@@ -4,65 +4,52 @@ import "p5";
 //import the p5 value (to reference p5.Vector.random2D() etc)
 import p5 from "p5";
 
-import { colourForPosition, drawRandomCircles } from "./randomStuff.ts";
+import {
+    createStartingQuad,
+    drawQuad,
+    subdivideAllRepeatedly,
+    type Quad,
+} from "./quad.ts";
+
+let quads: Quad[];
 
 p5.disableFriendlyErrors = true;
 
 window.setup = function setup() {
-    console.log("in setup()");
     createCanvas(windowWidth, windowHeight);
-    blendMode(DARKEST);
-    noLoop();
+    // blendMode(DARKEST);
+    restart();
 };
 
+function restart() {
+    quads = [createStartingQuad()];
+    redraw();
+}
 window.draw = function draw() {
     push();
     blendMode(BLEND);
     background(255);
     pop();
-    drawRandomCircles();
+    // randomSeed(1);
+    quads = subdivideAllRepeatedly(quads, {
+        shouldShrink: true,
+        numSplits: 3,
+        shrinkDistance: 20,
+    });
+    quads.forEach((q) => {
+        drawQuad(q);
+    });
+    fill(30);
+
+    text(quads.length, 100, height - 100);
 };
 
-window.mouseDragged = function mouseDragged(evt) {
-    if (!evt) {
-        return;
-    }
-    drawDraggedSquares(evt!);
-};
 window.mousePressed = function mousePressed(_evt) {
     if (mouseButton.left) {
-        redraw();
+        restart();
     }
 };
 
-function drawDraggedSquares(evt: MouseEvent) {
-    push();
-    const dx = evt.movementX;
-    const dy = evt.movementY;
-
-    const distMoved = sqrt(dx * dx + dy * dy);
-    const movementVector = createVector(dx, dy).add(p5.Vector.random2D());
-
-    fill(colourForPosition(createVector(mouseX, mouseY)));
-    const diameter = map(distMoved, 0, 400, 0, min(width, height), true);
-
-    push();
-
-    translate(mouseX, mouseY);
-    rectMode(CENTER);
-    rotate(movementVector.heading());
-    noStroke();
-    rect(0, 0, diameter);
-
-    if (distMoved > 30 && random() < 0.2) {
-        rotate(randomGaussian(0, PI / 20));
-        stroke(60);
-        strokeWeight(4);
-        noFill();
-        rect(0, 0, diameter);
-    }
-
-    pop();
-
-    pop();
-}
+window.windowResized = function () {
+    resizeCanvas(windowWidth, windowHeight);
+};
