@@ -40,7 +40,7 @@ window.mouseDragged = function (evt) {
 
     pop();
 };
-window.mousePressed = function (evt) {
+window.mousePressed = function (_evt) {
     redraw();
 };
 function randomPosition(): p5.Vector {
