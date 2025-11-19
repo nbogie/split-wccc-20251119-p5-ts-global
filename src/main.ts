@@ -56,6 +56,12 @@ window.draw = function draw() {
 
 window.mousePressed = function mousePressed(_evt) {
     if (mouseButton.left) {
+        gsap.to(options, {
+            duration: 0.6,
+            shrinkFraction: map(noise(1000 * millis()), 0.15, 0.85, 0, 1, true),
+
+            ease: "bounce.out",
+        });
     }
 };
 window.keyPressed = function keyPressed(_evt) {

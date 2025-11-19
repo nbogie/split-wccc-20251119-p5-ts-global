@@ -2,6 +2,7 @@ import p5 from "p5";
 import { minByOrThrow, randomColourFromPalette } from "./randomStuff.ts";
 export type Quad = {
     colour: p5.Color;
+    shrinkFraction: number;
     pts: [p5.Vector, p5.Vector, p5.Vector, p5.Vector];
 };
 
@@ -17,13 +18,16 @@ export interface Options {
 export function createStartingQuad(): Quad {
     return {
         colour: randomColourFromPalette(),
+        shrinkFraction: random(0, 0.9),
         pts: [
             { x: 0.1, y: 0.1 },
             { x: 0.9, y: 0.1 },
             { x: 0.9, y: 0.9 },
             { x: 0.1, y: 0.9 },
-        ].map((frac) => createVector(frac.x * width, frac.y * height)),
-    } as Quad;
+        ].map((frac) =>
+            createVector(frac.x * width, frac.y * height)
+        ) as Quad["pts"],
+    };
 }
 
 export function drawQuad(quad: Quad): void {
@@ -35,6 +39,13 @@ export function drawQuad(quad: Quad): void {
     quad.pts.forEach((v) => vertex(v.x, v.y));
     endShape(CLOSE);
     pop();
+}
+function createQuadWithPoints(pts: Quad["pts"]): Quad {
+    return {
+        pts: pts.map((pt) => pt.copy()) as Quad["pts"],
+        colour: randomColourFromPalette(),
+        shrinkFraction: random(0, 0.9),
+    } satisfies Quad;
 }
 export function splitQuad(
     inQuad: Quad,
@@ -48,28 +59,16 @@ export function splitQuad(
         const e = p5.Vector.lerp(a, b, cutFrac1);
         const f = p5.Vector.lerp(c, d, cutFrac2);
         return [
-            {
-                colour: randomColourFromPalette(),
-                pts: [a, e, f, d].map((pt) => pt.copy()) as Quad["pts"],
-            },
-            {
-                colour: randomColourFromPalette(),
-                pts: [e, b, c, f].map((pt) => pt.copy()) as Quad["pts"],
-            },
+            createQuadWithPoints([a, e, f, d]),
+            createQuadWithPoints([e, b, c, f]),
         ];
     } else {
         //cut b-c (creating e) and d-a (creating f) to give [a,b,e,d] and [f,e,c,d]
         const e = p5.Vector.lerp(b, c, cutFrac1);
         const f = p5.Vector.lerp(d, a, cutFrac2);
         return [
-            {
-                colour: randomColourFromPalette(),
-                pts: [a, b, e, f].map((pt) => pt.copy()) as Quad["pts"],
-            },
-            {
-                colour: randomColourFromPalette(),
-                pts: [f, e, c, d].map((pt) => pt.copy()) as Quad["pts"],
-            },
+            createQuadWithPoints([a, b, e, f]),
+            createQuadWithPoints([f, e, c, d]),
         ];
     }
 }
@@ -151,8 +150,7 @@ export function subdivideAllQuadsOnce(
 function shrinkQuad(quad: Quad, options: Options): Quad {
     return {
         ...quad,
-
-        pts: shrinkQuadPoints(quad.pts, options),
+        pts: shrinkQuadPoints(quad.pts, quad.shrinkFraction, options),
     } as Quad;
 }
 
@@ -163,31 +161,26 @@ type DecoratedEdge = {
     colour: string;
 };
 
-function shrinkQuadPoints(pts: Quad["pts"], options: Options): Quad["pts"] {
+function decorateEdge([p1, p2]: readonly [
+    p5.Vector,
+    p5.Vector
+]): DecoratedEdge {
+    return {
+        pts: [p1, p2],
+        midpoint: p5.Vector.lerp(p1, p2, 0.5),
+        colour: random(["lime", "yellow", "white", "red", "cyan", "magenta"]),
+        normal: p5.Vector.sub(p2, p1)
+            .normalize()
+            .rotate(PI / 2),
+    };
+}
+
+function shrinkQuadPoints(
+    pts: Quad["pts"],
+    shrinkFrac: number,
+    _options: Options
+): Quad["pts"] {
     const [a, b, c, d] = pts;
-
-    //      Consistent winding means for any edge P1 -> P2, it's always P2 - P1 rotated by -PI/2 for outward normal, or PI/2 for the shrink dir
-
-    function decorateEdge([p1, p2]: readonly [
-        p5.Vector,
-        p5.Vector
-    ]): DecoratedEdge {
-        return {
-            pts: [p1, p2],
-            midpoint: p5.Vector.lerp(p1, p2, 0.5),
-            colour: random([
-                "lime",
-                "yellow",
-                "white",
-                "red",
-                "cyan",
-                "magenta",
-            ]),
-            normal: p5.Vector.sub(p2, p1)
-                .normalize()
-                .rotate(PI / 2),
-        };
-    }
 
     const edges = (
         [
@@ -203,7 +196,7 @@ function shrinkQuadPoints(pts: Quad["pts"], options: Options): Quad["pts"] {
     const centroid = findQuadCentroid(pts);
 
     return pts.map((pt) =>
-        p5.Vector.lerp(pt, centroid, options.shrinkFraction)
+        p5.Vector.lerp(pt, centroid, shrinkFrac)
     ) as Quad["pts"];
 }
 
