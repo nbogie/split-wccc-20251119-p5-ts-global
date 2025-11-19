@@ -1,5 +1,5 @@
 import p5 from "p5";
-import { minBy, randomColourFromPalette } from "./randomStuff.ts";
+import { minByOrThrow, randomColourFromPalette } from "./randomStuff.ts";
 export type Quad = {
     colour: p5.Color;
     pts: [p5.Vector, p5.Vector, p5.Vector, p5.Vector];
@@ -81,10 +81,7 @@ function smallestSide(quad: Quad): { len: number; startIx: 0 | 1 | 2 | 3 } {
         [c, d],
         [d, a],
     ];
-    const smallest = minBy(pairs, ([p1, p2]) => p5.Vector.dist(p1, p2));
-    if (!smallest) {
-        throw new Error("did you pass minBy an empty array?");
-    }
+    const smallest = minByOrThrow(pairs, ([p1, p2]) => p5.Vector.dist(p1, p2));
     return {
         len: smallest.record,
         startIx: pairs.indexOf(smallest.element) as 0 | 1 | 2 | 3,

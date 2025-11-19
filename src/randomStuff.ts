@@ -22,21 +22,27 @@ export function randomColourFromPalette(): p5.Color {
     return c;
 }
 
-export function minBy<T, V extends number | string>(
-    array: T[],
-    iteratee: (value: T) => V
-): { element: T; record: V } | undefined {
-    if (!array || array.length === 0) {
-        return undefined;
+/**
+ * Will return the element that generates the minimum value according to the given fn.  Earliest tied candidate wins ties.  Also returns the actual min value generated.
+ * @param inputArray
+ * @param iterateeFn fn to call on each element of input array to generate value for comparison.
+ * @returns the "best" element and its generated minimum value
+ * @author Gemini LLM initially (and then heavily modded to return both the prize element and its converted min value, and again to throw, and again to make use of first, ...others)
+ */
+export function minByOrThrow<Elem, Val extends number | string>(
+    inputArray: Elem[],
+    iterateeFn: (value: Elem) => Val
+): { element: Elem; record: Val } {
+    if (!inputArray || inputArray.length === 0) {
+        throw new Error("Empty/undefined array passed to " + minByOrThrow.name);
     }
+    const [firstElement, ...otherElements] = inputArray;
 
-    let minElement: T = array[0];
-    let minValue: V = iteratee(minElement);
+    let minElement = firstElement;
+    let minValue = iterateeFn(minElement);
 
-    for (let i = 1; i < array.length; i++) {
-        const currentElement = array[i];
-        const currConvertedValue = iteratee(currentElement);
-
+    for (const currentElement of otherElements) {
+        const currConvertedValue = iterateeFn(currentElement);
         if (currConvertedValue < minValue) {
             minValue = currConvertedValue;
             minElement = currentElement;
