@@ -19,23 +19,24 @@ p5.disableFriendlyErrors = true;
 window.setup = function setup() {
     createCanvas(windowWidth, windowHeight);
     // blendMode(DARKEST);
-    restart();
+    randomSeed(options.seed);
 };
 const options: Options = {
     shouldShrink: true,
     numSplits: 4,
     shrinkDistance: 20,
     minAllowedLength: 10,
+    seed: 123,
 };
 
-function restart() {}
 window.draw = function draw() {
+    randomSeed(options.seed);
     quads = [createStartingQuad()];
+
     push();
     blendMode(BLEND);
     background(255);
     pop();
-    randomSeed(1);
     quads = subdivideAllRepeatedly(quads, options);
     quads.forEach((q) => {
         drawQuad(q);
@@ -47,6 +48,12 @@ window.draw = function draw() {
 
 window.mousePressed = function mousePressed(_evt) {
     if (mouseButton.left) {
+    }
+};
+window.keyPressed = function keyPressed(_evt) {
+    if (key === " ") {
+        console.log("space pressed");
+        options.seed = millis();
     }
 };
 window.mouseMoved = function mouseMoved(_evt) {

@@ -10,6 +10,7 @@ export interface Options {
     numSplits: number;
     shrinkDistance: number;
     minAllowedLength: number;
+    seed: number;
 }
 
 export function createStartingQuad(): Quad {
@@ -119,16 +120,23 @@ export function subdivideAllQuadsOnce(quads: Quad[], options: Options): Quad[] {
 //      Consistent winding means for any edge P1 -> P2, it's always P2 - P1 rotated by -PI/2
 function shrinkQuad(quad: Quad, shrinkDist: number): Quad {
     const [a, _b, c, _d] = quad.pts;
-    const midpoint = p5.Vector.lerp(a, c, 0.5);
+
     return {
         ...quad,
-        pts: quad.pts.map((pt) => {
-            const cornerToMid = p5.Vector.sub(midpoint, pt);
-            if (cornerToMid.mag() < shrinkDist) {
-                return pt;
-            }
-            const offset = p5.Vector.sub(midpoint, pt).setMag(shrinkDist);
-            return p5.Vector.add(pt, offset);
-        }),
+
+        pts: shrinkQuadPoints(quad.pts, shrinkDist),
     } as Quad;
+}
+
+function shrinkQuadPoints(pts: Quad["pts"], shrinkDist: number): Quad["pts"] {
+    const [a, b, c, d] = pts;
+    const midpoint = p5.Vector.lerp(a, c, 0.5);
+    return pts.map((pt) => {
+        const cornerToMid = p5.Vector.sub(midpoint, pt);
+        if (cornerToMid.mag() < shrinkDist) {
+            return pt;
+        }
+        const offset = p5.Vector.sub(midpoint, pt).setMag(shrinkDist);
+        return p5.Vector.add(pt, offset);
+    }) as Quad["pts"];
 }
