@@ -75,13 +75,6 @@ export function splitQuad(inQuad: Quad): [Quad, Quad] {
         ];
     }
 }
-function randomColourMarking(dir: "vert" | "horiz"): p5.Color {
-    if (dir === "horiz") {
-        return color(random(100, 255), 0, 0);
-    } else {
-        return color(random(100, 255));
-    }
-}
 function smallestSide(quad: Quad): number {
     const [a, b, c, d] = quad.pts;
     const pairs = [
