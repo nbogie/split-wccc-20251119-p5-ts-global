@@ -12,10 +12,10 @@ export function colourForPosition(pos: p5.Vector): p5.Color {
     push();
     colorMode(HSB);
     const stops = [
-        ["powderblue", 0],
-        ["hotpink", 0.2],
-        ["skyblue", 0.5],
-        ["dodgerblue", 1],
+        ["hotpink", 0],
+        ["yellow", 0.35],
+        ["magenta", 0.5],
+        ["cyan", 0.9],
     ] satisfies [string, number][];
     const frac = map(pos.x, 0, width, 0, 1, true);
     const myColor = paletteLerp(stops, frac);
