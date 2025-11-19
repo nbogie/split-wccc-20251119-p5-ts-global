@@ -21,3 +21,27 @@ export function randomColourFromPalette(): p5.Color {
     // c.setAlpha(100);
     return c;
 }
+
+export function minBy<T, V extends number | string>(
+    array: T[],
+    iteratee: (value: T) => V
+): { element: T; record: V } | undefined {
+    if (!array || array.length === 0) {
+        return undefined;
+    }
+
+    let minElement: T = array[0];
+    let minValue: V = iteratee(minElement);
+
+    for (let i = 1; i < array.length; i++) {
+        const currentElement = array[i];
+        const currConvertedValue = iteratee(currentElement);
+
+        if (currConvertedValue < minValue) {
+            minValue = currConvertedValue;
+            minElement = currentElement;
+        }
+    }
+
+    return { element: minElement, record: minValue };
+}

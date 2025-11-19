@@ -1,5 +1,5 @@
 import p5 from "p5";
-import { randomColourFromPalette } from "./randomStuff.ts";
+import { minBy, randomColourFromPalette } from "./randomStuff.ts";
 export type Quad = {
     colour: p5.Color;
     pts: [p5.Vector, p5.Vector, p5.Vector, p5.Vector];
@@ -29,37 +29,21 @@ export function createStartingQuad(): Quad {
 export function drawQuad(quad: Quad): void {
     push();
     const c = color(quad.colour.toString());
-    // c.setAlpha(100);
     fill(c);
     noStroke();
-    // strokeWeight(10);
-    // stroke(random(255));
-
     beginShape();
     quad.pts.forEach((v) => vertex(v.x, v.y));
     endShape(CLOSE);
     pop();
 }
-export function splitQuad(inQuad: Quad): [Quad, Quad] {
-    const isHorizontal = random([true, false]);
+export function splitQuad(
+    inQuad: Quad,
+    shouldCutFirstSide: boolean
+): [Quad, Quad] {
     const [a, b, c, d] = inQuad.pts.map((v) => v.copy());
     const cutFrac1 = random([1, 2]) / 3;
     const cutFrac2 = random([1, 2]) / 3;
-    if (isHorizontal) {
-        //cut b-c (creating e) and d-a (creating f) to give [a,b,e,d] and [f,e,c,d]
-        const e = p5.Vector.lerp(b, c, cutFrac1);
-        const f = p5.Vector.lerp(d, a, cutFrac2);
-        return [
-            {
-                colour: randomColourFromPalette(),
-                pts: [a, b, e, f].map((pt) => pt.copy()) as Quad["pts"],
-            },
-            {
-                colour: randomColourFromPalette(),
-                pts: [f, e, c, d].map((pt) => pt.copy()) as Quad["pts"],
-            },
-        ];
-    } else {
+    if (shouldCutFirstSide) {
         //cut a-b (creating e) and c-d (creating f) to give [a,e,f,d] and [e,b,c,f]
         const e = p5.Vector.lerp(a, b, cutFrac1);
         const f = p5.Vector.lerp(c, d, cutFrac2);
@@ -73,9 +57,23 @@ export function splitQuad(inQuad: Quad): [Quad, Quad] {
                 pts: [e, b, c, f].map((pt) => pt.copy()) as Quad["pts"],
             },
         ];
+    } else {
+        //cut b-c (creating e) and d-a (creating f) to give [a,b,e,d] and [f,e,c,d]
+        const e = p5.Vector.lerp(b, c, cutFrac1);
+        const f = p5.Vector.lerp(d, a, cutFrac2);
+        return [
+            {
+                colour: randomColourFromPalette(),
+                pts: [a, b, e, f].map((pt) => pt.copy()) as Quad["pts"],
+            },
+            {
+                colour: randomColourFromPalette(),
+                pts: [f, e, c, d].map((pt) => pt.copy()) as Quad["pts"],
+            },
+        ];
     }
 }
-function smallestSide(quad: Quad): number {
+function smallestSide(quad: Quad): { len: number; startIx: 0 | 1 | 2 | 3 } {
     const [a, b, c, d] = quad.pts;
     const pairs = [
         [a, b],
@@ -83,18 +81,26 @@ function smallestSide(quad: Quad): number {
         [c, d],
         [d, a],
     ];
-    const distances = pairs.map(([p1, p2]) => p5.Vector.dist(p1, p2));
-    return min(distances);
+    const smallest = minBy(pairs, ([p1, p2]) => p5.Vector.dist(p1, p2));
+    if (!smallest) {
+        throw new Error("did you pass minBy an empty array?");
+    }
+    return {
+        len: smallest.record,
+        startIx: pairs.indexOf(smallest.element) as 0 | 1 | 2 | 3,
+    };
 }
 
 export function splitQuadIfBig(
     quad: Quad,
     minAllowedLen: number
 ): Quad[] | null {
-    if (smallestSide(quad) < minAllowedLen) {
+    const smallSide = smallestSide(quad);
+    if (smallSide.len < minAllowedLen) {
         return null;
     }
-    const [q1, q2] = splitQuad(quad);
+    const cutFirstSide = smallSide.startIx % 2 === 1;
+    const [q1, q2] = splitQuad(quad, cutFirstSide);
     return [q1, q2];
 }
 
