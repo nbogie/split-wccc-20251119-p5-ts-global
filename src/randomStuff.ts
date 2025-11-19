@@ -10,5 +10,7 @@ export function randomColourFromPalette(): p5.Color {
         size: 5,
         type: "chromotome",
     };
-    return color(random(palette.colors));
+    const c = color(random(palette.colors));
+    c.setAlpha(100);
+    return c;
 }

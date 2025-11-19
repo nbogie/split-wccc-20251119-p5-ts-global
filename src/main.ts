@@ -24,7 +24,7 @@ window.setup = function setup() {
 const options: Options = {
     shouldShrink: true,
     numSplits: 4,
-    shrinkDistance: 20,
+    shrinkDistance: 0,
     minAllowedLength: 10,
     seed: 123,
 };
@@ -35,7 +35,7 @@ window.draw = function draw() {
 
     push();
     blendMode(BLEND);
-    background(255);
+    background(30);
     pop();
     quads = subdivideAllRepeatedly(quads, options);
     quads.forEach((q) => {
@@ -55,13 +55,25 @@ window.keyPressed = function keyPressed(_evt) {
         console.log("space pressed");
         options.seed = millis();
     }
+    if (key === "=" || key === "-") {
+        const sign = key === "=" ? 1 : -1;
+        const newDistance = constrain(
+            options.shrinkDistance + sign * 1,
+            0,
+            200
+        );
+        gsap.to(options, {
+            duration: 0.2,
+            shrinkDistance: newDistance,
+        });
+    }
 };
 window.mouseMoved = function mouseMoved(_evt) {
     //so far, this doesn't really need gsap.
-    gsap.to(options, {
-        duration: 0.05,
-        shrinkDistance: map(mouseX, 0, width, 0, 100, true),
-    });
+    // gsap.to(options, {
+    //     duration: 0.05,
+    //     shrinkDistance: map(mouseX, 0, width, 0, 300, true),
+    // });
 };
 
 window.windowResized = function () {
