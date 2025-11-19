@@ -1,6 +1,6 @@
 //run p5
 import "p5";
-
+import gsap from "gsap";
 //import the p5 value (to reference p5.Vector.random2D() etc)
 import p5 from "p5";
 
@@ -8,6 +8,7 @@ import {
     createStartingQuad,
     drawQuad,
     subdivideAllRepeatedly,
+    type Options,
     type Quad,
 } from "./quad.ts";
 
@@ -20,22 +21,22 @@ window.setup = function setup() {
     // blendMode(DARKEST);
     restart();
 };
+const options: Options = {
+    shouldShrink: true,
+    numSplits: 4,
+    shrinkDistance: 20,
+    minAllowedLength: 10,
+};
 
-function restart() {
-    quads = [createStartingQuad()];
-    redraw();
-}
+function restart() {}
 window.draw = function draw() {
+    quads = [createStartingQuad()];
     push();
     blendMode(BLEND);
     background(255);
     pop();
-    // randomSeed(1);
-    quads = subdivideAllRepeatedly(quads, {
-        shouldShrink: true,
-        numSplits: 3,
-        shrinkDistance: 20,
-    });
+    randomSeed(1);
+    quads = subdivideAllRepeatedly(quads, options);
     quads.forEach((q) => {
         drawQuad(q);
     });
@@ -46,8 +47,13 @@ window.draw = function draw() {
 
 window.mousePressed = function mousePressed(_evt) {
     if (mouseButton.left) {
-        restart();
     }
+};
+window.mouseMoved = function mouseMoved(_evt) {
+    gsap.to(options, {
+        duration: 0.2,
+        shrinkDistance: map(mouseX, 0, width, 0, 100, true),
+    });
 };
 
 window.windowResized = function () {

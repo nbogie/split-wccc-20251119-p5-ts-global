@@ -5,10 +5,11 @@ export type Quad = {
     pts: [p5.Vector, p5.Vector, p5.Vector, p5.Vector];
 };
 
-interface Options {
+export interface Options {
     shouldShrink: boolean;
     numSplits: number;
     shrinkDistance: number;
+    minAllowedLength: number;
 }
 
 export function createStartingQuad(): Quad {
@@ -71,8 +72,11 @@ function smallestSide(quad: Quad): number {
     return min(distances);
 }
 
-export function splitQuadIfBig(quad: Quad): Quad[] | null {
-    if (smallestSide(quad) < 100) {
+export function splitQuadIfBig(
+    quad: Quad,
+    minAllowedLen: number
+): Quad[] | null {
+    if (smallestSide(quad) < minAllowedLen) {
         return null;
     }
     const [q1, q2] = splitQuad(quad);
@@ -83,7 +87,6 @@ export function subdivideAllRepeatedly(
     quads: Quad[],
     options: Options
 ): Quad[] {
-    console.log("subdivideAllRepeatedly", { quadsLen: quads.length }, millis());
     let newQuads: Quad[] = [...quads];
     for (let i = 0; i < options.numSplits; i++) {
         newQuads = subdivideAllQuadsOnce(newQuads, options);
@@ -92,14 +95,11 @@ export function subdivideAllRepeatedly(
 }
 
 export function subdivideAllQuadsOnce(quads: Quad[], options: Options): Quad[] {
-    console.log(subdivideAllQuadsOnce.name, { ql: quads.length });
-
     const newQuads = [];
     for (const quad of quads) {
-        const result = splitQuadIfBig(quad);
+        const result = splitQuadIfBig(quad, options.minAllowedLength);
 
         if (!result) {
-            console.log("fail");
             newQuads.push(quad);
             continue;
         }
@@ -112,9 +112,11 @@ export function subdivideAllQuadsOnce(quads: Quad[], options: Options): Quad[] {
             newQuads.push(...result);
         }
     }
-    console.log(subdivideAllQuadsOnce.name, { returnLen: newQuads.length });
+
     return newQuads;
 }
+//TODO: move each edge along its normal vector.
+//      Consistent winding means for any edge P1 -> P2, it's always P2 - P1 rotated by -PI/2
 function shrinkQuad(quad: Quad, shrinkDist: number): Quad {
     const [a, _b, c, _d] = quad.pts;
     const midpoint = p5.Vector.lerp(a, c, 0.5);
