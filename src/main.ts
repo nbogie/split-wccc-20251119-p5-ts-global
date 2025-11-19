@@ -10,7 +10,6 @@ window.setup = function setup() {
 };
 
 window.draw = function draw() {
-    fill("dodgerblue");
     for (let i = 0; i < 10; i++) {
         const pos = randomPosition();
 
@@ -22,6 +21,7 @@ window.draw = function draw() {
 };
 
 window.mouseDragged = function (evt) {
+    push();
     const dx = evt?.movementX ?? 1;
     const dy = evt?.movementY ?? 1;
     const distMoved = sqrt(dx * dx + dy * dy);
@@ -30,21 +30,26 @@ window.mouseDragged = function (evt) {
     noStroke();
     fill(colourForPosition(createVector(mouseX, mouseY)));
     const diameter = map(distMoved, 0, 300, 0, min(width, height), true);
+
     push();
     translate(mouseX, mouseY);
     rectMode(CENTER);
     rotate(movementVector.heading());
     rect(0, 0, diameter);
     pop();
-};
 
+    pop();
+};
+window.mousePressed = function (evt) {
+    redraw();
+};
 function randomPosition(): p5.Vector {
     return createVector(random(width), random(height));
 }
 
 function colourForPosition(pos: p5.Vector): p5.Color {
     push();
-    colorMode(RGB);
+    colorMode(HSB);
 
     const stops = [
         ["powderblue", 0],
