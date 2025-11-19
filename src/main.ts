@@ -1,5 +1,9 @@
+//run p5
 import "p5";
+
+//import the p5 value (to reference p5.Vector.random2D() etc)
 import p5 from "p5";
+
 import { colourForPosition, drawRandomCircles } from "./randomStuff.ts";
 
 p5.disableFriendlyErrors = true;
@@ -36,7 +40,6 @@ function drawDraggedSquares(evt: MouseEvent) {
     const dx = evt.movementX;
     const dy = evt.movementY;
 
-    console.log(evt.movementX);
     const distMoved = sqrt(dx * dx + dy * dy);
     const movementVector = createVector(dx, dy).add(p5.Vector.random2D());
 
