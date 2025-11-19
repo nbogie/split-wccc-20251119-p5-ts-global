@@ -50,8 +50,9 @@ window.mousePressed = function mousePressed(_evt) {
     }
 };
 window.mouseMoved = function mouseMoved(_evt) {
+    //so far, this doesn't really need gsap.
     gsap.to(options, {
-        duration: 0.2,
+        duration: 0.05,
         shrinkDistance: map(mouseX, 0, width, 0, 100, true),
     });
 };
