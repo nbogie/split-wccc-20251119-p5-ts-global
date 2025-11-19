@@ -1,65 +1,65 @@
 import "p5";
 import p5 from "p5";
+import { colourForPosition, drawRandomCircles } from "./randomStuff.ts";
 
-console.log("hello world. in main.ts");
+p5.disableFriendlyErrors = true;
 
 window.setup = function setup() {
     console.log("in setup()");
     createCanvas(windowWidth, windowHeight);
+    blendMode(DARKEST);
     noLoop();
 };
 
 window.draw = function draw() {
-    for (let i = 0; i < 10; i++) {
-        const pos = randomPosition();
+    push();
+    blendMode(BLEND);
+    background(255);
+    pop();
+    drawRandomCircles();
+};
 
-        fill(colourForPosition(pos));
-        // noStroke();
-
-        circle(pos.x, pos.y, random(10, 200));
+window.mouseDragged = function mouseDragged(evt) {
+    if (!evt) {
+        return;
+    }
+    drawDraggedSquares(evt!);
+};
+window.mousePressed = function mousePressed(_evt) {
+    if (mouseButton.left) {
+        redraw();
     }
 };
 
-window.mouseDragged = function (evt) {
+function drawDraggedSquares(evt: MouseEvent) {
     push();
-    const dx = evt?.movementX ?? 1;
-    const dy = evt?.movementY ?? 1;
+    const dx = evt.movementX;
+    const dy = evt.movementY;
+
+    console.log(evt.movementX);
     const distMoved = sqrt(dx * dx + dy * dy);
     const movementVector = createVector(dx, dy).add(p5.Vector.random2D());
 
-    noStroke();
     fill(colourForPosition(createVector(mouseX, mouseY)));
-    const diameter = map(distMoved, 0, 300, 0, min(width, height), true);
+    const diameter = map(distMoved, 0, 400, 0, min(width, height), true);
 
     push();
+
     translate(mouseX, mouseY);
     rectMode(CENTER);
     rotate(movementVector.heading());
+    noStroke();
     rect(0, 0, diameter);
-    pop();
+
+    if (distMoved > 30 && random() < 0.2) {
+        rotate(randomGaussian(0, PI / 20));
+        stroke(60);
+        strokeWeight(4);
+        noFill();
+        rect(0, 0, diameter);
+    }
 
     pop();
-};
-window.mousePressed = function (_evt) {
-    redraw();
-};
-function randomPosition(): p5.Vector {
-    return createVector(random(width), random(height));
-}
 
-function colourForPosition(pos: p5.Vector): p5.Color {
-    push();
-    colorMode(HSB);
-
-    const stops = [
-        ["powderblue", 0],
-        ["hotpink", 0.2],
-        ["skyblue", 0.5],
-        ["dodgerblue", 1],
-    ] satisfies [string, number][];
-    const frac = map(pos.x, 0, width, 0, 1, true);
-    const myColor = paletteLerp(stops, frac);
     pop();
-
-    return myColor;
 }
