@@ -9,6 +9,7 @@ export interface Options {
     shouldShrink: boolean;
     numSplits: number;
     shrinkDistance: number;
+    shrinkFraction: number;
     minAllowedLength: number;
     seed: number;
 }
@@ -103,6 +104,7 @@ export function splitQuadIfBig(
     const [q1, q2] = splitQuad(quad);
     return [q1, q2];
 }
+
 /** given array will not be modified. */
 export function subdivideAllRepeatedly(
     quads: Quad[],
@@ -125,17 +127,23 @@ export function subdivideAllQuadsOnce(
     isLastLayer: boolean
 ): Quad[] {
     const newQuads = [];
+
+    const shouldShrink = options.shouldShrink && isLastLayer;
+
     for (const quad of quads) {
         const result = splitQuadIfBig(quad, options.minAllowedLength);
 
         if (!result) {
-            newQuads.push(quad);
+            if (shouldShrink) {
+                newQuads.push(shrinkQuad(quad, options));
+            } else {
+                newQuads.push(quad);
+            }
             continue;
         }
-        if (options.shouldShrink && isLastLayer) {
-            const shrunkenQuads = result.map((q) =>
-                shrinkQuad(q, options.shrinkDistance)
-            );
+
+        if (shouldShrink) {
+            const shrunkenQuads = result.map((q) => shrinkQuad(q, options));
             newQuads.push(...shrunkenQuads);
         } else {
             newQuads.push(...result);
@@ -144,11 +152,11 @@ export function subdivideAllQuadsOnce(
 
     return newQuads;
 }
-function shrinkQuad(quad: Quad, shrinkDist: number): Quad {
+function shrinkQuad(quad: Quad, options: Options): Quad {
     return {
         ...quad,
 
-        pts: shrinkQuadPoints(quad.pts, shrinkDist),
+        pts: shrinkQuadPoints(quad.pts, options),
     } as Quad;
 }
 
@@ -159,7 +167,7 @@ type DecoratedEdge = {
     colour: string;
 };
 
-function shrinkQuadPoints(pts: Quad["pts"], shrinkDist: number): Quad["pts"] {
+function shrinkQuadPoints(pts: Quad["pts"], options: Options): Quad["pts"] {
     const [a, b, c, d] = pts;
 
     //      Consistent winding means for any edge P1 -> P2, it's always P2 - P1 rotated by -PI/2 for outward normal, or PI/2 for the shrink dir
@@ -196,22 +204,11 @@ function shrinkQuadPoints(pts: Quad["pts"], shrinkDist: number): Quad["pts"] {
 
     visNormals(edges);
 
-    //mutating
-    for (let edge of edges) {
-        moveEdgeAlongNormalMutating(edge, shrinkDist);
-    }
-    if (mouseIsPressed) {
-        // debugger;
-    }
-    return edges.map((e) => e.pts[0]) as Quad["pts"];
-}
+    const centroid = findQuadCentroid(pts);
 
-function moveEdgeAlongNormalMutating(
-    edge: DecoratedEdge,
-    shrinkDist: number
-): void {
-    const offset = p5.Vector.mult(edge.normal, shrinkDist);
-    edge.pts.forEach((pt) => pt.add(offset));
+    return pts.map((pt) =>
+        p5.Vector.lerp(pt, centroid, options.shrinkFraction)
+    ) as Quad["pts"];
 }
 
 function visNormals(edges: DecoratedEdge[]) {
@@ -240,4 +237,9 @@ function visNormals(edges: DecoratedEdge[]) {
         circle(normLineLen, 0, 5);
         pop();
     }
+}
+function findQuadCentroid(quadPts: Quad["pts"]): p5.Vector {
+    return quadPts
+        .reduce((prev, curr) => prev.add(curr), createVector(0, 0))
+        .div(4);
 }

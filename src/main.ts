@@ -1,3 +1,12 @@
+//originally inspired by https://openprocessing.org/sketch/1045334/
+//TODO:
+//maybe fill with p5.brush? https://openprocessing.org/sketch/2117088
+// allow click to further split a selected quad (or few surrounding ones), animated with particles and lerp
+//don't shrink, disturb?
+//extrude to 3d w custom geom?
+//let the user use a knife to cut the geom, animate.
+//TODO: try shrinking corners to the intersection of the two inset lines parallel to their edges.
+
 //run p5
 import "p5";
 import gsap from "gsap";
@@ -25,6 +34,7 @@ const options: Options = {
     shouldShrink: true,
     numSplits: 4,
     shrinkDistance: 0,
+    shrinkFraction: 0.05, //0-1 exclusive
     minAllowedLength: 10,
     seed: 123,
 };
@@ -41,9 +51,7 @@ window.draw = function draw() {
     quads.forEach((q) => {
         drawQuad(q);
     });
-    fill(30);
-
-    text(quads.length, 100, height - 100);
+    drawDebugText();
 };
 
 window.mousePressed = function mousePressed(_evt) {
@@ -58,14 +66,20 @@ window.keyPressed = function keyPressed(_evt) {
     if (key === "=" || key === "-") {
         const sign = key === "=" ? 1 : -1;
         const newDistance = constrain(
-            options.shrinkDistance + sign * 1,
+            options.shrinkFraction + sign * 0.05,
             0,
-            200
+            1
         );
         gsap.to(options, {
-            duration: 0.2,
-            shrinkDistance: newDistance,
+            duration: 0.6,
+            shrinkFraction: newDistance,
+            ease: "bounce.out",
         });
+    }
+    if (key === "," || key === ".") {
+        const sign = key === "." ? 1 : -1;
+        const newCount = constrain(options.numSplits + sign, 0, 10);
+        options.numSplits = newCount;
     }
 };
 window.mouseMoved = function mouseMoved(_evt) {
@@ -79,3 +93,19 @@ window.mouseMoved = function mouseMoved(_evt) {
 window.windowResized = function () {
     resizeCanvas(windowWidth, windowHeight);
 };
+
+function drawDebugText() {
+    fill(255);
+    push();
+    translate(100, height - 100);
+    const lines = [
+        "quads: " + quads.length,
+        "shrinkFraction: " + options.shrinkFraction.toFixed(2),
+        "num splits: " + options.numSplits,
+    ];
+    for (let line of [...lines].reverse()) {
+        text(line, 0, 0);
+        translate(0, -30);
+    }
+    pop();
+}
