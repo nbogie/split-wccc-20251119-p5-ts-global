@@ -1,3 +1,5 @@
+import "p5";
+
 console.log("hello world. in main.ts");
 
 window.setup = function setup() {
