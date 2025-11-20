@@ -170,7 +170,6 @@ export function actionSplitQuadUnderPos(pos: p5.Vector) {
 }
 
 export function actionPickNewRandomPalette() {
-    console.log("action pick");
     const options = getWorld().options;
     const oldIx = options.paletteIx;
     const otherIndices = palettes

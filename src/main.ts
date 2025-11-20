@@ -11,11 +11,14 @@ import { actionRegenerate, createCommands, type Command } from "./actions.ts";
 import { drawQuad, type Options, type Quad } from "./quad.ts";
 import "./interaction.ts";
 import { drawDebugText, setDescription } from "./randomStuff.ts";
+
 export interface World {
     quads: Quad[];
     commands: Command[];
     options: Options;
 }
+
+/** Encapsulates our entire global state that will be made available to most of our functions */
 let world: World;
 
 //just checking this ts setup can handle the p5 value.
@@ -23,11 +26,7 @@ p5.disableFriendlyErrors = true;
 
 window.setup = function setup() {
     createCanvas(windowWidth, windowHeight);
-    world = {
-        commands: createCommands(),
-        quads: [],
-        options: createOptions(),
-    };
+    world = createWorld();
     setDescription();
     // blendMode(DARKEST);
     actionRegenerate();
@@ -57,6 +56,15 @@ function createOptions(): Options {
         minAllowedLength: 15,
         seed: 123,
         paletteIx: 0,
+    };
+}
+
+/** Create and return all the essentially global state that will be made available between modules. */
+function createWorld(): World {
+    return {
+        quads: [],
+        commands: createCommands(),
+        options: createOptions(),
     };
 }
 
