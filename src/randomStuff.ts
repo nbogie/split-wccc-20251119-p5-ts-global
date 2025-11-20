@@ -58,7 +58,7 @@ export function drawDebugText(world: World) {
     translate(100, height - 100);
     const lines = [
         "quads: " + quads.length,
-        "shrinkFraction: " + options.shrinkFraction.toFixed(2),
+        "shrinkFraction: " + options.globalShrinkFraction.toFixed(2),
         "num splits: " + options.numSplits,
         "palette: " + palettes[options.paletteIx].name,
     ];

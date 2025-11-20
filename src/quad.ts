@@ -14,6 +14,9 @@ export interface Options {
     shouldLogKeyCommands: boolean;
     /**when dragging over quads, how near must a quad centroid be to mouse pos to be considered targeted */
     quadBrushRadius: number;
+    /** A number between 0 (no shrink) and 1 (entirely shrunk - avoid).  Each quad maintains its own but sometimes we set all to this value.
+     * @see {@link Quad.shrinkFraction} for more on the meaning. */
+    globalShrinkFraction: number;
     shouldShrink: boolean;
     numSplits: number;
     shouldGenerateUnshrunk: boolean;
@@ -149,6 +152,8 @@ export function splitQuadIfBig(quad: Quad, options: Options): Quad[] | null {
     if (smallSide.len < options.minAllowedLength) {
         return null;
     }
+    //TODO: if within some threshold of each other, choose randomly.
+    //      Needed for grid of mulitple perfect square starting quads
     const cutFirstSide = smallSide.startIx % 2 === 1;
     const [q1, q2] = splitQuad(quad, cutFirstSide, options);
     return [q1, q2];

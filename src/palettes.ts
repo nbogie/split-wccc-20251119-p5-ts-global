@@ -2,21 +2,6 @@
 // via [https://nice-colours-quicker.netlify.app/](nice-colours-quicker)
 export const palettes = [
     {
-        name: "system.#04",
-        colors: [
-            "#e31f4f",
-            "#f0ac3f",
-            "#18acab",
-            "#26265a",
-            "#ea7d81",
-            "#dcd9d0",
-        ],
-        stroke: "#26265a",
-        backgrund: "#dcd9d0",
-        size: 6,
-        type: "chromotome",
-    },
-    {
         name: "nowak",
         colors: [
             "#e85b30",
@@ -32,6 +17,22 @@ export const palettes = [
         size: 7,
         type: "chromotome",
     },
+    {
+        name: "system.#04",
+        colors: [
+            "#e31f4f",
+            "#f0ac3f",
+            "#18acab",
+            "#26265a",
+            "#ea7d81",
+            "#dcd9d0",
+        ],
+        stroke: "#26265a",
+        backgrund: "#dcd9d0",
+        size: 6,
+        type: "chromotome",
+    },
+
     {
         name: "tsu_arcade",
         colors: [

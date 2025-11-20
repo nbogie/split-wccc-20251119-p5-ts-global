@@ -101,8 +101,11 @@ export function createCommands(): Command[] {
 }
 export function actionSetupGrid() {
     const w = getWorld();
+    w.options.seed = millis();
+    w.options.numSplits = 1;
+    randomSeed(w.options.seed);
     w.quads = createGridOfStartingQuads(w.options);
-    w.quads = subdivideAllRepeatedly(w.quads, { ...w.options, numSplits: 1 });
+    w.quads = subdivideAllRepeatedly(w.quads, w.options);
     const shouldFakeOut = random() < 0.2;
     gsap.to(w.quads, {
         delay: 0.1,
@@ -123,11 +126,18 @@ export function actionChangeNumSplits(sign: -1 | 1) {
 
 export function actionChangeGlobalShrinkFraction(sign: 1 | -1) {
     const options = getWorld().options;
-    const newDistance = constrain(options.shrinkFraction + sign * 0.05, 0, 1);
-    gsap.to(options, {
+    const newDistance = constrain(
+        options.globalShrinkFraction + sign * 0.05,
+        0,
+        1
+    );
+
+    options.globalShrinkFraction = newDistance;
+
+    gsap.to(getWorld().quads, {
         duration: 0.6,
-        shrinkFraction: newDistance,
-        ease: "bounce.out",
+        shrinkFraction: options.globalShrinkFraction,
+        ease: "power3.out",
     });
 }
 
@@ -139,10 +149,10 @@ export function actionTakeAScreenshot() {
     setTimeout(() => save("wccc-split-neill"), 0);
 }
 export function actionRegenerate() {
-    const options = getWorld().options;
+    const world = getWorld();
+    const options = world.options;
     options.seed = millis();
     randomSeed(options.seed);
-    const world = getWorld();
 
     world.quads = [createStartingQuad(options)];
     world.quads = subdivideAllRepeatedly(world.quads, options);

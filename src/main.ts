@@ -52,7 +52,7 @@ function createOptions(): Options {
         shouldShrink: true,
         numSplits: 4,
         shouldGenerateUnshrunk: true,
-        shrinkFraction: 0.05, //0-1 exclusive
+        globalShrinkFraction: 0.05, //0-1 exclusive
         minAllowedLength: 15,
         seed: 123,
         paletteIx: 0,
