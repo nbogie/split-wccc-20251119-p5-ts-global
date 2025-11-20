@@ -2,6 +2,7 @@ import gsap from "gsap";
 import { getWorld } from "./main.ts";
 
 import {
+    createGridOfStartingQuads,
     createStartingQuad,
     findQuadNearestToPos,
     splitQuadIfBig,
@@ -27,6 +28,13 @@ export function createCommands(): Command[] {
             "Regenerate a new set of quads preserving the current config",
     });
 
+    cmds.push({
+        key: "g",
+        action: actionSetupGrid,
+        title: "make grid",
+        description:
+            "setup a grid of starting quads and bisect them a (small) amount",
+    });
     cmds.push({
         key: "r",
         action: actionAnimateRandomShrinkFractionChanges,
@@ -60,14 +68,14 @@ export function createCommands(): Command[] {
     });
     cmds.push({
         key: "-",
-        action: () => actionChangeShrinkFraction(-1),
+        action: () => actionChangeGlobalShrinkFraction(-1),
         title: "decrease global shrink fraction",
         description:
             "Decrease the global shrink fraction (fractions by which all quad corners are lerped towards their centroid)",
     });
     cmds.push({
         key: "=",
-        action: () => actionChangeShrinkFraction(1),
+        action: () => actionChangeGlobalShrinkFraction(1),
         title: "increase global shrink fraction",
         description:
             "Increase the global shrink fraction (fractions by which all quad corners are lerped towards their centroid)",
@@ -91,6 +99,19 @@ export function createCommands(): Command[] {
 
     return cmds;
 }
+export function actionSetupGrid() {
+    const w = getWorld();
+    w.quads = createGridOfStartingQuads(w.options);
+    w.quads = subdivideAllRepeatedly(w.quads, { ...w.options, numSplits: 1 });
+    const shouldFakeOut = random() < 0.2;
+    gsap.to(w.quads, {
+        delay: 0.1,
+        duration: 0.5,
+        shrinkFraction: "random(0, 0.6, 0.2)",
+        repeat: shouldFakeOut ? 1 : 0,
+        yoyo: shouldFakeOut,
+    });
+}
 
 export function actionChangeNumSplits(sign: -1 | 1) {
     const options = getWorld().options;
@@ -100,7 +121,7 @@ export function actionChangeNumSplits(sign: -1 | 1) {
     actionRegenerate();
 }
 
-export function actionChangeShrinkFraction(sign: 1 | -1) {
+export function actionChangeGlobalShrinkFraction(sign: 1 | -1) {
     const options = getWorld().options;
     const newDistance = constrain(options.shrinkFraction + sign * 0.05, 0, 1);
     gsap.to(options, {

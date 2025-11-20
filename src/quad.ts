@@ -34,6 +34,44 @@ export function createStartingQuad(options: Options): Quad {
     ) as Quad["pts"];
     return createQuadWithPoints(pts, options);
 }
+export function createGridOfStartingQuads(options: Options): Quad[] {
+    const numColumns = 4;
+    const numRows = 4;
+    const cellSize = min(width, height) / numRows;
+    const gridQuads: Quad[] = [];
+    for (let colIx = 0; colIx < numColumns; colIx++) {
+        for (let rowIx = 0; rowIx < numRows; rowIx++) {
+            gridQuads.push(
+                createQuadOnGrid({ colIx, rowIx, cellSize }, options)
+            );
+        }
+    }
+    return gridQuads;
+}
+
+function createQuadOnGrid(
+    {
+        colIx,
+        rowIx,
+        cellSize,
+    }: { colIx: number; rowIx: number; cellSize: number },
+    options: Options
+): Quad {
+    const centrePoint = createVector(
+        colIx * cellSize + cellSize / 2,
+        rowIx * cellSize + cellSize / 2
+    );
+
+    const pts: Quad["pts"] = [
+        { x: 0.05, y: 0.05 },
+        { x: 0.95, y: 0.05 },
+        { x: 0.95, y: 0.95 },
+        { x: 0.05, y: 0.95 },
+    ].map((frac) =>
+        createVector(frac.x * cellSize, frac.y * cellSize).add(centrePoint)
+    ) as Quad["pts"];
+    return createQuadWithPoints(pts, options);
+}
 
 function createQuadWithPoints(pts: Quad["pts"], options: Options): Quad {
     return {
