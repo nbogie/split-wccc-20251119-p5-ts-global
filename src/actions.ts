@@ -143,24 +143,14 @@ export function actionAnimateRandomShrinkFractionChanges() {
     //https://gsap.com/community/forums/topic/22266-staggerto-different-values/
 
     const quads = getWorld().quads;
-    const unshrink = random() < 0.5;
     const shouldStagger = random([true, false]);
-    const totalElapsedTime = 1;
+    const totalElapsedTime = 0.4;
     //go faster with higher number of quads
     const staggerTime = totalElapsedTime / quads.length;
     gsap.to(quads, {
         duration: totalElapsedTime,
-        shrinkFraction: unshrink
-            ? 0
-            : (ix: number, _elem: any) =>
-                  map(
-                      noise(ix * 777 + 1000 * millis()),
-                      0.15,
-                      0.85,
-                      0,
-                      0.9,
-                      true
-                  ),
+        shrinkFraction: (ix: number, _elem: any) =>
+            map(noise(ix * 777 + 1000 * millis()), 0.15, 0.85, 0, 0.9, true),
         stagger: shouldStagger ? staggerTime : undefined,
         ease: "bounce.out",
     });
