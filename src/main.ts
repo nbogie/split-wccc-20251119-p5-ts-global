@@ -12,6 +12,7 @@
 //TODO: unshrink all quads on one or two perpendicular edges (or intersecting one or two simple straight lines across the design.  Really wants to be a thick line though to ensure fewer near misses)
 //      this would look good animated (stagger might work but should be in order they line passes through them)
 //TODO: animate a little humanised rotation around centroid?
+//TODO: avoid having quads shrunk only a little - the crappy tangents look like mistakes.  e.g. round to 20%?
 import gsap from "gsap";
 //run p5
 import "p5";
@@ -32,22 +33,25 @@ import { mousePos } from "./randomStuff.ts";
 
 let quads: Quad[];
 let commands: Command[];
+
+//just checking this ts setup can handle the p5 value.
 p5.disableFriendlyErrors = true;
 
 window.setup = function setup() {
     createCanvas(windowWidth, windowHeight);
     commands = createCommands();
     // blendMode(DARKEST);
-    regenerate();
+    actionRegenerate();
 };
 
 function createCommands(): Command[] {
     const cmds: Command[] = [];
     cmds.push({
         key: " ",
-        action: regenerate,
+        action: actionRegenerate,
         title: "regenerate",
-        description: "Regenerate a new set of quads",
+        description:
+            "Regenerate a new set of quads preserving the current config",
     });
 
     cmds.push({
@@ -59,7 +63,7 @@ function createCommands(): Command[] {
     });
     cmds.push({
         key: "s",
-        action: takeAScreenshot,
+        action: actionTakeAScreenshot,
         title: "screenshot",
         description: "Take a screenshot of the current canvas",
     });
@@ -69,11 +73,57 @@ function createCommands(): Command[] {
         title: "split quad at mouse",
         description: "Split the quad under the current mouse/touch position",
     });
+    cmds.push({
+        key: "-",
+        action: () => actionChangeShrinkFraction(-1),
+        title: "decrease global shrink fraction",
+        description:
+            "Decrease the global shrink fraction (fractions by which all quad corners are lerped towards their centroid)",
+    });
+    cmds.push({
+        key: "=",
+        action: () => actionChangeShrinkFraction(1),
+        title: "increase global shrink fraction",
+        description:
+            "Increase the global shrink fraction (fractions by which all quad corners are lerped towards their centroid)",
+    });
+
+    cmds.push({
+        key: ",",
+        action: () => actionChangeNumSplits(-1),
+        title: "decrease num splits",
+        description:
+            "Decrease the number of quad-splitting passes done over the quads.  Bigger quads will result.",
+    });
+
+    cmds.push({
+        key: ".",
+        action: () => actionChangeNumSplits(1),
+        title: "increase num splits",
+        description:
+            "Increase the number of quad-splitting passes done over the quads.  Smaller quads will result.",
+    });
 
     return cmds;
 }
 
-function takeAScreenshot() {
+function actionChangeNumSplits(sign: -1 | 1) {
+    const newCount = constrain(options.numSplits + sign, 0, 10);
+    options.numSplits = newCount;
+    options.shouldGenerateUnshrunk = random([true, false]);
+    actionRegenerate();
+}
+
+function actionChangeShrinkFraction(sign: 1 | -1) {
+    const newDistance = constrain(options.shrinkFraction + sign * 0.05, 0, 1);
+    gsap.to(options, {
+        duration: 0.6,
+        shrinkFraction: newDistance,
+        ease: "bounce.out",
+    });
+}
+
+function actionTakeAScreenshot() {
     options.shouldDrawDebugText = false;
     //to queue a draw without the debug text
     redraw();
@@ -83,6 +133,7 @@ function takeAScreenshot() {
 const options: Options = {
     shouldDrawDebugText: true,
     shouldDrawDebugNormals: false,
+    shouldLogKeyCommands: true,
     quadBrushRadius: 120,
     shouldShrink: true,
     numSplits: 4,
@@ -92,7 +143,7 @@ const options: Options = {
     seed: 123,
 };
 
-function regenerate() {
+function actionRegenerate() {
     options.seed = millis();
     randomSeed(options.seed);
     quads = [createStartingQuad(options)];
@@ -154,45 +205,20 @@ function animateRandomShrinkFractionChanges() {
     });
 }
 window.keyPressed = function keyPressed(_evt) {
-    // if (key === " ") {
-    //     regenerate();
-    // }
-    // if (key === "r") {
-    //     animateRandomShrinkFractionChanges();
-    // }
-    // if (key === "s") {
-    //     options.shouldDrawDebugText = false;
-    //     redraw();
-    //     setTimeout(() => save("wccc-split-neill"), 0);
-    // }
-    // if (key === "d") {
-    //     splitQuadUnderPos(mousePos());
-    // }
-    const foundCommand = commands.find((cmd) => cmd.key === key);
-    if (foundCommand) {
-        console.log("running cmd: " + foundCommand.title);
-        foundCommand.action();
-    }
+    //see createCommands for the actions taken on key presses
 
-    if (key === "=" || key === "-") {
-        const sign = key === "=" ? 1 : -1;
-        const newDistance = constrain(
-            options.shrinkFraction + sign * 0.05,
-            0,
-            1
-        );
-        gsap.to(options, {
-            duration: 0.6,
-            shrinkFraction: newDistance,
-            ease: "bounce.out",
-        });
-    }
-    if (key === "," || key === ".") {
-        const sign = key === "." ? 1 : -1;
-        const newCount = constrain(options.numSplits + sign, 0, 10);
-        options.numSplits = newCount;
-        options.shouldGenerateUnshrunk = random([true, false]);
-        regenerate();
+    const foundCommand = commands.find((cmd) => cmd.key === key);
+
+    if (foundCommand) {
+        if (options.shouldLogKeyCommands) {
+            console.log(
+                "running cmd: " +
+                    foundCommand.title +
+                    ` (${foundCommand.action.name})`
+            );
+        }
+
+        foundCommand.action();
     }
 };
 

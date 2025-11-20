@@ -10,6 +10,7 @@ export type Quad = {
 export interface Options {
     shouldDrawDebugText: boolean;
     shouldDrawDebugNormals: boolean;
+    shouldLogKeyCommands: boolean;
     /**when dragging over quads, how near must a quad centroid be to mouse pos to be considered targeted */
     quadBrushRadius: number;
     shouldShrink: boolean;
