@@ -35,6 +35,12 @@ export function createCommands(): Command[] {
             "Animate random quad shrink/grows from a variety of options",
     });
     cmds.push({
+        key: "u",
+        action: actionAnimateUnshrinkAll,
+        title: "unshrink all",
+        description: "Animate all quads unshrinking to full size",
+    });
+    cmds.push({
         key: "p",
         action: actionPickNewRandomPalette,
         title: "pick random palette",
@@ -122,6 +128,15 @@ export function actionRegenerate() {
     actionAnimateRandomShrinkFractionChanges();
 }
 
+export function actionAnimateUnshrinkAll() {
+    const quads = getWorld().quads;
+    gsap.to(quads, {
+        duration: 0.2,
+        stagger: 0.1 / quads.length,
+        shrinkFraction: 0,
+        ease: "power3.out",
+    });
+}
 export function actionAnimateRandomShrinkFractionChanges() {
     //todo: try to do this with all elements at once, passing a fn to calc the unique shrinkFraction value for each
     //that will allow stagger
