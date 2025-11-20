@@ -9,10 +9,9 @@ Written in typescript and p5 v2.x in global-mode with modules, partly to test v2
 
 ## Credits
 
-I've written similar sketches years ago (studying Okazz, mostly) but did this one without consulting/reusing any code.
-
--   Original quad bisection inspiration and education from [Okazz's sketch "201216a"](https://openprocessing.org/sketch/1045334/)
--   Some palette(s) from [kgolid's chromotome](https://github.com/kgolid/chromotome) via [https://nice-colours-quicker.netlify.app/](nice-colours-quicker)
+-   Very much informed by [Okazz's wonderful, elegant sketch "201216a"](https://openprocessing.org/sketch/1045334/) though all I've started with here is an approximation of their conceptual algorithm from memory (no doubt I butchered that).
+    (I've written other non-interactive versions of this some years ago but started from scratch for the challenge without reusing / consulting any code.)
+-   Uses some palette(s) from [Kjetil Golid's chromotome](https://github.com/kgolid/chromotome) via [https://nice-colours-quicker.netlify.app/](nice-colours-quicker).
 
 ## WCCChallenge?
 
@@ -26,5 +25,6 @@ See [docs/todo.md](docs/todo.md)
 ## other studies around this idea
 
 -   Okazz original (to my knowledge): https://openprocessing.org/sketch/1045334/
--   from 2023 a minimal featured and hopefully clearer re-write, recursive as per original. https://openprocessing.org/sketch/1970161
--   from 2021 https://openprocessing.org/sketch/1303469 somewhat interactive reveal with optional insetting
+-   mine from 2023, a slight re-write of Okazz's sketch, hopefully clearer. Recursive as per original. https://openprocessing.org/sketch/1970161
+-   mine from 2021 https://openprocessing.org/sketch/1303469
+    I was aiming at a somewhat interactive reveal/breakdown but it's naff. The additional optional insetting was done well, iirc.
