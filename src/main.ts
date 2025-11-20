@@ -49,6 +49,7 @@ window.draw = function draw() {
 
 function createOptions(): Options {
     return {
+        shouldUseGridMode: random([true, false]),
         shouldDrawDebugText: true,
         shouldDrawDebugNormals: false,
         shouldLogKeyCommands: true,
