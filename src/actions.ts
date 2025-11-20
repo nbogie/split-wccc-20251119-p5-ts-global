@@ -20,6 +20,14 @@ export interface Command {
 
 export function createCommands(): Command[] {
     const cmds: Command[] = [];
+
+    cmds.push({
+        key: "h",
+        action: actionShowHelp,
+        title: "show help",
+        description:
+            "show some help on commands and interaction.  to console for now.",
+    });
     cmds.push({
         key: " ",
         action: actionRegenerateObservingMode,
@@ -35,6 +43,7 @@ export function createCommands(): Command[] {
         description:
             "setup a grid of starting quads and bisect them a (small) amount",
     });
+
     cmds.push({
         key: "o",
         action: actionRegenerateWithSingleStartingQuad,
@@ -113,6 +122,19 @@ export function createCommands(): Command[] {
 
     return cmds;
 }
+export function actionShowHelp() {
+    const cmds = getWorld().commands;
+    const lines = cmds.map(
+        (c) => `Key: "${c.key}": ${c.title}  (${c.description}).`
+    );
+    const mouseInteractionNotes = [
+        "mouse over with shift or control to inflate/shrink nearby quads",
+        "mouse-drag to subdivide the quad under mouse (keybd 'd' for more accuracy)",
+    ];
+    lines.push(...mouseInteractionNotes);
+    console.log(lines.join("\n"));
+}
+
 export function actionRegenerateFromGrid() {
     const w = getWorld();
     w.options.seed = millis();
