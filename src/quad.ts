@@ -3,6 +3,7 @@ import { minByOrThrow, randomColourFromPalette } from "./randomStuff.ts";
 export type Quad = {
     colour: p5.Color;
     shrinkFraction: number;
+    //TODO: remove this.  never read i think
     isLeaf: boolean;
     pts: [p5.Vector, p5.Vector, p5.Vector, p5.Vector];
 };
@@ -16,8 +17,6 @@ export interface Options {
     shouldShrink: boolean;
     numSplits: number;
     shouldGenerateUnshrunk: boolean;
-    /** Not currently used.  was a GLOBAL number between 0 (no shrink) and 1 (entirely shrunk - avoid) which is used as the fraction to lerp a corner towards its quad's centroid. Currently, though, each quad maintains its own. */
-    shrinkFraction: number;
     minAllowedLength: number;
     seed: number;
     paletteIx: number;
@@ -102,8 +101,6 @@ export function drawQuad(quad: Quad, options: Options): void {
     beginShape();
     shrunkPts.forEach((v) => vertex(v.x, v.y));
     endShape(CLOSE);
-    // translate(quad.pts[0]);
-    // text(quad.shrinkFraction.toFixed(3), 0, 0);
     pop();
 }
 export function splitQuad(
@@ -157,7 +154,9 @@ export function splitQuadIfBig(quad: Quad, options: Options): Quad[] | null {
     return [q1, q2];
 }
 
-/** given array will not be modified. */
+/** given array will not be modified.
+ * options.numSplits controls max number of divisions. May stop earlier if too small.
+ */
 export function subdivideAllRepeatedly(
     quads: Quad[],
     options: Options
