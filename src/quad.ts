@@ -38,10 +38,17 @@ function createQuadWithPoints(pts: Quad["pts"], options: Options): Quad {
         pts: pts.map((pt) => pt.copy()) as Quad["pts"],
         isLeaf: false,
         colour: randomColourFromPalette(),
-        shrinkFraction: options.shouldGenerateUnshrunk ? 0 : random(0, 0.9),
+        shrinkFraction: options.shouldGenerateUnshrunk
+            ? 0
+            : randomShrinkFraction(),
     } satisfies Quad;
 }
 
+//0.1, 0.2 - 0.9...
+function randomShrinkFraction() {
+    const numDivisions = 10;
+    return round(numDivisions * random(0, 0.9)) / numDivisions;
+}
 export function drawQuad(quad: Quad, options: Options): void {
     push();
     const c = color(quad.colour.toString());

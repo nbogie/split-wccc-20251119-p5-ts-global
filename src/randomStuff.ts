@@ -55,3 +55,11 @@ export function minByOrThrow<Elem, Val extends number | string>(
 export function mousePos(): p5.Vector {
     return createVector(mouseX, mouseY);
 }
+
+export function collect<T>(numItems: number, fn: (ix: number) => T): T[] {
+    const arr = [];
+    for (let i = 0; i < numItems; i++) {
+        arr.push(fn(i));
+    }
+    return arr;
+}
