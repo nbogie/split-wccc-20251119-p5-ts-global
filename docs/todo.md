@@ -3,7 +3,7 @@
 ## Keen TODOs:
 
 -   make grid layout responsive to screen size.
--   dat.gui for mobile only - completely hideable
+-   brush selection tool for mobile.
 -   Try inset by shrinking corners to the intersection of the two inset lines parallel to their edges.
 -   Instead of unshrinking only the nearest, try all within a threshold of mouse
 -   Quads unshrink by colour, periodically? (or all quads with same colour as hovered-quad?)
@@ -13,7 +13,8 @@
 -   Prepare a paper texture to an offscreen and compose it each frame.
 -   maybe fill with p5.brush? https://openprocessing.org/sketch/2117088
 -   auto-play that demos some of the features and has a simulated "mouse pointer" moving and dragging etc.
-
+-   dat.gui but completely hideable
+  
 ## Less keen TODOs:
 -   split according to an underlying image pixel brightness
 -   round the corners?
