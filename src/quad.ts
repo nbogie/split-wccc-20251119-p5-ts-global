@@ -19,6 +19,7 @@ export interface Options {
     shrinkFraction: number;
     minAllowedLength: number;
     seed: number;
+    paletteIx: number;
 }
 
 export function createStartingQuad(options: Options): Quad {

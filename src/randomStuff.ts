@@ -1,23 +1,9 @@
 import p5 from "p5";
+import { getWorld, type World } from "./main.ts";
+import { palettes } from "./palettes.ts";
 
 export function randomColourFromPalette(): p5.Color {
-    //palette from kgolid
-    const palette = {
-        name: "system.#04",
-        colors: [
-            "#e31f4f",
-            "#f0ac3f",
-            "#18acab",
-            "#26265a",
-            "#ea7d81",
-            "#dcd9d0",
-        ],
-        stroke: "#26265a",
-        backgrund: "#dcd9d0",
-        size: 6,
-        type: "chromotome",
-    };
-    const c = color(random(palette.colors));
+    const c = color(random(palettes[getWorld().options.paletteIx].colors));
     // c.setAlpha(100);
     return c;
 }
@@ -62,4 +48,23 @@ export function collect<T>(numItems: number, fn: (ix: number) => T): T[] {
         arr.push(fn(i));
     }
     return arr;
+}
+
+export function drawDebugText(world: World) {
+    const { quads, options } = world;
+    fill(255);
+
+    push();
+    translate(100, height - 100);
+    const lines = [
+        "quads: " + quads.length,
+        "shrinkFraction: " + options.shrinkFraction.toFixed(2),
+        "num splits: " + options.numSplits,
+        "palette: " + palettes[options.paletteIx].name,
+    ];
+    for (let line of [...lines].reverse()) {
+        text(line, 0, 0);
+        translate(0, -30);
+    }
+    pop();
 }
