@@ -53,10 +53,21 @@ window.mouseMoved = function mouseMoved(_evt) {
                 shrinkFraction: 0,
             });
         }
+
+        //This debouncing isn't working because we're making and assigning a new (albeit debounced) fn EVERY mousemove event
+        // function shrinkRandomly(_ix: any, theQuad: Quad) {
+        //     return random(0.2, 0.6);
+        // }
+        //https://lodash.com/docs/4.17.15#debounce
+        // const debouncedShrinkRandomly = debounce(shrinkRandomly, 1300, {
+        //     leading: true,
+        //     trailing: false,
+        // });
+
         if (keyIsDown(CONTROL)) {
             gsap.to(nearbyQuads, {
                 duration: 0.5,
-                shrinkFraction: () => 0.4,
+                shrinkFraction: "random(0.2, 0.6, 0.1)",
             });
         }
     }

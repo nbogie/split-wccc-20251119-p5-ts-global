@@ -11,7 +11,9 @@
         "type-check:watch": "tsc --noEmit --watch"
     },
     "devDependencies": {
+        "@types/lodash": "^4.17.20",
         "gsap": "^3.13.0",
+        "lodash": "^4.17.21",
         "p5": "^2.1.1",
         "typescript": "~5.9.3",
         "vite": "^7.2.2"
