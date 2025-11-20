@@ -3,6 +3,13 @@
     "private": true,
     "version": "0.0.0",
     "type": "module",
+    "repository": {
+        "url": "git@github.com:nbogie/split-wccc-20251119-p5-ts-global.git",
+        "type": "git"
+    },
+    "author": {
+        "name": "Neill Bogie"
+    },
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
