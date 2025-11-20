@@ -31,14 +31,55 @@ import {
 import { mousePos } from "./randomStuff.ts";
 
 let quads: Quad[];
-
+let commands: Command[];
 p5.disableFriendlyErrors = true;
 
 window.setup = function setup() {
     createCanvas(windowWidth, windowHeight);
+    commands = createCommands();
     // blendMode(DARKEST);
     regenerate();
 };
+
+function createCommands(): Command[] {
+    const cmds: Command[] = [];
+    cmds.push({
+        key: " ",
+        action: regenerate,
+        title: "regenerate",
+        description: "Regenerate a new set of quads",
+    });
+
+    cmds.push({
+        key: "r",
+        action: animateRandomShrinkFractionChanges,
+        title: "random shrinks",
+        description:
+            "Animate random quad shrink/grows from a variety of options",
+    });
+    cmds.push({
+        key: "s",
+        action: takeAScreenshot,
+        title: "screenshot",
+        description: "Take a screenshot of the current canvas",
+    });
+    cmds.push({
+        key: "d",
+        action: () => splitQuadUnderPos(mousePos()),
+        title: "split quad at mouse",
+        description: "Split the quad under the current mouse/touch position",
+    });
+
+    return cmds;
+}
+
+function takeAScreenshot() {
+    options.shouldDrawDebugText = false;
+    //to queue a draw without the debug text
+    redraw();
+    //can't save immediately - it won't wait for the redraw.
+    setTimeout(() => save("wccc-split-neill"), 0);
+}
 const options: Options = {
     shouldDrawDebugText: true,
     shouldDrawDebugNormals: false,
@@ -77,6 +118,13 @@ window.mousePressed = function mousePressed(_evt) {
     }
 };
 
+interface Command {
+    title: string;
+    description: string;
+    key: string;
+    action: () => void;
+}
+
 function animateRandomShrinkFractionChanges() {
     //todo: try to do this with all elements at once, passing a fn to calc the unique shrinkFraction value for each
     //that will allow stagger
@@ -106,19 +154,24 @@ function animateRandomShrinkFractionChanges() {
     });
 }
 window.keyPressed = function keyPressed(_evt) {
-    if (key === " ") {
-        regenerate();
-    }
-    if (key === "r") {
-        animateRandomShrinkFractionChanges();
-    }
-    if (key === "s") {
-        options.shouldDrawDebugText = false;
-        redraw();
-        setTimeout(() => save("wccc-split-neill"), 0);
-    }
-    if (key === "d") {
-        splitQuadUnderPos(mousePos());
+    // if (key === " ") {
+    //     regenerate();
+    // }
+    // if (key === "r") {
+    //     animateRandomShrinkFractionChanges();
+    // }
+    // if (key === "s") {
+    //     options.shouldDrawDebugText = false;
+    //     redraw();
+    //     setTimeout(() => save("wccc-split-neill"), 0);
+    // }
+    // if (key === "d") {
+    //     splitQuadUnderPos(mousePos());
+    // }
+    const foundCommand = commands.find((cmd) => cmd.key === key);
+    if (foundCommand) {
+        console.log("running cmd: " + foundCommand.title);
+        foundCommand.action();
     }
 
     if (key === "=" || key === "-") {
