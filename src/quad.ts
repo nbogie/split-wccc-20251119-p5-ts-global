@@ -16,6 +16,7 @@ export interface Options {
     shouldShrink: boolean;
     numSplits: number;
     shouldGenerateUnshrunk: boolean;
+    /** a number between 0 (no shrink) and 1 (entirely shrunk - avoid) which is used as the fraction to lerp a corner towards its quad's centroid. */
     shrinkFraction: number;
     minAllowedLength: number;
     seed: number;
