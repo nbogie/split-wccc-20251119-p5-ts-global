@@ -11,6 +11,7 @@
 //TODO: quads unshrink by colour, periodically? (or all quads with same colour as hovered-quad?)
 //TODO: unshrink all quads on one or two perpendicular edges (or intersecting one or two simple straight lines across the design.  Really wants to be a thick line though to ensure fewer near misses)
 //      this would look good animated (stagger might work but should be in order they line passes through them)
+//TODO: animate a little humanised rotation around centroid?
 //run p5
 import "p5";
 import gsap from "gsap";
@@ -40,7 +41,7 @@ window.setup = function setup() {
 const options: Options = {
     shouldShrink: true,
     numSplits: 4,
-    shrinkDistance: 0,
+    shouldGenerateUnshrunk: true,
     shrinkFraction: 0.05, //0-1 exclusive
     minAllowedLength: 10,
     seed: 123,
@@ -49,7 +50,7 @@ const options: Options = {
 function regenerate() {
     options.seed = millis();
     randomSeed(options.seed);
-    quads = [createStartingQuad()];
+    quads = [createStartingQuad(options)];
     quads = subdivideAllRepeatedly(quads, options);
     animateRandomShrinkFractionChanges();
 }
@@ -75,20 +76,24 @@ function animateRandomShrinkFractionChanges() {
     //todo: try to do this with all elements at once, passing a fn to calc the unique shrinkFraction value for each
     //that will allow stagger
     //https://gsap.com/community/forums/topic/22266-staggerto-different-values/
-    quads.forEach((q, ix) =>
-        gsap.to(q, {
-            duration: 2.1,
-            shrinkFraction: map(
-                noise(ix * 777 + 1000 * millis()),
-                0.15,
-                0.85,
-                0,
-                0.9,
-                true
-            ),
-            ease: "bounce.out",
-        })
-    );
+    const unshrink = random() < 0.5;
+
+    gsap.to(quads, {
+        duration: 0.2,
+        shrinkFraction: unshrink
+            ? 0
+            : (ix: number, _elem: any) =>
+                  map(
+                      noise(ix * 777 + 1000 * millis()),
+                      0.15,
+                      0.85,
+                      0,
+                      0.9,
+                      true
+                  ),
+        stagger: 0.1,
+        ease: "bounce.out",
+    });
 }
 window.keyPressed = function keyPressed(_evt) {
     if (key === " ") {

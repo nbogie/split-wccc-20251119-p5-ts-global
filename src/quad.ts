@@ -10,26 +10,31 @@ export type Quad = {
 export interface Options {
     shouldShrink: boolean;
     numSplits: number;
-    shrinkDistance: number;
+    shouldGenerateUnshrunk: boolean;
     shrinkFraction: number;
     minAllowedLength: number;
     seed: number;
 }
 
-export function createStartingQuad(): Quad {
+export function createStartingQuad(options: Options): Quad {
+    const pts: Quad["pts"] = [
+        { x: 0.1, y: 0.1 },
+        { x: 0.9, y: 0.1 },
+        { x: 0.9, y: 0.9 },
+        { x: 0.1, y: 0.9 },
+    ].map((frac) =>
+        createVector(frac.x * width, frac.y * height)
+    ) as Quad["pts"];
+    return createQuadWithPoints(pts, options);
+}
+
+function createQuadWithPoints(pts: Quad["pts"], options: Options): Quad {
     return {
+        pts: pts.map((pt) => pt.copy()) as Quad["pts"],
+        isLeaf: false,
         colour: randomColourFromPalette(),
-        shrinkFraction: random(0, 0.9),
-        isLeaf: false, //subdivide must take care of setting this flag if we decide to stop here
-        pts: [
-            { x: 0.1, y: 0.1 },
-            { x: 0.9, y: 0.1 },
-            { x: 0.9, y: 0.9 },
-            { x: 0.1, y: 0.9 },
-        ].map((frac) =>
-            createVector(frac.x * width, frac.y * height)
-        ) as Quad["pts"],
-    };
+        shrinkFraction: options.shouldGenerateUnshrunk ? 0 : random(0, 0.9),
+    } satisfies Quad;
 }
 
 export function drawQuad(quad: Quad): void {
@@ -47,17 +52,10 @@ export function drawQuad(quad: Quad): void {
     // text(quad.shrinkFraction.toFixed(3), 0, 0);
     pop();
 }
-function createQuadWithPoints(pts: Quad["pts"]): Quad {
-    return {
-        pts: pts.map((pt) => pt.copy()) as Quad["pts"],
-        isLeaf: false,
-        colour: randomColourFromPalette(),
-        shrinkFraction: random(0, 0.9),
-    } satisfies Quad;
-}
 export function splitQuad(
     inQuad: Quad,
-    shouldCutFirstSide: boolean
+    shouldCutFirstSide: boolean,
+    options: Options
 ): [Quad, Quad] {
     const [a, b, c, d] = inQuad.pts.map((v) => v.copy());
     const cutFrac1 = random([1, 2]) / 3;
@@ -67,16 +65,16 @@ export function splitQuad(
         const e = p5.Vector.lerp(a, b, cutFrac1);
         const f = p5.Vector.lerp(c, d, cutFrac2);
         return [
-            createQuadWithPoints([a, e, f, d]),
-            createQuadWithPoints([e, b, c, f]),
+            createQuadWithPoints([a, e, f, d], options),
+            createQuadWithPoints([e, b, c, f], options),
         ];
     } else {
         //cut b-c (creating e) and d-a (creating f) to give [a,b,e,d] and [f,e,c,d]
         const e = p5.Vector.lerp(b, c, cutFrac1);
         const f = p5.Vector.lerp(d, a, cutFrac2);
         return [
-            createQuadWithPoints([a, b, e, f]),
-            createQuadWithPoints([f, e, c, d]),
+            createQuadWithPoints([a, b, e, f], options),
+            createQuadWithPoints([f, e, c, d], options),
         ];
     }
 }
@@ -95,16 +93,13 @@ function smallestSide(quad: Quad): { len: number; startIx: 0 | 1 | 2 | 3 } {
     };
 }
 
-export function splitQuadIfBig(
-    quad: Quad,
-    minAllowedLen: number
-): Quad[] | null {
+export function splitQuadIfBig(quad: Quad, options: Options): Quad[] | null {
     const smallSide = smallestSide(quad);
-    if (smallSide.len < minAllowedLen) {
+    if (smallSide.len < options.minAllowedLength) {
         return null;
     }
     const cutFirstSide = smallSide.startIx % 2 === 1;
-    const [q1, q2] = splitQuad(quad, cutFirstSide);
+    const [q1, q2] = splitQuad(quad, cutFirstSide, options);
     return [q1, q2];
 }
 
@@ -132,7 +127,7 @@ export function subdivideAllQuadsOnce(
     const newQuads: Quad[] = [];
 
     for (const quad of quads) {
-        const result = splitQuadIfBig(quad, options.minAllowedLength);
+        const result = splitQuadIfBig(quad, options);
 
         if (!result) {
             newQuads.push({ ...quad, isLeaf: true });
@@ -146,12 +141,6 @@ export function subdivideAllQuadsOnce(
     }
 
     return newQuads;
-}
-function shrinkQuad(quad: Quad, options: Options): Quad {
-    return {
-        ...quad,
-        pts: shrinkQuadPoints(quad.pts, quad.shrinkFraction, options),
-    } as Quad;
 }
 
 type DecoratedEdge = {
