@@ -76,10 +76,15 @@ function animateRandomShrinkFractionChanges() {
     //todo: try to do this with all elements at once, passing a fn to calc the unique shrinkFraction value for each
     //that will allow stagger
     //https://gsap.com/community/forums/topic/22266-staggerto-different-values/
+
     const unshrink = random() < 0.5;
 
+    const shouldStagger = random([true, false]);
+    const totalElapsedTime = 1;
+    const staggerTime = totalElapsedTime / quads.length;
+    // const staggerTime = 0.01;
     gsap.to(quads, {
-        duration: 0.2,
+        duration: totalElapsedTime,
         shrinkFraction: unshrink
             ? 0
             : (ix: number, _elem: any) =>
@@ -91,14 +96,12 @@ function animateRandomShrinkFractionChanges() {
                       0.9,
                       true
                   ),
-        stagger: 0.1,
+        stagger: shouldStagger ? staggerTime : undefined,
         ease: "bounce.out",
     });
 }
 window.keyPressed = function keyPressed(_evt) {
     if (key === " ") {
-        console.log("space pressed");
-
         regenerate();
     }
     if (key === "=" || key === "-") {
@@ -118,6 +121,7 @@ window.keyPressed = function keyPressed(_evt) {
         const sign = key === "." ? 1 : -1;
         const newCount = constrain(options.numSplits + sign, 0, 10);
         options.numSplits = newCount;
+        options.shouldGenerateUnshrunk = random([true, false]);
         regenerate();
     }
 };
