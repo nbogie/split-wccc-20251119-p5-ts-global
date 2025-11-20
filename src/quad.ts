@@ -9,6 +9,8 @@ export type Quad = {
 };
 
 export interface Options {
+    /** next time we're asked to generate from scratch, should we lay out in a grid? */
+    shouldUseGridMode: boolean;
     shouldDrawDebugText: boolean;
     shouldDrawDebugNormals: boolean;
     shouldLogKeyCommands: boolean;

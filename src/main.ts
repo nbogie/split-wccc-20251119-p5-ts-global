@@ -7,7 +7,11 @@ import "p5";
 //This import brings in the runtime p5 value (to reference p5.Vector.random2D() etc)
 import p5 from "p5";
 
-import { actionRegenerate, createCommands, type Command } from "./actions.ts";
+import {
+    actionRegenerateObservingMode,
+    createCommands,
+    type Command,
+} from "./actions.ts";
 import { drawQuad, type Options, type Quad } from "./quad.ts";
 import "./interaction.ts";
 import { drawDebugText, setDescription } from "./randomStuff.ts";
@@ -29,7 +33,7 @@ window.setup = function setup() {
     world = createWorld();
     setDescription();
     // blendMode(DARKEST);
-    actionRegenerate();
+    actionRegenerateObservingMode();
 };
 
 window.draw = function draw() {

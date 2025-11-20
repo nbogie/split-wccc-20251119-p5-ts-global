@@ -22,18 +22,25 @@ export function createCommands(): Command[] {
     const cmds: Command[] = [];
     cmds.push({
         key: " ",
-        action: actionRegenerate,
+        action: actionRegenerateObservingMode,
         title: "regenerate",
         description:
-            "Regenerate a new set of quads preserving the current config",
+            "Regenerate a new set of quads preserving the current config (maintaining grid mode if enabled)",
     });
 
     cmds.push({
         key: "g",
-        action: actionSetupGrid,
+        action: actionRegenerateFromGrid,
         title: "make grid",
         description:
             "setup a grid of starting quads and bisect them a (small) amount",
+    });
+    cmds.push({
+        key: "o",
+        action: actionRegenerateWithSingleStartingQuad,
+        title: "regenerate from one quad",
+        description:
+            "Regenerate a new set of quads starting from a single large quad",
     });
     cmds.push({
         key: "r",
@@ -99,10 +106,11 @@ export function createCommands(): Command[] {
 
     return cmds;
 }
-export function actionSetupGrid() {
+export function actionRegenerateFromGrid() {
     const w = getWorld();
     w.options.seed = millis();
-    w.options.numSplits = 1;
+    // w.options.numSplits = 1;
+    w.options.shouldUseGridMode = true;
     randomSeed(w.options.seed);
     w.quads = createGridOfStartingQuads(w.options);
     w.quads = subdivideAllRepeatedly(w.quads, w.options);
@@ -121,7 +129,7 @@ export function actionChangeNumSplits(sign: -1 | 1) {
     const newCount = constrain(options.numSplits + sign, 0, 10);
     options.numSplits = newCount;
     options.shouldGenerateUnshrunk = random([true, false]);
-    actionRegenerate();
+    actionRegenerateObservingMode();
 }
 
 export function actionChangeGlobalShrinkFraction(sign: 1 | -1) {
@@ -148,15 +156,24 @@ export function actionTakeAScreenshot() {
     //can't save immediately - it won't wait for the redraw.
     setTimeout(() => save("wccc-split-neill"), 0);
 }
-export function actionRegenerate() {
+export function actionRegenerateWithSingleStartingQuad() {
     const world = getWorld();
     const options = world.options;
+    //for next time
+    options.shouldUseGridMode = false;
     options.seed = millis();
     randomSeed(options.seed);
 
     world.quads = [createStartingQuad(options)];
     world.quads = subdivideAllRepeatedly(world.quads, options);
     actionAnimateRandomShrinkFractionChanges();
+}
+export function actionRegenerateObservingMode() {
+    if (getWorld().options.shouldUseGridMode) {
+        actionRegenerateFromGrid();
+    } else {
+        actionRegenerateWithSingleStartingQuad();
+    }
 }
 
 export function actionAnimateUnshrinkAll() {
@@ -210,5 +227,5 @@ export function actionPickNewRandomPalette() {
         return 0;
     }
     options.paletteIx = random(otherIndices);
-    actionRegenerate();
+    actionRegenerateObservingMode();
 }
