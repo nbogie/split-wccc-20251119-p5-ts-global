@@ -1,17 +1,24 @@
 ## what's this
 
-typescript global mode p5.js v2.x sketch (w vite)
+An interactive p5.js sketch for the [#WCCChallenge](https://openprocessing.org/curation/78544) Nov'25 themed "split".  In it, the user can play around bisecting / inflating / shrinking quads to various depths with mouse and keyboard.
+    
+Written in typescript and p5 v2.x in global-mode with modules, partly to test v2 typescript types and global mode setup.  (Bundled with vite)
 
-For WCCC challenge, theme "split", nov '25
+<img width="1920" height="1113" alt="wccc-split-screenshot-square-grid" src="https://github.com/user-attachments/assets/68b323eb-4b7a-4abd-b753-867052d82b74" />
 
-Partly to test v2 typescript types and global mode setup.
+
+
+## "Split" - Interactive quad bisection painting sketch with p5.js
 
 I've written similar sketches years ago (studying Okazz, mostly) but did this one without consulting/reusing any code.
 
-## Credits
-
 -   Original quad bisection inspiration and education from [Okazz's sketch "201216a"](https://openprocessing.org/sketch/1045334/)
 -   Some palette(s) from [kgolid's chromotome](https://github.com/kgolid/chromotome) via [https://nice-colours-quicker.netlify.app/](nice-colours-quicker)
+
+## WCCChallenge?
+
+Join the Birb's Nest Discord for friendly creative coding community
+and future challenges and contributions: https://discord.gg/S8c7qcjw2b
 
 ## TODO:
 
