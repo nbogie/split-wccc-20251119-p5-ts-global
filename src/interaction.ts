@@ -37,17 +37,28 @@ window.mouseMoved = function mouseMoved(_evt) {
     if (w.quads.length === 0) {
         return;
     }
+
     const mouseP = mousePos();
     const nearbyQuads = w.quads.filter(
         (q) => findQuadCentroid(q.pts).dist(mouseP) < w.options.quadBrushRadius
     );
 
+    //These should be debounced: https://css-tricks.com/debouncing-throttling-explained-examples/
+
     //so far, this doesn't really need gsap.
     if (nearbyQuads.length > 0) {
-        gsap.to(nearbyQuads, {
-            duration: 0.5,
-            shrinkFraction: 0,
-        });
+        if (keyIsDown(SHIFT)) {
+            gsap.to(nearbyQuads, {
+                duration: 0.5,
+                shrinkFraction: 0,
+            });
+        }
+        if (keyIsDown(CONTROL)) {
+            gsap.to(nearbyQuads, {
+                duration: 0.5,
+                shrinkFraction: () => 0.4,
+            });
+        }
     }
 };
 
