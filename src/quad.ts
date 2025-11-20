@@ -3,6 +3,7 @@ import { minByOrThrow, randomColourFromPalette } from "./randomStuff.ts";
 export type Quad = {
     colour: p5.Color;
     shrinkFraction: number;
+    isLeaf: boolean;
     pts: [p5.Vector, p5.Vector, p5.Vector, p5.Vector];
 };
 
@@ -19,6 +20,7 @@ export function createStartingQuad(): Quad {
     return {
         colour: randomColourFromPalette(),
         shrinkFraction: random(0, 0.9),
+        isLeaf: false, //subdivide must take care of setting this flag if we decide to stop here
         pts: [
             { x: 0.1, y: 0.1 },
             { x: 0.9, y: 0.1 },
@@ -33,16 +35,22 @@ export function createStartingQuad(): Quad {
 export function drawQuad(quad: Quad): void {
     push();
     const c = color(quad.colour.toString());
+    drawDebugInfo(quad);
+    const shrunkPts = shrinkQuadPoints(quad.pts, quad.shrinkFraction);
+
     fill(c);
     noStroke();
     beginShape();
-    quad.pts.forEach((v) => vertex(v.x, v.y));
+    shrunkPts.forEach((v) => vertex(v.x, v.y));
     endShape(CLOSE);
+    // translate(quad.pts[0]);
+    // text(quad.shrinkFraction.toFixed(3), 0, 0);
     pop();
 }
 function createQuadWithPoints(pts: Quad["pts"]): Quad {
     return {
         pts: pts.map((pt) => pt.copy()) as Quad["pts"],
+        isLeaf: false,
         colour: randomColourFromPalette(),
         shrinkFraction: random(0, 0.9),
     } satisfies Quad;
@@ -121,28 +129,20 @@ export function subdivideAllQuadsOnce(
     options: Options,
     isLastLayer: boolean
 ): Quad[] {
-    const newQuads = [];
-
-    const shouldShrink = options.shouldShrink && isLastLayer;
+    const newQuads: Quad[] = [];
 
     for (const quad of quads) {
         const result = splitQuadIfBig(quad, options.minAllowedLength);
 
         if (!result) {
-            if (shouldShrink) {
-                newQuads.push(shrinkQuad(quad, options));
-            } else {
-                newQuads.push(quad);
-            }
+            newQuads.push({ ...quad, isLeaf: true });
             continue;
         }
-
-        if (shouldShrink) {
-            const shrunkenQuads = result.map((q) => shrinkQuad(q, options));
-            newQuads.push(...shrunkenQuads);
-        } else {
-            newQuads.push(...result);
-        }
+        const corrected: Quad[] = result.map((q) => ({
+            ...q,
+            isLeaf: isLastLayer,
+        }));
+        newQuads.push(...corrected);
     }
 
     return newQuads;
@@ -175,24 +175,7 @@ function decorateEdge([p1, p2]: readonly [
     };
 }
 
-function shrinkQuadPoints(
-    pts: Quad["pts"],
-    shrinkFrac: number,
-    _options: Options
-): Quad["pts"] {
-    const [a, b, c, d] = pts;
-
-    const edges = (
-        [
-            [a, b],
-            [b, c],
-            [c, d],
-            [d, a],
-        ] as const
-    ).map((edge) => decorateEdge(edge));
-
-    visNormals(edges);
-
+function shrinkQuadPoints(pts: Quad["pts"], shrinkFrac: number): Quad["pts"] {
     const centroid = findQuadCentroid(pts);
 
     return pts.map((pt) =>
@@ -227,8 +210,22 @@ function visNormals(edges: DecoratedEdge[]) {
         pop();
     }
 }
-function findQuadCentroid(quadPts: Quad["pts"]): p5.Vector {
+export function findQuadCentroid(quadPts: Quad["pts"]): p5.Vector {
     return quadPts
         .reduce((prev, curr) => prev.add(curr), createVector(0, 0))
         .div(4);
+}
+function drawDebugInfo(quad: Quad): void {
+    const [a, b, c, d] = quad.pts;
+
+    const edges = (
+        [
+            [a, b],
+            [b, c],
+            [c, d],
+            [d, a],
+        ] as const
+    ).map((edge) => decorateEdge(edge));
+
+    visNormals(edges);
 }

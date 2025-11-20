@@ -51,3 +51,7 @@ export function minByOrThrow<Elem, Val extends number | string>(
 
     return { element: minElement, record: minValue };
 }
+
+export function mousePos(): p5.Vector {
+    return createVector(mouseX, mouseY);
+}

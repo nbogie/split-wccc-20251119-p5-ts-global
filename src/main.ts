@@ -6,7 +6,7 @@
 //extrude to 3d w custom geom?
 //let the user use a knife to cut the geom, animate.
 //TODO: try shrinking corners to the intersection of the two inset lines parallel to their edges.
-
+//TODO: instead of unshrinking only the nearest, try all within a threshold of mouse
 //run p5
 import "p5";
 import gsap from "gsap";
@@ -16,19 +16,22 @@ import p5 from "p5";
 import {
     createStartingQuad,
     drawQuad,
+    findQuadCentroid,
     subdivideAllRepeatedly,
     type Options,
     type Quad,
 } from "./quad.ts";
+import { minByOrThrow, mousePos } from "./randomStuff.ts";
 
 let quads: Quad[];
+let selectedQuad: Quad | undefined;
 
 p5.disableFriendlyErrors = true;
 
 window.setup = function setup() {
     createCanvas(windowWidth, windowHeight);
     // blendMode(DARKEST);
-    randomSeed(options.seed);
+    regenerate();
 };
 const options: Options = {
     shouldShrink: true,
@@ -39,15 +42,18 @@ const options: Options = {
     seed: 123,
 };
 
-window.draw = function draw() {
+function regenerate() {
     randomSeed(options.seed);
     quads = [createStartingQuad()];
+    quads = subdivideAllRepeatedly(quads, options);
+    animateRandomShrinkFractionChanges();
+}
 
+window.draw = function draw() {
     push();
     blendMode(BLEND);
     background(30);
     pop();
-    quads = subdivideAllRepeatedly(quads, options);
     quads.forEach((q) => {
         drawQuad(q);
     });
@@ -56,14 +62,29 @@ window.draw = function draw() {
 
 window.mousePressed = function mousePressed(_evt) {
     if (mouseButton.left) {
-        gsap.to(options, {
-            duration: 0.6,
-            shrinkFraction: map(noise(1000 * millis()), 0.15, 0.85, 0, 1, true),
-
-            ease: "bounce.out",
-        });
+        animateRandomShrinkFractionChanges();
     }
 };
+
+function animateRandomShrinkFractionChanges() {
+    //todo: try to do this with all elements at once, passing a fn to calc the unique shrinkFraction value for each
+    //that will allow stagger
+    //https://gsap.com/community/forums/topic/22266-staggerto-different-values/
+    quads.forEach((q, ix) =>
+        gsap.to(q, {
+            duration: 2.1,
+            shrinkFraction: map(
+                noise(ix * 777 + 1000 * millis()),
+                0.15,
+                0.85,
+                0,
+                0.9,
+                true
+            ),
+            ease: "bounce.out",
+        })
+    );
+}
 window.keyPressed = function keyPressed(_evt) {
     if (key === " ") {
         console.log("space pressed");
@@ -86,14 +107,23 @@ window.keyPressed = function keyPressed(_evt) {
         const sign = key === "." ? 1 : -1;
         const newCount = constrain(options.numSplits + sign, 0, 10);
         options.numSplits = newCount;
+        regenerate();
     }
 };
 window.mouseMoved = function mouseMoved(_evt) {
+    if (quads.length === 0) {
+        return;
+    }
+    const nearestQuad = minByOrThrow(quads, (quad: Quad) =>
+        findQuadCentroid(quad.pts).dist(mousePos())
+    );
+    selectedQuad = nearestQuad.element;
+
     //so far, this doesn't really need gsap.
-    // gsap.to(options, {
-    //     duration: 0.05,
-    //     shrinkDistance: map(mouseX, 0, width, 0, 300, true),
-    // });
+    gsap.to(selectedQuad, {
+        duration: 0.3,
+        shrinkFraction: 0,
+    });
 };
 
 window.windowResized = function () {
