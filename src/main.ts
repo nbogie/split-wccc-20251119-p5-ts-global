@@ -7,6 +7,10 @@
 //let the user use a knife to cut the geom, animate.
 //TODO: try shrinking corners to the intersection of the two inset lines parallel to their edges.
 //TODO: instead of unshrinking only the nearest, try all within a threshold of mouse
+//TODO: grid of squares with one split only, with random significant shrinkage.  looks bold.
+//TODO: quads unshrink by colour, periodically? (or all quads with same colour as hovered-quad?)
+//TODO: unshrink all quads on one or two perpendicular edges (or intersecting one or two simple straight lines across the design.  Really wants to be a thick line though to ensure fewer near misses)
+//      this would look good animated (stagger might work but should be in order they line passes through them)
 //run p5
 import "p5";
 import gsap from "gsap";
@@ -43,6 +47,7 @@ const options: Options = {
 };
 
 function regenerate() {
+    options.seed = millis();
     randomSeed(options.seed);
     quads = [createStartingQuad()];
     quads = subdivideAllRepeatedly(quads, options);
@@ -88,7 +93,8 @@ function animateRandomShrinkFractionChanges() {
 window.keyPressed = function keyPressed(_evt) {
     if (key === " ") {
         console.log("space pressed");
-        options.seed = millis();
+
+        regenerate();
     }
     if (key === "=" || key === "-") {
         const sign = key === "=" ? 1 : -1;
