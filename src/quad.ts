@@ -8,6 +8,10 @@ export type Quad = {
 };
 
 export interface Options {
+    shouldDrawDebugText: boolean;
+    shouldDrawDebugNormals: boolean;
+    /**when dragging over quads, how near must a quad centroid be to mouse pos to be considered targeted */
+    quadBrushRadius: number;
     shouldShrink: boolean;
     numSplits: number;
     shouldGenerateUnshrunk: boolean;
@@ -37,10 +41,12 @@ function createQuadWithPoints(pts: Quad["pts"], options: Options): Quad {
     } satisfies Quad;
 }
 
-export function drawQuad(quad: Quad): void {
+export function drawQuad(quad: Quad, options: Options): void {
     push();
     const c = color(quad.colour.toString());
-    drawDebugInfo(quad);
+    if (options.shouldDrawDebugNormals) {
+        drawDebugInfo(quad);
+    }
     const shrunkPts = shrinkQuadPoints(quad.pts, quad.shrinkFraction);
 
     fill(c);
@@ -217,4 +223,10 @@ function drawDebugInfo(quad: Quad): void {
     ).map((edge) => decorateEdge(edge));
 
     visNormals(edges);
+}
+
+export function findQuadNearestToPos(quads: Quad[], pos: p5.Vector) {
+    return minByOrThrow(quads, (quad: Quad) =>
+        findQuadCentroid(quad.pts).dist(pos)
+    );
 }

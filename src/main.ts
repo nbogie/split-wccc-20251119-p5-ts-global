@@ -12,9 +12,9 @@
 //TODO: unshrink all quads on one or two perpendicular edges (or intersecting one or two simple straight lines across the design.  Really wants to be a thick line though to ensure fewer near misses)
 //      this would look good animated (stagger might work but should be in order they line passes through them)
 //TODO: animate a little humanised rotation around centroid?
+import gsap from "gsap";
 //run p5
 import "p5";
-import gsap from "gsap";
 //import the p5 value (to reference p5.Vector.random2D() etc)
 import p5 from "p5";
 
@@ -22,14 +22,15 @@ import {
     createStartingQuad,
     drawQuad,
     findQuadCentroid,
+    findQuadNearestToPos,
+    splitQuadIfBig,
     subdivideAllRepeatedly,
     type Options,
     type Quad,
 } from "./quad.ts";
-import { minByOrThrow, mousePos } from "./randomStuff.ts";
+import { mousePos } from "./randomStuff.ts";
 
 let quads: Quad[];
-let selectedQuad: Quad | undefined;
 
 p5.disableFriendlyErrors = true;
 
@@ -39,11 +40,14 @@ window.setup = function setup() {
     regenerate();
 };
 const options: Options = {
+    shouldDrawDebugText: true,
+    shouldDrawDebugNormals: false,
+    quadBrushRadius: 120,
     shouldShrink: true,
     numSplits: 4,
     shouldGenerateUnshrunk: true,
     shrinkFraction: 0.05, //0-1 exclusive
-    minAllowedLength: 10,
+    minAllowedLength: 15,
     seed: 123,
 };
 
@@ -61,9 +65,11 @@ window.draw = function draw() {
     background(30);
     pop();
     quads.forEach((q) => {
-        drawQuad(q);
+        drawQuad(q, options);
     });
-    drawDebugText();
+    if (options.shouldDrawDebugText) {
+        drawDebugText();
+    }
 };
 
 window.mousePressed = function mousePressed(_evt) {
@@ -81,8 +87,8 @@ function animateRandomShrinkFractionChanges() {
 
     const shouldStagger = random([true, false]);
     const totalElapsedTime = 1;
+    //go faster with higher number of quads
     const staggerTime = totalElapsedTime / quads.length;
-    // const staggerTime = 0.01;
     gsap.to(quads, {
         duration: totalElapsedTime,
         shrinkFraction: unshrink
@@ -104,6 +110,15 @@ window.keyPressed = function keyPressed(_evt) {
     if (key === " ") {
         regenerate();
     }
+    if (key === "s") {
+        options.shouldDrawDebugText = false;
+        redraw();
+        setTimeout(() => save("wccc-split-neill"), 0);
+    }
+    if (key === "d") {
+        splitQuadUnderPos(mousePos());
+    }
+
     if (key === "=" || key === "-") {
         const sign = key === "=" ? 1 : -1;
         const newDistance = constrain(
@@ -125,25 +140,46 @@ window.keyPressed = function keyPressed(_evt) {
         regenerate();
     }
 };
+window.mouseDragged = function mouseDragged(_evt) {
+    if (splitQuadUnderPos(mousePos())) {
+        console.log("split ok");
+    }
+};
 window.mouseMoved = function mouseMoved(_evt) {
     if (quads.length === 0) {
         return;
     }
-    const nearestQuad = minByOrThrow(quads, (quad: Quad) =>
-        findQuadCentroid(quad.pts).dist(mousePos())
+    const mouseP = mousePos();
+    const nearbyQuads = quads.filter(
+        (q) => findQuadCentroid(q.pts).dist(mouseP) < options.quadBrushRadius
     );
-    selectedQuad = nearestQuad.element;
 
     //so far, this doesn't really need gsap.
-    gsap.to(selectedQuad, {
-        duration: 0.3,
-        shrinkFraction: 0,
-    });
+    if (nearbyQuads.length > 0) {
+        gsap.to(nearbyQuads, {
+            duration: 0.5,
+            shrinkFraction: 0,
+        });
+    }
 };
 
 window.windowResized = function () {
     resizeCanvas(windowWidth, windowHeight);
 };
+
+export function splitQuadUnderPos(pos: p5.Vector) {
+    //TODO: when ditching a split quad, clear any gsap anims on it.
+    const nearestResult = findQuadNearestToPos(quads, pos);
+    const splitResult = splitQuadIfBig(nearestResult.element, {
+        ...options,
+        shouldGenerateUnshrunk: false,
+    });
+    if (splitResult) {
+        quads.push(...splitResult);
+        quads = quads.filter((q) => q !== nearestResult.element);
+    }
+    return splitResult;
+}
 
 function drawDebugText() {
     fill(255);
