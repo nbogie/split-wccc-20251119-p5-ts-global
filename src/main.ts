@@ -44,6 +44,37 @@ window.setup = function setup() {
     actionRegenerate();
 };
 
+window.draw = function draw() {
+    background(30);
+
+    quads.forEach((q) => {
+        drawQuad(q, options);
+    });
+    if (options.shouldDrawDebugText) {
+        drawDebugText();
+    }
+};
+
+const options: Options = {
+    shouldDrawDebugText: true,
+    shouldDrawDebugNormals: false,
+    shouldLogKeyCommands: true,
+    quadBrushRadius: 120,
+    shouldShrink: true,
+    numSplits: 4,
+    shouldGenerateUnshrunk: true,
+    shrinkFraction: 0.05, //0-1 exclusive
+    minAllowedLength: 15,
+    seed: 123,
+};
+
+interface Command {
+    title: string;
+    description: string;
+    key: string;
+    action: () => void;
+}
+
 function createCommands(): Command[] {
     const cmds: Command[] = [];
     cmds.push({
@@ -130,19 +161,6 @@ function actionTakeAScreenshot() {
     //can't save immediately - it won't wait for the redraw.
     setTimeout(() => save("wccc-split-neill"), 0);
 }
-const options: Options = {
-    shouldDrawDebugText: true,
-    shouldDrawDebugNormals: false,
-    shouldLogKeyCommands: true,
-    quadBrushRadius: 120,
-    shouldShrink: true,
-    numSplits: 4,
-    shouldGenerateUnshrunk: true,
-    shrinkFraction: 0.05, //0-1 exclusive
-    minAllowedLength: 15,
-    seed: 123,
-};
-
 function actionRegenerate() {
     options.seed = millis();
     randomSeed(options.seed);
@@ -151,30 +169,10 @@ function actionRegenerate() {
     animateRandomShrinkFractionChanges();
 }
 
-window.draw = function draw() {
-    push();
-    blendMode(BLEND);
-    background(30);
-    pop();
-    quads.forEach((q) => {
-        drawQuad(q, options);
-    });
-    if (options.shouldDrawDebugText) {
-        drawDebugText();
-    }
-};
-
 window.mousePressed = function mousePressed(_evt) {
     if (mouseButton.left) {
     }
 };
-
-interface Command {
-    title: string;
-    description: string;
-    key: string;
-    action: () => void;
-}
 
 function animateRandomShrinkFractionChanges() {
     //todo: try to do this with all elements at once, passing a fn to calc the unique shrinkFraction value for each
