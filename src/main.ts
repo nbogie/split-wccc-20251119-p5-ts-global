@@ -48,14 +48,15 @@ window.draw = function draw() {
 };
 
 function createOptions(): Options {
+    const shouldUseGridMode = random([true, false]);
     return {
-        shouldUseGridMode: random([true, false]),
-        shouldDrawDebugText: true,
+        shouldUseGridMode,
+        shouldDrawDebugText: false,
         shouldDrawDebugNormals: false,
         shouldLogKeyCommands: true,
         quadBrushRadius: 120,
         shouldShrink: true,
-        numSplits: 4,
+        numSplits: shouldUseGridMode ? random([1, 2, 3]) : random([4, 5, 6]),
         shouldGenerateUnshrunk: true,
         globalShrinkFraction: 0.05, //0-1 exclusive
         minAllowedLength: 15,
