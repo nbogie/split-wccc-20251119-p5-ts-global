@@ -74,6 +74,13 @@ export function createCommands(): Command[] {
         description: "Split the quad under the current mouse/touch position",
     });
     cmds.push({
+        key: "t",
+        action: actionToggleDebugText,
+        title: "toggle debug text",
+        description:
+            "Toggle the display of some debug text (num quads, num iterations of bisection, palette name, etc)",
+    });
+    cmds.push({
         key: "-",
         action: () => actionChangeGlobalShrinkFraction(-1),
         title: "decrease global shrink fraction",
@@ -215,6 +222,11 @@ export function actionSplitQuadUnderPos(pos: p5.Vector) {
         gsap.to(splitResult, { shrinkFraction: 0, duration: 0.5 });
     }
     return splitResult;
+}
+
+export function actionToggleDebugText() {
+    const options = getWorld().options;
+    options.shouldDrawDebugText = !options.shouldDrawDebugText;
 }
 
 export function actionPickNewRandomPalette() {
