@@ -74,7 +74,6 @@ window.draw = function draw() {
 
 window.mousePressed = function mousePressed(_evt) {
     if (mouseButton.left) {
-        animateRandomShrinkFractionChanges();
     }
 };
 
@@ -110,6 +109,9 @@ window.keyPressed = function keyPressed(_evt) {
     if (key === " ") {
         regenerate();
     }
+    if (key === "r") {
+        animateRandomShrinkFractionChanges();
+    }
     if (key === "s") {
         options.shouldDrawDebugText = false;
         redraw();
@@ -140,11 +142,11 @@ window.keyPressed = function keyPressed(_evt) {
         regenerate();
     }
 };
+
 window.mouseDragged = function mouseDragged(_evt) {
-    if (splitQuadUnderPos(mousePos())) {
-        console.log("split ok");
-    }
+    splitQuadUnderPos(mousePos());
 };
+
 window.mouseMoved = function mouseMoved(_evt) {
     if (quads.length === 0) {
         return;
@@ -177,6 +179,7 @@ export function splitQuadUnderPos(pos: p5.Vector) {
     if (splitResult) {
         quads.push(...splitResult);
         quads = quads.filter((q) => q !== nearestResult.element);
+        gsap.to(splitResult, { shrinkFraction: 0, duration: 0.5 });
     }
     return splitResult;
 }
