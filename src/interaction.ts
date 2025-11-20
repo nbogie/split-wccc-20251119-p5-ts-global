@@ -65,6 +65,7 @@ window.mouseMoved = function mouseMoved(_evt) {
 
         if (keyIsDown(CONTROL)) {
             gsap.to(nearbyQuads, {
+                delay: 0.05,
                 duration: 0.5,
                 shrinkFraction: "random(0.2, 0.6, 0.1)",
             });
