@@ -43,8 +43,6 @@ window.mouseMoved = function mouseMoved(_evt) {
         (q) => findQuadCentroid(q.pts).dist(mouseP) < w.options.quadBrushRadius
     );
 
-    //These should be debounced: https://css-tricks.com/debouncing-throttling-explained-examples/
-
     //so far, this doesn't really need gsap.
     if (nearbyQuads.length > 0) {
         if (keyIsDown(SHIFT)) {
@@ -59,7 +57,8 @@ window.mouseMoved = function mouseMoved(_evt) {
         //     return random(0.2, 0.6);
         // }
         //https://lodash.com/docs/4.17.15#debounce
-        // const debouncedShrinkRandomly = debounce(shrinkRandomly, 1300, {
+        //and https://css-tricks.com/debouncing-throttling-explained-examples/
+        // const debouncedShrinkRandomly = debounce(shrinkRandomly, 500, {
         //     leading: true,
         //     trailing: false,
         // });
