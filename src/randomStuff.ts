@@ -68,3 +68,11 @@ export function drawDebugText(world: World) {
     }
     pop();
 }
+
+export function setDescription() {
+    describe(
+        "Colourful repeatedly bisected and sometimes shrunk quads.  " +
+            "User interactions can grow and shrink them and " +
+            "break them down into further subdivisions."
+    );
+}

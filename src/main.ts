@@ -10,7 +10,7 @@ import p5 from "p5";
 import { actionRegenerate, createCommands, type Command } from "./actions.ts";
 import { drawQuad, type Options, type Quad } from "./quad.ts";
 import "./interaction.ts";
-import { drawDebugText } from "./randomStuff.ts";
+import { drawDebugText, setDescription } from "./randomStuff.ts";
 export interface World {
     quads: Quad[];
     commands: Command[];
@@ -28,6 +28,7 @@ window.setup = function setup() {
         quads: [],
         options: createOptions(),
     };
+    setDescription();
     // blendMode(DARKEST);
     actionRegenerate();
 };
