@@ -46,7 +46,10 @@ export function createGridOfStartingQuads(options: Options): Quad[] {
     for (let colIx = 0; colIx < numColumns; colIx++) {
         for (let rowIx = 0; rowIx < numRows; rowIx++) {
             gridQuads.push(
-                createQuadOnGrid({ colIx, rowIx, cellSize }, options)
+                createQuadOnGrid(
+                    { colIx, rowIx, numColumns, numRows, cellSize },
+                    options
+                )
             );
         }
     }
@@ -57,13 +60,23 @@ function createQuadOnGrid(
     {
         colIx,
         rowIx,
+        numColumns,
+        numRows,
         cellSize,
-    }: { colIx: number; rowIx: number; cellSize: number },
+    }: {
+        colIx: number;
+        rowIx: number;
+        numColumns: number;
+        numRows: number;
+        cellSize: number;
+    },
     options: Options
 ): Quad {
-    const centrePoint = createVector(
-        colIx * cellSize + cellSize / 2,
-        rowIx * cellSize + cellSize / 2
+    const leftMargin = (width - cellSize * numColumns) / 2;
+    const topMargin = (height - cellSize * numRows) / 2;
+    const topLeft = createVector(
+        colIx * cellSize + leftMargin,
+        rowIx * cellSize + topMargin
     );
 
     const pts: Quad["pts"] = [
@@ -72,7 +85,7 @@ function createQuadOnGrid(
         { x: 0.95, y: 0.95 },
         { x: 0.05, y: 0.95 },
     ].map((frac) =>
-        createVector(frac.x * cellSize, frac.y * cellSize).add(centrePoint)
+        createVector(frac.x * cellSize, frac.y * cellSize).add(topLeft)
     ) as Quad["pts"];
     return createQuadWithPoints(pts, options);
 }
