@@ -138,10 +138,6 @@ export function actionAnimateUnshrinkAll() {
     });
 }
 export function actionAnimateRandomShrinkFractionChanges() {
-    //todo: try to do this with all elements at once, passing a fn to calc the unique shrinkFraction value for each
-    //that will allow stagger
-    //https://gsap.com/community/forums/topic/22266-staggerto-different-values/
-
     const quads = getWorld().quads;
     const shouldStagger = random([true, false]);
     const totalElapsedTime = 0.4;
