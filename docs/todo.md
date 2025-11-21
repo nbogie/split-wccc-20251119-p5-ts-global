@@ -3,17 +3,20 @@
 ## Keen TODOs:
 
 -   make grid layout responsive to screen size.
+-   brush selection tool for mobile.
 -   Try inset by shrinking corners to the intersection of the two inset lines parallel to their edges.
 -   Instead of unshrinking only the nearest, try all within a threshold of mouse
 -   Quads unshrink by colour, periodically? (or all quads with same colour as hovered-quad?)
--   Unshrink all quads lying on one or two perpendicular edges (or intersecting one or two simple straight lines across the design. Really wants to be a thick line though to ensure fewer near misses)
+-   Unshrink all quads lying on one or two perpendicular edges of the whole image (or intersecting one or two simple straight lines across the design. Really wants to be a thick line though to ensure fewer near misses)
     -   This would look good animated (stagger might work but should be in order they line passes through them)
+-   greyscale palette
 -   Prepare a paper texture to an offscreen and compose it each frame.
 -   maybe fill with p5.brush? https://openprocessing.org/sketch/2117088
 -   auto-play that demos some of the features and has a simulated "mouse pointer" moving and dragging etc.
-
+-   dat.gui but completely hideable
+  
 ## Less keen TODOs:
-
+-   split according to an underlying image pixel brightness
 -   round the corners?
 -   on splitting quads, spawn and animate some particles for teh JUICE?
 -   animate a little rotation around centroid for a human feel?
