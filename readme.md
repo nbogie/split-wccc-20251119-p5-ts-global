@@ -11,7 +11,7 @@ Written in typescript and p5 v2.x in global-mode with modules, partly to test v2
 
 -   Very much informed by [Okazz's wonderful, elegant sketch "201216a"](https://openprocessing.org/sketch/1045334/) though all I've started with here is an approximation of their conceptual algorithm from memory (no doubt I butchered that).
     (I've written other non-interactive versions of this some years ago but started from scratch for the challenge without reusing / consulting any code.)
--   Uses some palette(s) from [Kjetil Golid's chromotome](https://github.com/kgolid/chromotome) via [https://nice-colours-quicker.netlify.app/](nice-colours-quicker).
+-   Uses various palette(s) from [Kjetil Golid's chromotome](https://github.com/kgolid/chromotome) via [https://nice-colours-quicker.netlify.app/](nice-colours-quicker).
 
 ## WCCChallenge?
 

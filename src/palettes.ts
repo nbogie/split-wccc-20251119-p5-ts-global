@@ -1,14 +1,6 @@
-// Credit: Palettes from [kgolid's chromotome](https://github.com/kgolid/chromotome)
+// Credit: Almost all palettes from [kgolid's chromotome](https://github.com/kgolid/chromotome)
 // via [https://nice-colours-quicker.netlify.app/](nice-colours-quicker)
 export const palettes = [
-    {
-        name: "neill-rybitten1",
-        colors: ["#906593", "#DE2C26", "#F2B47F", "#F6D3CA", "#B8D7BE"],
-        stroke: 20,
-        background: 20,
-        size: 5,
-        type: "chromotome",
-    },
     {
         name: "nowak",
         colors: [
@@ -78,6 +70,14 @@ export const palettes = [
         colors: ["#ed555d", "#fffcc9", "#41b797", "#eda126", "#7b5770"],
         stroke: "#fffcc9",
         background: "#2d1922",
+        size: 5,
+        type: "chromotome",
+    },
+    {
+        name: "neill-rybitten1",
+        colors: ["#906593", "#DE2C26", "#F2B47F", "#F6D3CA", "#B8D7BE"],
+        stroke: 20,
+        background: 20,
         size: 5,
         type: "chromotome",
     },
