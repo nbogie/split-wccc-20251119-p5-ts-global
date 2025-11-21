@@ -1,6 +1,8 @@
 import p5 from "p5";
 import { minByOrThrow, randomColourFromPalette } from "./randomStuff.ts";
 export type Quad = {
+    /** time this quad was last manipulated by mouse - in millis since sketch start */
+    lastMouseModMillis: number;
     colour: p5.Color;
     shrinkFraction: number;
     //TODO: remove this.  never read i think
@@ -94,6 +96,7 @@ function createQuadWithPoints(pts: Quad["pts"], options: Options): Quad {
     return {
         pts: pts.map((pt) => pt.copy()) as Quad["pts"],
         isLeaf: false,
+        lastMouseModMillis: -1,
         colour: randomColourFromPalette(),
         shrinkFraction: options.shouldGenerateUnshrunk
             ? 0

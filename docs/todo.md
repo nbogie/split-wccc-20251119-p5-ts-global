@@ -28,3 +28,4 @@
 -   Draw "g" grid of squares each one split level only, with random and significant shrinkage. bold look.
 -   allow click to further split a selected quad (or few surrounding ones)
 -   avoid having quads shrunk only a little - the crappy tangents look like mistakes. e.g. round to 20%?
+-   stop shrink-wriggling on ctrl-mouseover by observing a last-modded time per quad.
