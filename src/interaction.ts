@@ -59,12 +59,16 @@ window.mouseMoved = function mouseMoved(_evt) {
             const freshNearbyQuads = nearbyQuads.filter(
                 (q) => q.lastMouseModMillis < oneSecAgo
             );
-            gsap.to(freshNearbyQuads, {
-                delay: 0.05,
-                duration: 0.5,
-                shrinkFraction: "random(0.2, 0.6, 0.1)",
-            });
-            freshNearbyQuads.forEach((q) => (q.lastMouseModMillis = millis()));
+            if (freshNearbyQuads.length > 0) {
+                gsap.to(freshNearbyQuads, {
+                    delay: 0.05,
+                    duration: 0.5,
+                    shrinkFraction: "random(0.2, 0.6, 0.1)",
+                });
+                freshNearbyQuads.forEach(
+                    (q) => (q.lastMouseModMillis = millis())
+                );
+            }
         }
     }
 };
