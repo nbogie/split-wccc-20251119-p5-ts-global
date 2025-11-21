@@ -2,6 +2,14 @@
 // via [https://nice-colours-quicker.netlify.app/](nice-colours-quicker)
 export const palettes = [
     {
+        name: "neill-rybitten1",
+        colors: ["#906593", "#DE2C26", "#F2B47F", "#F6D3CA", "#B8D7BE"],
+        stroke: 20,
+        background: 20,
+        size: 5,
+        type: "chromotome",
+    },
+    {
         name: "nowak",
         colors: [
             "#e85b30",
