@@ -6,7 +6,7 @@
 -   add changing palette without re-drawing. especially for allowing colour palette over greyscale, or vice versa.
 -   make grid layout responsive to screen size.
 -   make a dedicated brush selection tool for mobile - dat.gui is too much.
--   Instead of unshrinking only the nearest, try all within a threshold of mouse
+-   Instead of splitting only the nearest, try all within a threshold of mouse
 -   Allow unshrink by colour. Perhaps runs periodically? (or all quads with same colour as hovered-quad?)
 -   add message system (shows the last line only and fades)
 -   Unshrink all quads lying on one or two perpendicular edges of the whole image (or intersecting one or two simple straight lines across the design. Really wants to be a thick line though to ensure fewer near misses)
