@@ -22,6 +22,24 @@ export function createCommands(): Command[] {
     const cmds: Command[] = [];
 
     cmds.push({
+        key: "1",
+        action: actionSelectSplitterBrush,
+        title: "select brush: split",
+        description: "change the current brush mode to split quads",
+    });
+    cmds.push({
+        key: "2",
+        action: actionSelectShrinkerBrush,
+        title: "select brush: shrink",
+        description: "change the current brush mode to shrink quads",
+    });
+    cmds.push({
+        key: "3",
+        action: actionSelectInflaterBrush,
+        title: "select brush: inflate",
+        description: "change the current brush mode to inflate quads",
+    });
+    cmds.push({
         key: "h",
         action: actionShowHelp,
         title: "show help",
