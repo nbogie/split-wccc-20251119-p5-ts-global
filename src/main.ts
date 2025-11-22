@@ -3,9 +3,10 @@
 //See readme.md for more info
 
 //this import RUNS p5 - it's not for type purposes - that's set up by  global.d.ts
-import "p5";
+import "p5"; //TODO: remove this import when building for OP
+
 //This import brings in the runtime p5 value (to reference p5.Vector.random2D() etc)
-import p5 from "p5";
+import p5 from "p5"; //TODO: remove this import when building for OP
 
 import {
     actionAnimateRandomShrinkFractionChanges,
@@ -23,7 +24,8 @@ import { drawQuad, type Options, type Quad } from "./quad.js";
 import "./interaction.js";
 import { drawDebugText, setDescription } from "./randomStuff.js";
 
-import * as dat from "dat.gui";
+import * as dat from "dat.gui"; //TODO: remove this import when building for OP
+
 import { createGUI } from "./gui.js";
 
 export interface World {

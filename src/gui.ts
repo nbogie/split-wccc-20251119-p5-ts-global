@@ -1,4 +1,5 @@
-import * as dat from "dat.gui";
+import * as dat from "dat.gui"; //TODO: remove this at OP deploy
+
 import { actionRegenerateObservingMode } from "./actions.js";
 import type { World } from "./main.js";
 import { palettes } from "./palettes.js";
