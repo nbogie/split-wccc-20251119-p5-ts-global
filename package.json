@@ -18,7 +18,9 @@
         "type-check:watch": "tsc --noEmit --watch"
     },
     "devDependencies": {
+        "@types/dat.gui": "^0.7.13",
         "@types/lodash": "^4.17.20",
+        "dat.gui": "^0.7.9",
         "gsap": "^3.13.0",
         "lodash": "^4.17.21",
         "p5": "^2.1.1",

@@ -263,3 +263,13 @@ export function actionPickNewRandomPalette() {
     options.paletteIx = random(otherIndices);
     actionRegenerateObservingMode();
 }
+
+export function actionSelectShrinkerBrush() {
+    getWorld().options.brushMode = "shrink";
+}
+export function actionSelectSplitterBrush() {
+    getWorld().options.brushMode = "split";
+}
+export function actionSelectInflaterBrush() {
+    getWorld().options.brushMode = "inflate";
+}

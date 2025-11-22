@@ -61,6 +61,7 @@ export function drawDebugText(world: World) {
         "shrinkFraction: " + options.globalShrinkFraction.toFixed(2),
         "num splits: " + options.numSplits,
         "palette: " + palettes[options.paletteIx].name,
+        "brushMode: " + options.brushMode,
     ];
     for (let line of [...lines].reverse()) {
         text(line, 0, 0);

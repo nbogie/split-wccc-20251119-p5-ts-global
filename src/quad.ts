@@ -10,7 +10,10 @@ export type Quad = {
     pts: [p5.Vector, p5.Vector, p5.Vector, p5.Vector];
 };
 
+export type BrushMode = "inflate" | "shrink" | "split" | "no-op";
+
 export interface Options {
+    brushMode: BrushMode;
     /** next time we're asked to generate from scratch, should we lay out in a grid? */
     shouldUseGridMode: boolean;
     shouldDrawDebugText: boolean;
@@ -27,6 +30,15 @@ export interface Options {
     minAllowedLength: number;
     seed: number;
     paletteIx: number;
+
+    // these should probably go in a separate object and interface - controls
+    actionSelectShrinkerBrush: () => void;
+    actionSelectInflaterBrush: () => void;
+    actionSelectSplitterBrush: () => void;
+    actionAnimateUnshrinkAll: () => void;
+    actionAnimateRandomShrinkFractionChanges: () => void;
+    actionRegenerateFromGrid: () => void;
+    actionRegenerateWithSingleStartingQuad: () => void;
 }
 
 export function createStartingQuad(options: Options): Quad {

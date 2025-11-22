@@ -3,7 +3,7 @@
 ## Keen TODOs:
 
 -   on auto-shrink after creating grid, don't allow 0 shrink. the contacts look crap sometimes, though form interesting composites other times.
--   float UI hints for user making suggestions on operations.
+-   add changing palette without re-drawing. especially for allowing colour palette over greyscale, or vice versa.
 -   make grid layout responsive to screen size.
 -   brush selection tool for mobile.
 -   Try inset by shrinking corners to the intersection of the two inset lines parallel to their edges.
@@ -15,6 +15,7 @@
 -   maybe fill with p5.brush? https://openprocessing.org/sketch/2117088
 -   auto-play that demos some of the features and has a simulated "mouse pointer" moving and dragging etc.
 -   dat.gui but completely hideable
+-   float UI hints for user making suggestions on operations.
 
 ## Less keen TODOs:
 

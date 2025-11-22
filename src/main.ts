@@ -8,7 +8,14 @@ import "p5";
 import p5 from "p5";
 
 import {
+    actionAnimateRandomShrinkFractionChanges,
+    actionAnimateUnshrinkAll,
+    actionRegenerateFromGrid,
     actionRegenerateObservingMode,
+    actionRegenerateWithSingleStartingQuad,
+    actionSelectInflaterBrush,
+    actionSelectShrinkerBrush,
+    actionSelectSplitterBrush,
     createCommands,
     type Command,
 } from "./actions.ts";
@@ -16,10 +23,14 @@ import { drawQuad, type Options, type Quad } from "./quad.ts";
 import "./interaction.ts";
 import { drawDebugText, setDescription } from "./randomStuff.ts";
 
+import * as dat from "dat.gui";
+import { createGUI } from "./gui.ts";
+
 export interface World {
     quads: Quad[];
     commands: Command[];
     options: Options;
+    gui?: dat.GUI;
 }
 
 /** Encapsulates our entire global state that will be made available to most of our functions */
@@ -62,16 +73,27 @@ function createOptions(): Options {
         minAllowedLength: 15,
         seed: 123,
         paletteIx: 0,
+        brushMode: "no-op",
+        actionSelectShrinkerBrush,
+        actionSelectInflaterBrush,
+        actionSelectSplitterBrush,
+        actionAnimateUnshrinkAll,
+        actionAnimateRandomShrinkFractionChanges,
+        actionRegenerateFromGrid,
+        actionRegenerateWithSingleStartingQuad,
     };
 }
 
 /** Create and return all the essentially global state that will be made available between modules. */
 function createWorld(): World {
-    return {
+    const w: World = {
         quads: [],
         commands: createCommands(),
         options: createOptions(),
     };
+    w.gui = createGUI(w);
+
+    return w;
 }
 
 export function getWorld() {
