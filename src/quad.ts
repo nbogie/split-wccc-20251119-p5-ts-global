@@ -148,8 +148,10 @@ export function drawQuadWithBrightness(
     // fill(c);
     fill(brightnessFrac * 200);
     noStroke();
+    const shrunkPts = shrinkQuadPoints(quad.pts, quad.shrinkFraction);
+
     beginShape();
-    quad.pts.forEach((v) => vertex(v.x, v.y));
+    shrunkPts.forEach((v) => vertex(v.x, v.y));
     endShape(CLOSE);
     pop();
 }
