@@ -166,6 +166,13 @@ export function createCommands(): Command[] {
         description:
             "Increase the number of quad-splitting passes done over the quads.  Smaller quads will result.",
     });
+    cmds.push({
+        key: "z",
+        action: () => actionAnimateShrinkAllCompletely(),
+        title: "shink all to zero",
+        description:
+            "Increase the number of quad-splitting passes done over the quads.  Smaller quads will result.",
+    });
 
     return cmds;
 }
@@ -260,6 +267,18 @@ export function actionRegenerateObservingMode() {
     } else {
         actionRegenerateWithSingleStartingQuad();
     }
+}
+
+export function actionAnimateShrinkAllCompletely() {
+    const shouldStagger = random([true, false]);
+
+    const quads = getWorld().quads;
+    gsap.to(quads, {
+        duration: 0.2,
+        stagger: shouldStagger ? 0.5 / quads.length : undefined,
+        shrinkFraction: 1,
+        ease: "power3.out",
+    });
 }
 
 export function actionAnimateUnshrinkAll() {
