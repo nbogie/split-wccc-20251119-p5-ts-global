@@ -2,12 +2,10 @@ import p5 from "p5";
 import { getWorld, type World } from "./main.js";
 import { palettes } from "./palettes.js";
 
-export function randomColourFromPalette(): p5.Color {
+export function randomColourAndIdFromPalette(): [p5.Color, number] {
     const colours = palettes[getWorld().options.paletteIx].colors;
-
-    const c = color(random(colours));
-    // c.setAlpha(100);
-    return c;
+    const ix = floor(random(0, colours.length));
+    return [color(colours[ix]), ix];
 }
 
 /**

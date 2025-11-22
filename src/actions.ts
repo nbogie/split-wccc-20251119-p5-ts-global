@@ -68,6 +68,14 @@ export function createCommands(): Command[] {
         beginnerPriority: "1: high",
     });
     cmds.push({
+        key: "4",
+        action: actionSelectInflateByColourBrush,
+        title: "Select brush: inflate-by-colour",
+        description:
+            "change the current brush mode to inflate quads having the same colour as the under mouse",
+        beginnerPriority: "1: high",
+    });
+    cmds.push({
         key: "?",
         action: actionToggleHelp,
         title: "Toggle help",
@@ -324,6 +332,25 @@ export function actionAnimateUnshrinkAll() {
         ease: "power3.out",
     });
 }
+
+export function actionAnimateUnshrinkBySameColourAsUnderMouse() {
+    const quads = getWorld().quads;
+    const nearestQuad = findQuadNearestToPos(quads, mousePos());
+    if (!nearestQuad) {
+        return;
+    }
+    //this will include the quad under pointer. good.
+    const sameColourQuads = quads.filter(
+        (q) => q.colourIx === nearestQuad.element.colourIx
+    );
+
+    gsap.to(sameColourQuads, {
+        duration: 0.2,
+        stagger: 1 / quads.length,
+        shrinkFraction: 0,
+        ease: "power3.out",
+    });
+}
 export function actionAnimateRandomShrinkFractionChanges() {
     const quads = getWorld().quads;
     const shouldStagger = random([true, false]);
@@ -414,6 +441,11 @@ export function actionSelectSplitterBrush() {
 export function actionSelectInflaterBrush() {
     getWorld().options.brushMode = "inflate";
     postMessage("Inflater brush");
+}
+
+export function actionSelectInflateByColourBrush() {
+    getWorld().options.brushMode = "inflate-by-colour";
+    postMessage("Inflate-by-Colour brush");
 }
 export function actionSetDrawModeNormal(): void {
     const w = getWorld();

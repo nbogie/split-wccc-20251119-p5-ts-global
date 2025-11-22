@@ -1,16 +1,23 @@
 import p5 from "p5";
-import { minByOrThrow, randomColourFromPalette } from "./randomStuff.js";
+import { minByOrThrow, randomColourAndIdFromPalette } from "./randomStuff.js";
 export type Quad = {
     /** time this quad was last manipulated by mouse - in millis since sketch start */
     lastMouseModMillis: number;
     colour: p5.Color;
+    /** helps us find all quads of the same colour. */
+    colourIx: number;
     shrinkFraction: number;
     //TODO: remove this.  never read i think
     isLeaf: boolean;
     pts: [p5.Vector, p5.Vector, p5.Vector, p5.Vector];
 };
 
-export type BrushMode = "inflate" | "shrink" | "split" | "no-op";
+export type BrushMode =
+    | "inflate"
+    | "shrink"
+    | "split"
+    | "inflate-by-colour"
+    | "no-op";
 
 export interface Options {
     shouldShowHelpScreen: boolean;
@@ -111,11 +118,13 @@ function createQuadOnGrid(
 }
 
 function createQuadWithPoints(pts: Quad["pts"], options: Options): Quad {
+    const [colour, colourIx] = randomColourAndIdFromPalette();
     return {
         pts: pts.map((pt) => pt.copy()) as Quad["pts"],
         isLeaf: false,
         lastMouseModMillis: -1,
-        colour: randomColourFromPalette(),
+        colour,
+        colourIx,
         shrinkFraction: options.shouldGenerateUnshrunk
             ? 0
             : randomShrinkFraction(),

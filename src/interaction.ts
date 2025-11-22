@@ -1,5 +1,8 @@
 import gsap from "gsap";
-import { splitAndAddGivenQuads } from "./actions.js";
+import {
+    actionAnimateUnshrinkBySameColourAsUnderMouse,
+    splitAndAddGivenQuads,
+} from "./actions.js";
 import { getWorld } from "./main.js";
 import { findQuadNearestToPos, findQuadsNearPos } from "./quad.js";
 import { mousePos } from "./randomStuff.js";
@@ -77,6 +80,13 @@ window.mouseDragged = function mouseDragged(evt) {
                 }
             }
             break;
+
+        case "inflate-by-colour":
+            {
+                actionAnimateUnshrinkBySameColourAsUnderMouse();
+            }
+            break;
+
         case "shrink":
             {
                 const nearbyQuads = findQuadsNearPos(

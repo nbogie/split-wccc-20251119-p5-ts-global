@@ -5,7 +5,6 @@
 -   Do alternative insetting by shrinking corners to the intersection of the two inset lines parallel to their edges.
 -   add changing palette without re-drawing. especially for allowing colour palette over greyscale, or vice versa.
 -   make a dedicated brush selection tool for mobile - dat.gui is too much.
--   Allow unshrink by colour. Perhaps runs periodically? (or all quads with same colour as hovered-quad?)
 -   Unshrink all quads lying on one or two perpendicular edges of the whole image (or intersecting one or two simple straight lines across the design. Really wants to be a thick line though to ensure fewer near misses)
     -   This would look good animated (stagger might work but should be in order they line passes through them)
 -   Prepare a paper texture to an offscreen and compose it each frame.
@@ -31,6 +30,7 @@
 
 ## Done
 
+-   Allow unshrink by colour.All quads with same colour as hovered-quad. It's a bit meh.
 -   add on-screen help: "?" because dat.gui takes "h"
 -   add message system (shows the last line only and fades)
 -   Instead of splitting only the nearest, try all within a threshold of mouse
