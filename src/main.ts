@@ -66,7 +66,7 @@ function createOptions(): Options {
         shouldUseGridMode,
         shouldDrawDebugText: false,
         shouldDrawDebugNormals: false,
-        shouldLogKeyCommands: true,
+        shouldLogKeyCommands: false,
         quadBrushRadius: 120,
         shouldShrink: true,
         numSplits: shouldUseGridMode ? random([1, 2, 3]) : random([4, 5, 6]),
