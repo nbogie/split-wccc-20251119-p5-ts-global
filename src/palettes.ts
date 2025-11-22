@@ -2,14 +2,6 @@
 // via [https://nice-colours-quicker.netlify.app/](nice-colours-quicker)
 export const palettes = [
     {
-        name: "neill-grayscale",
-        colors: [50, 100, 150, 200, 250],
-        stroke: "#100",
-        background: "30",
-        size: 5,
-        type: "chromotome",
-    },
-    {
         name: "nowak",
         colors: [
             "#e85b30",
@@ -54,6 +46,14 @@ export const palettes = [
         stroke: "#251c12",
         background: "#cfc7b9",
         size: 6,
+        type: "chromotome",
+    },
+    {
+        name: "neill-grayscale",
+        colors: ["#323232", "#646464", "#969696", "#c8c8c8", "#fafafa"],
+        stroke: "#969696",
+        background: "30",
+        size: 5,
         type: "chromotome",
     },
     {

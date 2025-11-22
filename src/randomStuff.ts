@@ -3,7 +3,9 @@ import { getWorld, type World } from "./main.ts";
 import { palettes } from "./palettes.ts";
 
 export function randomColourFromPalette(): p5.Color {
-    const c = color(random(palettes[getWorld().options.paletteIx].colors));
+    const colours = palettes[getWorld().options.paletteIx].colors;
+
+    const c = color(random(colours));
     // c.setAlpha(100);
     return c;
 }
