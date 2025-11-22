@@ -34,6 +34,7 @@ export interface World {
     quads: Quad[];
     commands: Command[];
     options: Options;
+    messages: Message[];
     gui?: dat.GUI;
     images: p5.Image[] | null;
 }
@@ -73,6 +74,9 @@ window.draw = function draw() {
             );
     }
 
+    drawRecentPostedMessages();
+    updatePostedMessages();
+
     if (options.shouldDrawDebugText) {
         drawDebugText(world);
     }
@@ -89,6 +93,8 @@ function createOptions(): Options {
         quadDrawFillMode: random(["useBrightness", "usePalette"]),
         imageIx: 0,
         shouldUseGridMode,
+
+        shouldDrawMessages: true,
         shouldDrawDebugText: false,
         shouldDrawDebugNormals: false,
         shouldLogKeyCommands: false,
@@ -99,12 +105,13 @@ function createOptions(): Options {
                 ? 10
                 : shouldUseGridMode
                 ? random([1, 2, 3])
-                : random([4, 5, 6]),
+                : random([5, 6]),
         shouldGenerateUnshrunk: true,
         globalShrinkFraction: 0.05, //0-1 exclusive
         minAllowedLength: quadDrawMode === "under-image" ? 5 : 15,
         seed: 123,
         paletteIx: 0,
+        defaultMessageDurationMillis: 2000,
         brushMode: "no-op",
         actionSelectShrinkerBrush,
         actionSelectInflaterBrush,
@@ -116,6 +123,10 @@ function createOptions(): Options {
     };
 }
 
+export interface Message {
+    str: string;
+    postedAtMillis: number;
+}
 /** Create and return all the essentially global state that will be made available between modules. */
 function createWorld(): World {
     const w: World = {
@@ -123,6 +134,7 @@ function createWorld(): World {
         commands: createCommands(),
         options: createOptions(),
         images: null,
+        messages: [],
     };
     w.gui = createGUI(w);
 
@@ -131,4 +143,33 @@ function createWorld(): World {
 
 export function getWorld() {
     return world;
+}
+
+export function postMessage(str: string) {
+    const m: Message = createMessage(str);
+    world.messages.push(m);
+}
+
+export function drawRecentPostedMessages() {
+    if (!world.options.shouldDrawMessages) {
+        return;
+    }
+    push();
+    textAlign(RIGHT, BOTTOM);
+    translate(width, height - 50);
+    fill(255);
+    textSize(round(min(width, height) * 0.03));
+    text(world.messages.at(-1)?.str ?? "", -50, 0);
+    pop();
+}
+export function updatePostedMessages() {
+    world.messages = world.messages.filter(
+        (m) =>
+            m.postedAtMillis >
+            millis() - world.options.defaultMessageDurationMillis
+    );
+}
+
+export function createMessage(str: string): Message {
+    return { str, postedAtMillis: millis() };
 }

@@ -13,12 +13,14 @@ export type Quad = {
 export type BrushMode = "inflate" | "shrink" | "split" | "no-op";
 
 export interface Options {
+    defaultMessageDurationMillis: number;
     quadDrawMode: "normal" | "under-image";
     quadDrawFillMode: "useBrightness" | "usePalette";
     imageIx: number;
     brushMode: BrushMode;
     /** next time we're asked to generate from scratch, should we lay out in a grid? */
     shouldUseGridMode: boolean;
+    shouldDrawMessages: boolean;
     shouldDrawDebugText: boolean;
     shouldDrawDebugNormals: boolean;
     shouldLogKeyCommands: boolean;

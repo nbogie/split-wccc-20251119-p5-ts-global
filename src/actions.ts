@@ -1,5 +1,5 @@
 import gsap from "gsap";
-import { getWorld } from "./main.js";
+import { getWorld, postMessage } from "./main.js";
 
 import {
     createGridOfStartingQuads,
@@ -130,16 +130,23 @@ export function createCommands(): Command[] {
             "Toggle the display of some debug text (num quads, num iterations of bisection, palette name, etc)",
     });
     cmds.push({
-        key: "-",
-        action: () => actionChangeGlobalShrinkFraction(-1),
-        title: "decrease global shrink fraction",
+        key: "m",
+        action: actionToggleMessages,
+        title: "toggle messages",
         description:
-            "Decrease the global shrink fraction (fractions by which all quad corners are lerped towards their centroid)",
+            "Toggle the display of info messages when you take certain actions",
     });
     cmds.push({
         key: "=",
+        action: () => actionChangeGlobalShrinkFraction(-1),
+        title: "unshrink all a little",
+        description:
+            "Decreate the global shrink fraction (fractions by which all quad corners are lerped towards their centroid)",
+    });
+    cmds.push({
+        key: "-",
         action: () => actionChangeGlobalShrinkFraction(1),
-        title: "increase global shrink fraction",
+        title: "shrink all a little",
         description:
             "Increase the global shrink fraction (fractions by which all quad corners are lerped towards their centroid)",
     });
@@ -173,6 +180,7 @@ export function actionShowHelp() {
     ];
     lines.push(...mouseInteractionNotes);
     console.log(lines.join("\n"));
+    postMessage("Commands help posted to console");
 }
 
 export function actionRegenerateFromGrid() {
@@ -193,6 +201,9 @@ export function actionRegenerateFromGrid() {
         repeat: shouldFakeOut ? 1 : 0,
         yoyo: shouldFakeOut,
     });
+    postMessage(
+        `Regenerating from a grid of starting quads. (Num splits: ${w.options.numSplits})`
+    );
 }
 
 export function actionChangeNumSplits(sign: -1 | 1) {
@@ -201,6 +212,7 @@ export function actionChangeNumSplits(sign: -1 | 1) {
     options.numSplits = newCount;
     options.shouldGenerateUnshrunk = random([true, false]);
     actionRegenerateObservingMode();
+    postMessage("Max number of splits " + options.numSplits);
 }
 
 export function actionChangeGlobalShrinkFraction(sign: 1 | -1) {
@@ -238,6 +250,9 @@ export function actionRegenerateWithSingleStartingQuad() {
     world.quads = [createStartingQuad(options)];
     world.quads = subdivideAllRepeatedly(world.quads, options);
     actionAnimateRandomShrinkFractionChanges();
+    postMessage(
+        `Regenerating from one quad. (Num splits: ${options.numSplits})`
+    );
 }
 export function actionRegenerateObservingMode() {
     if (getWorld().options.shouldUseGridMode) {
@@ -315,6 +330,11 @@ export function actionToggleDebugText() {
     const options = getWorld().options;
     options.shouldDrawDebugText = !options.shouldDrawDebugText;
 }
+export function actionToggleMessages() {
+    const options = getWorld().options;
+    options.shouldDrawMessages = !options.shouldDrawMessages;
+    postMessage("messages " + (options.shouldDrawMessages ? "on" : "off"));
+}
 
 export function actionPickNewRandomPalette() {
     const options = getWorld().options;
@@ -327,16 +347,20 @@ export function actionPickNewRandomPalette() {
     }
     options.paletteIx = random(otherIndices);
     actionRegenerateObservingMode();
+    postMessage("Palette: " + palettes[options.paletteIx].name);
 }
 
 export function actionSelectShrinkerBrush() {
     getWorld().options.brushMode = "shrink";
+    postMessage("Shrinker brush");
 }
 export function actionSelectSplitterBrush() {
     getWorld().options.brushMode = "split";
+    postMessage("Splitter brush");
 }
 export function actionSelectInflaterBrush() {
     getWorld().options.brushMode = "inflate";
+    postMessage("Inflater brush");
 }
 export function actionSetDrawModeNormal(): void {
     const w = getWorld();
@@ -351,5 +375,8 @@ export function actionSetDrawModeToUseReferenceImage(): void {
         w.options.minAllowedLength = 5;
         w.options.numSplits = w.options.shouldUseGridMode ? 9 : 12;
         w.options.imageIx = (w.options.imageIx + 1) % w.images.length;
+        postMessage(
+            "using reference image.  Submode: " + w.options.quadDrawFillMode
+        );
     }
 }
