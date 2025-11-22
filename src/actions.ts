@@ -23,7 +23,7 @@ export function createCommands(): Command[] {
     const cmds: Command[] = [];
 
     cmds.push({
-        key: "9",
+        key: "i",
         action: () => {
             actionSetDrawModeToUseReferenceImage();
 
@@ -34,7 +34,7 @@ export function createCommands(): Command[] {
             "have the quads observe the brightness or colour of a loaded but hidden reference image",
     });
     cmds.push({
-        key: "0",
+        key: "n",
         action: () => {
             getWorld().options.numSplits = 5;
             actionSetDrawModeNormal();
