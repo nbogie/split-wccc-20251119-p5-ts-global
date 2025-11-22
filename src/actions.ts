@@ -25,7 +25,7 @@ export function createCommands(): Command[] {
         key: "9",
         action: () => {
             actionSetDrawModeToUseReferenceImage();
-            getWorld().options.numSplits = 15;
+
             actionRegenerateObservingMode();
         },
         title: "draw mode: reference image",
@@ -324,5 +324,7 @@ export function actionSetDrawModeToUseReferenceImage(): void {
     if (w.images) {
         w.options.quadDrawMode = "under-image";
         w.options.minAllowedLength = 5;
+        w.options.numSplits = 13;
+        w.options.imageIx = (w.options.imageIx + 1) % w.images.length;
     }
 }

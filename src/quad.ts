@@ -14,6 +14,7 @@ export type BrushMode = "inflate" | "shrink" | "split" | "no-op";
 
 export interface Options {
     quadDrawMode: "normal" | "under-image";
+    imageIx: number;
     brushMode: BrushMode;
     /** next time we're asked to generate from scratch, should we lay out in a grid? */
     shouldUseGridMode: boolean;

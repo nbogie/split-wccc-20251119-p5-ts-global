@@ -85,6 +85,7 @@ function createOptions(): Options {
         : "under-image";
     return {
         quadDrawMode,
+        imageIx: 0,
         shouldUseGridMode,
         shouldDrawDebugText: false,
         shouldDrawDebugNormals: false,
@@ -93,7 +94,7 @@ function createOptions(): Options {
         shouldShrink: true,
         numSplits:
             quadDrawMode === "under-image"
-                ? 20
+                ? 10
                 : shouldUseGridMode
                 ? random([1, 2, 3])
                 : random([4, 5, 6]),

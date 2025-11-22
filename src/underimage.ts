@@ -25,7 +25,7 @@ export function drawQuadsByUnderlyingImage() {
     if (!world.images) {
         return;
     }
-    const imageToUse = world.images[0];
+    const imageToUse = world.images[world.options.imageIx];
     const leftMargin = (width - imageToUse.width) / 2;
     const topMargin = (height - imageToUse.height) / 2;
     const topLeftOffset = createVector(leftMargin, topMargin);
