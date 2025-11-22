@@ -4,7 +4,6 @@
 
 -   Do alternative insetting by shrinking corners to the intersection of the two inset lines parallel to their edges.
 -   add changing palette without re-drawing. especially for allowing colour palette over greyscale, or vice versa.
--   make grid layout responsive to screen size.
 -   make a dedicated brush selection tool for mobile - dat.gui is too much.
 -   Allow unshrink by colour. Perhaps runs periodically? (or all quads with same colour as hovered-quad?)
 -   Unshrink all quads lying on one or two perpendicular edges of the whole image (or intersecting one or two simple straight lines across the design. Really wants to be a thick line though to ensure fewer near misses)
@@ -17,6 +16,7 @@
 -   fix dat.gui and p5 loading for openprocessing - load in script tag, don't import. Vite "externalize dependency" seems to handle this - in library mode, at least: https://vite.dev/guide/build#library-mode
     -   Or just use from script tag throughout dev (global.d.ts for types, perhaps?)
 -   let the user use a knife to draw a long line which cuts the geom, animate.
+-   make grid layout responsive to screen size.
 
 ## Less keen TODOs:
 
@@ -31,6 +31,7 @@
 
 ## Done
 
+-   add on-screen help: "?" because dat.gui takes "h"
 -   add message system (shows the last line only and fades)
 -   Instead of splitting only the nearest, try all within a threshold of mouse
 -   on auto-shrink after creating grid, don't allow 0 shrink. the contacts look crap sometimes, though form interesting composites other times.
