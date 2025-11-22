@@ -1,5 +1,5 @@
 import gsap from "gsap";
-import { getWorld } from "./main.ts";
+import { getWorld } from "./main.js";
 
 import {
     createGridOfStartingQuads,
@@ -7,9 +7,9 @@ import {
     findQuadNearestToPos,
     splitQuadIfBig,
     subdivideAllRepeatedly,
-} from "./quad.ts";
-import { mousePos } from "./randomStuff.ts";
-import { palettes } from "./palettes.ts";
+} from "./quad.js";
+import { mousePos } from "./randomStuff.js";
+import { palettes } from "./palettes.js";
 
 export interface Command {
     title: string;

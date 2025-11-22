@@ -1,5 +1,5 @@
 import p5 from "p5";
-import { minByOrThrow, randomColourFromPalette } from "./randomStuff.ts";
+import { minByOrThrow, randomColourFromPalette } from "./randomStuff.js";
 export type Quad = {
     /** time this quad was last manipulated by mouse - in millis since sketch start */
     lastMouseModMillis: number;

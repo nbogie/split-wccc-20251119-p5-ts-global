@@ -1,8 +1,8 @@
 import gsap from "gsap";
-import { actionSplitQuadUnderPos } from "./actions.ts";
-import { getWorld } from "./main.ts";
-import { findQuadCentroid } from "./quad.ts";
-import { mousePos } from "./randomStuff.ts";
+import { actionSplitQuadUnderPos } from "./actions.js";
+import { getWorld } from "./main.js";
+import { findQuadCentroid } from "./quad.js";
+import { mousePos } from "./randomStuff.js";
 //TODO: quads, options, commands would need to be global
 
 window.mousePressed = function mousePressed(evt) {

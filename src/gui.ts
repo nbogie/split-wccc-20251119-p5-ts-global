@@ -1,7 +1,7 @@
 import * as dat from "dat.gui";
-import { actionRegenerateObservingMode } from "./actions.ts";
-import type { World } from "./main.ts";
-import { palettes } from "./palettes.ts";
+import { actionRegenerateObservingMode } from "./actions.js";
+import type { World } from "./main.js";
+import { palettes } from "./palettes.js";
 
 export function createGUI(w: World): dat.GUI {
     const gui = new dat.GUI({ closed: true });

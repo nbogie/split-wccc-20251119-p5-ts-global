@@ -1,6 +1,6 @@
 import p5 from "p5";
-import { getWorld, type World } from "./main.ts";
-import { palettes } from "./palettes.ts";
+import { getWorld, type World } from "./main.js";
+import { palettes } from "./palettes.js";
 
 export function randomColourFromPalette(): p5.Color {
     const colours = palettes[getWorld().options.paletteIx].colors;

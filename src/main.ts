@@ -18,13 +18,13 @@ import {
     actionSelectSplitterBrush,
     createCommands,
     type Command,
-} from "./actions.ts";
-import { drawQuad, type Options, type Quad } from "./quad.ts";
-import "./interaction.ts";
-import { drawDebugText, setDescription } from "./randomStuff.ts";
+} from "./actions.js";
+import { drawQuad, type Options, type Quad } from "./quad.js";
+import "./interaction.js";
+import { drawDebugText, setDescription } from "./randomStuff.js";
 
 import * as dat from "dat.gui";
-import { createGUI } from "./gui.ts";
+import { createGUI } from "./gui.js";
 
 export interface World {
     quads: Quad[];
