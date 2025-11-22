@@ -1,7 +1,7 @@
 import gsap from "gsap";
 import { splitAndAddGivenQuads } from "./actions.js";
 import { getWorld } from "./main.js";
-import { findQuadsNearPos } from "./quad.js";
+import { findQuadNearestToPos, findQuadsNearPos } from "./quad.js";
 import { mousePos } from "./randomStuff.js";
 //TODO: quads, options, commands would need to be global
 
@@ -46,15 +46,19 @@ window.mouseDragged = function mouseDragged(evt) {
     switch (w.options.brushMode) {
         case "split":
             {
+                //we always want at least one quad, even if the mouse isn't very close to the centroid of a big quad.
+                //(wouldn't be necessary if this was intersection-based hit-test rather than distance-based)
+                const nearest = findQuadNearestToPos(w.quads, mouseP);
                 const nearbyQuads = findQuadsNearPos(
                     mouseP,
                     w.options.quadBrushRadius / 4,
                     w.quads
                 );
-                if (nearbyQuads.length > 0) {
-                    splitAndAddGivenQuads(nearbyQuads);
-                    return;
-                }
+                splitAndAddGivenQuads([
+                    nearest.element,
+                    ...nearbyQuads.filter((q) => q !== nearest.element),
+                ]);
+                return;
             }
             break;
         case "inflate":
