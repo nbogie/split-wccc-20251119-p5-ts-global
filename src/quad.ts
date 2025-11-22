@@ -146,7 +146,7 @@ export function drawQuadWithBrightness(
     // const c = color(quad.colour.toString());
     // c.setAlpha(brightnessFrac); //brightnessFrac);
     // fill(c);
-    fill(brightnessFrac * 200);
+    fill(max(30, brightnessFrac * 200));
     noStroke();
     const shrunkPts = shrinkQuadPoints(quad.pts, quad.shrinkFraction);
 
