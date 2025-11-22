@@ -63,14 +63,10 @@ window.draw = function draw() {
     background(30);
     const { options } = world;
 
-    if (options.shouldDrawCanvasTexture) {
-        push();
-        blendMode(SUBTRACT);
-        image(textureGraphic, 0, 0);
-        pop();
-    }
     push();
+
     if (options.shouldDrawCanvasTexture) {
+        image(textureGraphic, 0, 0);
         blendMode(ADD);
     }
 
