@@ -55,7 +55,7 @@ export function collect<T>(numItems: number, fn: (ix: number) => T): T[] {
 export function drawDebugText(world: World) {
     const { quads, options } = world;
     fill(255);
-
+    stroke(0);
     push();
     translate(100, height - 100);
     const lines = [

@@ -9,7 +9,7 @@ export function createGUI(w: World): dat.GUI {
 
     gui.add(w.options, "paletteIx", 0, palettes.length - 1, 1);
     gui.add(w.options, "quadBrushRadius", 1, 200, 10);
-    gui.add(w.options, "numSplits", 0, 10, 1)
+    gui.add(w.options, "numSplits", 0, 30, 1)
         .listen()
         .onFinishChange((_v) => actionRegenerateObservingMode());
     gui.add(w.options, "actionSelectShrinkerBrush").name("⬇️ brush:shrink");

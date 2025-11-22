@@ -13,6 +13,7 @@ export type Quad = {
 export type BrushMode = "inflate" | "shrink" | "split" | "no-op";
 
 export interface Options {
+    quadDrawMode: "normal" | "under-image";
     brushMode: BrushMode;
     /** next time we're asked to generate from scratch, should we lay out in a grid? */
     shouldUseGridMode: boolean;
@@ -133,6 +134,22 @@ export function drawQuad(quad: Quad, options: Options): void {
     noStroke();
     beginShape();
     shrunkPts.forEach((v) => vertex(v.x, v.y));
+    endShape(CLOSE);
+    pop();
+}
+
+export function drawQuadWithBrightness(
+    quad: Quad,
+    brightnessFrac: number
+): void {
+    push();
+    // const c = color(quad.colour.toString());
+    // c.setAlpha(brightnessFrac); //brightnessFrac);
+    // fill(c);
+    fill(brightnessFrac * 200);
+    noStroke();
+    beginShape();
+    quad.pts.forEach((v) => vertex(v.x, v.y));
     endShape(CLOSE);
     pop();
 }

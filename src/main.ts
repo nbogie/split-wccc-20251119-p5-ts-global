@@ -20,19 +20,22 @@ import {
     createCommands,
     type Command,
 } from "./actions.js";
-import { drawQuad, type Options, type Quad } from "./quad.js";
+
 import "./interaction.js";
+import { drawQuad, type Options, type Quad } from "./quad.js";
 import { drawDebugText, setDescription } from "./randomStuff.js";
 
 import * as dat from "dat.gui"; //TODO: remove this import when building for OP
 
 import { createGUI } from "./gui.js";
+import { drawQuadsByUnderlyingImage, loadImagePack } from "./underimage.js";
 
 export interface World {
     quads: Quad[];
     commands: Command[];
     options: Options;
     gui?: dat.GUI;
+    images: p5.Image[] | null;
 }
 
 /** Encapsulates our entire global state that will be made available to most of our functions */
@@ -41,9 +44,10 @@ let world: World;
 //just checking this ts setup can handle the p5 value.
 p5.disableFriendlyErrors = true;
 
-window.setup = function setup() {
+window.setup = async function setup() {
     createCanvas(windowWidth, windowHeight);
     world = createWorld();
+    world.images = await loadImagePack("/images/scImagePack");
     setDescription();
     // blendMode(DARKEST);
     actionRegenerateObservingMode();
@@ -51,10 +55,24 @@ window.setup = function setup() {
 
 window.draw = function draw() {
     background(30);
-    const { quads, options } = world;
-    quads.forEach((q) => {
-        drawQuad(q, options);
-    });
+    const { options } = world;
+    switch (options.quadDrawMode) {
+        case "normal":
+            world.quads.forEach((q) => {
+                drawQuad(q, options);
+            });
+            break;
+        case "under-image":
+            if (world.images) {
+                drawQuadsByUnderlyingImage();
+            }
+            break;
+        default:
+            throw new Error(
+                "unrecognised quadDrawMode: " + options.quadDrawMode
+            );
+    }
+
     if (options.shouldDrawDebugText) {
         drawDebugText(world);
     }
@@ -62,17 +80,24 @@ window.draw = function draw() {
 
 function createOptions(): Options {
     const shouldUseGridMode = random([true, false]);
+    const quadDrawMode: Options["quadDrawMode"] = "under-image";
     return {
+        quadDrawMode,
         shouldUseGridMode,
         shouldDrawDebugText: false,
         shouldDrawDebugNormals: false,
         shouldLogKeyCommands: false,
         quadBrushRadius: 120,
         shouldShrink: true,
-        numSplits: shouldUseGridMode ? random([1, 2, 3]) : random([4, 5, 6]),
+        numSplits:
+            quadDrawMode === "under-image"
+                ? 20
+                : shouldUseGridMode
+                ? random([1, 2, 3])
+                : random([4, 5, 6]),
         shouldGenerateUnshrunk: true,
         globalShrinkFraction: 0.05, //0-1 exclusive
-        minAllowedLength: 15,
+        minAllowedLength: quadDrawMode === "under-image" ? 5 : 15,
         seed: 123,
         paletteIx: 0,
         brushMode: "no-op",
@@ -92,6 +117,7 @@ function createWorld(): World {
         quads: [],
         commands: createCommands(),
         options: createOptions(),
+        images: null,
     };
     w.gui = createGUI(w);
 

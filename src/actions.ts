@@ -22,6 +22,27 @@ export function createCommands(): Command[] {
     const cmds: Command[] = [];
 
     cmds.push({
+        key: "9",
+        action: () => {
+            actionSetDrawModeToUseReferenceImage();
+            getWorld().options.numSplits = 15;
+            actionRegenerateObservingMode();
+        },
+        title: "draw mode: reference image",
+        description:
+            "have the quads observe the brightness or colour of a loaded but hidden reference image",
+    });
+    cmds.push({
+        key: "0",
+        action: () => {
+            getWorld().options.numSplits = 5;
+            actionSetDrawModeNormal();
+            actionRegenerateObservingMode();
+        },
+        title: "draw mode: normal",
+        description: "set normal draw mode",
+    });
+    cmds.push({
         key: "1",
         action: actionSelectSplitterBrush,
         title: "select brush: split",
@@ -175,7 +196,7 @@ export function actionRegenerateFromGrid() {
 
 export function actionChangeNumSplits(sign: -1 | 1) {
     const options = getWorld().options;
-    const newCount = constrain(options.numSplits + sign, 0, 10);
+    const newCount = constrain(options.numSplits + sign, 0, 30);
     options.numSplits = newCount;
     options.shouldGenerateUnshrunk = random([true, false]);
     actionRegenerateObservingMode();
@@ -292,4 +313,16 @@ export function actionSelectSplitterBrush() {
 }
 export function actionSelectInflaterBrush() {
     getWorld().options.brushMode = "inflate";
+}
+export function actionSetDrawModeNormal(): void {
+    const w = getWorld();
+    w.options.quadDrawMode = "normal";
+    w.options.minAllowedLength = 15;
+}
+export function actionSetDrawModeToUseReferenceImage(): void {
+    const w = getWorld();
+    if (w.images) {
+        w.options.quadDrawMode = "under-image";
+        w.options.minAllowedLength = 5;
+    }
 }
