@@ -15,9 +15,11 @@ import {
 } from "./actions.js";
 import { drawQuad } from "./quad.js";
 import "./interaction.js";
+import { createGUI } from "./gui.js";
 import { drawDebugText, setDescription } from "./randomStuff.js";
 /** Encapsulates our entire global state that will be made available to most of our functions */
 let world;
+
 //just checking this ts setup can handle the p5 value.
 p5.disableFriendlyErrors = true;
 window.setup = function setup() {
@@ -52,7 +54,7 @@ function createOptions() {
         minAllowedLength: 15,
         seed: 123,
         paletteIx: 0,
-        brushMode: "no-op",
+        brushMode: "inflate",
         actionSelectShrinkerBrush,
         actionSelectInflaterBrush,
         actionSelectSplitterBrush,
@@ -69,6 +71,7 @@ function createWorld() {
         commands: createCommands(),
         options: createOptions(),
     };
+    w.gui = createGUI(w);
     return w;
 }
 export function getWorld() {
