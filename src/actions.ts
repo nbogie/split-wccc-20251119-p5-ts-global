@@ -17,6 +17,7 @@ export interface Command {
     description: string;
     key: string;
     action: () => void;
+    beginnerPriority: "1: high" | "2: med" | "3: low";
 }
 
 export function createCommands(): Command[] {
@@ -24,12 +25,13 @@ export function createCommands(): Command[] {
 
     cmds.push({
         key: "i",
+        beginnerPriority: "3: low",
         action: () => {
             actionSetDrawModeToUseReferenceImage();
 
             actionRegenerateObservingMode();
         },
-        title: "draw mode: reference image",
+        title: "Draw mode: reference image",
         description:
             "have the quads observe the brightness or colour of a loaded but hidden reference image",
     });
@@ -40,154 +42,186 @@ export function createCommands(): Command[] {
             actionSetDrawModeNormal();
             actionRegenerateObservingMode();
         },
-        title: "draw mode: normal",
+        title: "Draw mode: normal",
         description: "set normal draw mode",
+        beginnerPriority: "3: low",
     });
     cmds.push({
         key: "1",
         action: actionSelectSplitterBrush,
-        title: "select brush: split",
+        title: "Select brush: split",
         description: "change the current brush mode to split quads",
+        beginnerPriority: "1: high",
     });
     cmds.push({
         key: "2",
         action: actionSelectShrinkerBrush,
-        title: "select brush: shrink",
+        title: "Select brush: shrink",
         description: "change the current brush mode to shrink quads",
+        beginnerPriority: "1: high",
     });
     cmds.push({
         key: "3",
         action: actionSelectInflaterBrush,
-        title: "select brush: inflate",
+        title: "Select brush: inflate",
         description: "change the current brush mode to inflate quads",
+        beginnerPriority: "1: high",
+    });
+    cmds.push({
+        key: "?",
+        action: actionToggleHelp,
+        title: "Toggle help",
+        description: "Toggle display of help on commands and interaction.",
+        beginnerPriority: "1: high",
     });
     cmds.push({
         key: "h",
-        action: actionShowHelp,
-        title: "show help",
-        description:
-            "show some help on commands and interaction.  to console for now.",
+        action: () => {}, //implemented by dat.gui automatically
+        title: "Toggle hide dat.gui",
+        description: "Toggle complete hide of dat.gui",
+        beginnerPriority: "3: low",
     });
     cmds.push({
         key: " ",
         action: actionRegenerateObservingMode,
-        title: "regenerate",
+        title: "Regenerate",
         description:
             "Regenerate a new set of quads preserving the current config (maintaining grid mode if enabled)",
+        beginnerPriority: "2: med",
     });
 
     cmds.push({
         key: "g",
         action: actionRegenerateFromGrid,
-        title: "make grid",
+        title: "Regenerate from grid",
         description:
-            "setup a grid of starting quads and bisect them a (small) amount",
+            "Regenerate a new set of quads by repeatedly bisecting a grid of starting quads",
+        beginnerPriority: "1: high",
     });
 
     cmds.push({
         key: "o",
         action: actionRegenerateWithSingleStartingQuad,
-        title: "regenerate from one quad",
+        title: "Regenerate from one quad",
         description:
             "Regenerate a new set of quads starting from a single large quad",
+        beginnerPriority: "1: high",
     });
     cmds.push({
         key: "r",
         action: actionAnimateRandomShrinkFractionChanges,
-        title: "random shrinks",
+        title: "Shrink all randomly",
         description:
             "Animate random quad shrink/grows from a variety of options",
+        beginnerPriority: "1: high",
     });
     cmds.push({
         key: "u",
         action: actionAnimateUnshrinkAll,
-        title: "unshrink all",
+        title: "Unshrink all fully",
         description: "Animate all quads unshrinking to full size",
+        beginnerPriority: "1: high",
     });
     cmds.push({
         key: "p",
         action: actionPickNewRandomPalette,
-        title: "pick random palette",
+        title: "Pick random palette",
         description: "Pick random palette from those available",
+        beginnerPriority: "1: high",
     });
     cmds.push({
         key: "s",
         action: actionTakeAScreenshot,
-        title: "screenshot",
+        title: "Screenshot",
         description: "Take a screenshot of the current canvas",
+        beginnerPriority: "2: med",
     });
     cmds.push({
         key: "d",
         action: () => splitQuadUnderPos(mousePos()),
-        title: "split quad at mouse",
+        title: "Split quad at mouse",
         description: "Split the quad under the current mouse/touch position",
+        beginnerPriority: "3: low",
     });
     cmds.push({
         key: "t",
         action: actionToggleDebugText,
-        title: "toggle debug text",
+        title: "Toggle debug text",
         description:
             "Toggle the display of some debug text (num quads, num iterations of bisection, palette name, etc)",
+        beginnerPriority: "3: low",
     });
     cmds.push({
         key: "m",
         action: actionToggleMessages,
-        title: "toggle messages",
+        title: "Toggle messages",
         description:
             "Toggle the display of info messages when you take certain actions",
+        beginnerPriority: "3: low",
     });
     cmds.push({
         key: "=",
         action: () => actionChangeGlobalShrinkFraction(-1),
-        title: "unshrink all a little",
+        title: "Unshrink all a little",
         description:
             "Decreate the global shrink fraction (fractions by which all quad corners are lerped towards their centroid)",
+        beginnerPriority: "3: low",
     });
     cmds.push({
         key: "-",
         action: () => actionChangeGlobalShrinkFraction(1),
-        title: "shrink all a little",
+        title: "Shrink all a little",
         description:
             "Increase the global shrink fraction (fractions by which all quad corners are lerped towards their centroid)",
+        beginnerPriority: "3: low",
     });
 
     cmds.push({
         key: ",",
         action: () => actionChangeNumSplits(-1),
-        title: "decrease num splits",
+        title: "Decrease num splits",
         description:
-            "Decrease the number of quad-splitting passes done over the quads.  Bigger quads will result.",
+            "Decrease the maximum number of quad-splitting passes done over the quads.  Bigger quads will result.",
+        beginnerPriority: "1: high",
     });
 
     cmds.push({
         key: ".",
         action: () => actionChangeNumSplits(1),
-        title: "increase num splits",
+        title: "Increase num splits",
         description:
-            "Increase the number of quad-splitting passes done over the quads.  Smaller quads will result.",
+            "Increase the maximum number of quad-splitting passes done over the quads.  Smaller quads will result.",
+        beginnerPriority: "1: high",
     });
     cmds.push({
         key: "z",
         action: () => actionAnimateShrinkAllCompletely(),
-        title: "shink all to zero",
+        title: "Shink all to zero",
         description:
             "Increase the number of quad-splitting passes done over the quads.  Smaller quads will result.",
+        beginnerPriority: "3: low",
     });
 
     return cmds;
 }
-export function actionShowHelp() {
-    const cmds = getWorld().commands;
-    const lines = cmds.map(
-        (c) => `Key: "${c.key}": ${c.title}  (${c.description}).`
-    );
-    const mouseInteractionNotes = [
-        "mouse over with shift or control to inflate/shrink nearby quads",
-        "mouse-drag to subdivide the quad under mouse (keybd 'd' for more accuracy)",
-    ];
-    lines.push(...mouseInteractionNotes);
-    console.log(lines.join("\n"));
-    postMessage("Commands help posted to console");
+function generateHelpReportForConsole(): String[] {
+    const items = createHelpItems();
+
+    return items.map((c) => {
+        let keyCol = (
+            c.type === "key" ? `"${c.key}"` : c.interactionDescription
+        ).padStart(12, " ");
+        return `${keyCol}: ${c.title} (${c.description}).`;
+    });
+}
+
+export function actionToggleHelp() {
+    const w = getWorld();
+    w.options.shouldShowHelpScreen = !w.options.shouldShowHelpScreen;
+    if (w.options.shouldShowHelpScreen) {
+        console.log(generateHelpReportForConsole().join("\n"));
+        postMessage("Commands help posted to console");
+    }
 }
 
 export function actionRegenerateFromGrid() {
@@ -398,4 +432,47 @@ export function actionSetDrawModeToUseReferenceImage(): void {
             "using reference image.  Submode: " + w.options.quadDrawFillMode
         );
     }
+}
+
+type KeyHelpItem = {
+    type: "key";
+    key: string;
+    title: string;
+    description: string;
+};
+type InteractionHelpItem = {
+    type: "interaction";
+    interactionDescription: string;
+    title: string;
+    description: string;
+};
+export type HelpItem = KeyHelpItem | InteractionHelpItem;
+
+export function createHelpItems(): HelpItem[] {
+    const cmds = getWorld().commands.sort((a, b) =>
+        a.beginnerPriority < b.beginnerPriority ? -1 : 1
+    );
+    const mouseHelpItems: InteractionHelpItem[] = [
+        {
+            type: "interaction",
+            interactionDescription: "drag mouse",
+            title: "Manipulate quads",
+            description:
+                "Depending on the currently selected brush, you can shrink / inflate / split the quads under or near the pointer",
+        },
+    ];
+
+    function createHelpItemForCommand(cmd: Command): KeyHelpItem {
+        return {
+            ...cmd,
+            type: "key",
+            key: cmd.key === " " ? "SPACE" : cmd.key,
+        };
+    }
+
+    const items: HelpItem[] = [
+        ...mouseHelpItems,
+        ...cmds.map(createHelpItemForCommand),
+    ];
+    return items;
 }

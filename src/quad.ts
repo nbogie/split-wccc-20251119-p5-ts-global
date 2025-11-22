@@ -13,6 +13,7 @@ export type Quad = {
 export type BrushMode = "inflate" | "shrink" | "split" | "no-op";
 
 export interface Options {
+    shouldShowHelpScreen: boolean;
     defaultMessageDurationMillis: number;
     quadDrawMode: "normal" | "under-image";
     quadDrawFillMode: "useBrightness" | "usePalette";

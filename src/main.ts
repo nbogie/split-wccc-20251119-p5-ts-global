@@ -18,6 +18,7 @@ import {
     actionSelectShrinkerBrush,
     actionSelectSplitterBrush,
     createCommands,
+    createHelpItems,
     type Command,
 } from "./actions.js";
 
@@ -73,6 +74,9 @@ window.draw = function draw() {
                 "unrecognised quadDrawMode: " + options.quadDrawMode
             );
     }
+    if (options.shouldShowHelpScreen) {
+        drawHelpScreen();
+    }
 
     drawRecentPostedMessages();
     updatePostedMessages();
@@ -96,6 +100,7 @@ function createOptions(): Options {
 
         shouldDrawMessages: true,
         shouldDrawDebugText: false,
+        shouldShowHelpScreen: false,
         shouldDrawDebugNormals: false,
         shouldLogKeyCommands: false,
         quadBrushRadius: 120,
@@ -172,4 +177,36 @@ export function updatePostedMessages() {
 
 export function createMessage(str: string): Message {
     return { str, postedAtMillis: millis() };
+}
+
+function drawHelpScreen() {
+    const items = createHelpItems();
+    push();
+    background(20);
+
+    const lineColours = ["#ef9e28", "#c6ac71"];
+
+    const lineHeight = 30;
+    stroke(30);
+    textAlign(LEFT, TOP);
+    translate(width / 2, 50);
+    const baseSize = 15;
+    for (let [ix, info] of items.entries()) {
+        fill(lineColours[ix % 2]);
+        textWeight(800);
+        textAlign(RIGHT, TOP);
+        textSize(baseSize * 1.3);
+        text(
+            info.type === "key" ? info.key : info.interactionDescription,
+            -50,
+            0
+        );
+        textAlign(LEFT, TOP);
+        textSize(baseSize);
+        textWeight(400);
+        text(info.title, 50, 0);
+        // text(info.description, 300, 0);//too much info in this form.  better on hover, or in reference page.
+        translate(0, lineHeight);
+    }
+    pop();
 }
