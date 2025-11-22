@@ -52,14 +52,13 @@ window.mouseDragged = function mouseDragged(evt) {
             break;
         case "inflate":
             if (w.options.brushMode === "inflate") {
-                if (nearbyQuads.length < 0) {
+                if (nearbyQuads.length > 0) {
+                    gsap.to(nearbyQuads, {
+                        duration: 0.5,
+                        shrinkFraction: 0,
+                    });
                     return;
                 }
-                gsap.to(nearbyQuads, {
-                    duration: 0.5,
-                    shrinkFraction: 0,
-                });
-                return;
             }
             break;
         case "shrink":
