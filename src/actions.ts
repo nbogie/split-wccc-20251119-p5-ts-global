@@ -156,16 +156,18 @@ export function actionShowHelp() {
 export function actionRegenerateFromGrid() {
     const w = getWorld();
     w.options.seed = millis();
-    // w.options.numSplits = 1;
     w.options.shouldUseGridMode = true;
     randomSeed(w.options.seed);
     w.quads = createGridOfStartingQuads(w.options);
     w.quads = subdivideAllRepeatedly(w.quads, w.options);
+    const isBigGrid = w.options.numSplits < 2;
     const shouldFakeOut = random() < 0.2;
     gsap.to(w.quads, {
         delay: 0.1,
         duration: 0.5,
-        shrinkFraction: "random(0, 0.6, 0.2)",
+        shrinkFraction: isBigGrid
+            ? "random(0.0, 0.4, 0.2)"
+            : "random(0.2, 0.6, 0.2)",
         repeat: shouldFakeOut ? 1 : 0,
         yoyo: shouldFakeOut,
     });
