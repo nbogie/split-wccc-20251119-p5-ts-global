@@ -16,9 +16,11 @@
 -   auto-play that demos some of the features and has a simulated "mouse pointer" moving and dragging etc.
 -   dat.gui but completely hideable
 -   float UI hints for user making suggestions on operations.
+-   fix dat.gui loading for openprocessing - load in script tag.
 
 ## Less keen TODOs:
 
+-   shrink all to zero is interesting - hides them and lets you magic the quads in by inflating them.
 -   split according to an underlying image pixel brightness
 -   round the corners?
 -   on splitting quads, spawn and animate some particles for teh JUICE?
