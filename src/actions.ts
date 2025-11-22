@@ -347,8 +347,9 @@ export function actionSetDrawModeToUseReferenceImage(): void {
     const w = getWorld();
     if (w.images) {
         w.options.quadDrawMode = "under-image";
+        w.options.quadDrawFillMode = random(["useBrightness", "usePalette"]);
         w.options.minAllowedLength = 5;
-        w.options.numSplits = 13;
+        w.options.numSplits = w.options.shouldUseGridMode ? 9 : 12;
         w.options.imageIx = (w.options.imageIx + 1) % w.images.length;
     }
 }

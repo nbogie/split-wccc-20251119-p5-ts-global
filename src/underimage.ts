@@ -36,6 +36,6 @@ export function drawQuadsByUnderlyingImage() {
             centroid.x + -topLeftOffset.x,
             centroid.y + -topLeftOffset.y
         );
-        drawQuadWithBrightness(q, r / 200);
+        drawQuadWithBrightness(q, r / 200, world.options.quadDrawFillMode);
     });
 }

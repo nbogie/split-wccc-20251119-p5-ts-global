@@ -14,6 +14,7 @@ export type BrushMode = "inflate" | "shrink" | "split" | "no-op";
 
 export interface Options {
     quadDrawMode: "normal" | "under-image";
+    quadDrawFillMode: "useBrightness" | "usePalette";
     imageIx: number;
     brushMode: BrushMode;
     /** next time we're asked to generate from scratch, should we lay out in a grid? */
@@ -141,13 +142,23 @@ export function drawQuad(quad: Quad, options: Options): void {
 
 export function drawQuadWithBrightness(
     quad: Quad,
-    brightnessFrac: number
+    brightnessFrac: number,
+    fillMode: "useBrightness" | "usePalette"
 ): void {
     push();
-    // const c = color(quad.colour.toString());
-    // c.setAlpha(brightnessFrac); //brightnessFrac);
-    // fill(c);
-    fill(max(30, brightnessFrac * 200));
+    const level = max(30, brightnessFrac * 200);
+
+    if (fillMode === "useBrightness") {
+        fill(level);
+    } else {
+        if (level > 100) {
+            const c = color(quad.colour.toString());
+            fill(c);
+        } else {
+            fill(level);
+        }
+    }
+
     noStroke();
     const shrunkPts = shrinkQuadPoints(quad.pts, quad.shrinkFraction);
 

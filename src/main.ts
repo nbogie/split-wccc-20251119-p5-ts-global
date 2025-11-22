@@ -83,8 +83,10 @@ function createOptions(): Options {
     const quadDrawMode: Options["quadDrawMode"] = true
         ? "normal"
         : "under-image";
+
     return {
         quadDrawMode,
+        quadDrawFillMode: random(["useBrightness", "usePalette"]),
         imageIx: 0,
         shouldUseGridMode,
         shouldDrawDebugText: false,
