@@ -6,7 +6,6 @@
 -   add changing palette without re-drawing. especially for allowing colour palette over greyscale, or vice versa.
 -   Unshrink all quads lying on one or two perpendicular edges of the whole image (or intersecting one or two simple straight lines across the design. Really wants to be a thick line though to ensure fewer near misses)
     -   This would look good animated (stagger might work but should be in order they line passes through them)
--   Prepare a paper texture to an offscreen and compose it each frame.
 -   maybe fill with p5.brush? https://openprocessing.org/sketch/2117088
 -   auto-play mode that demos some of the features and has a simulated "mouse pointer" moving and dragging etc.
 -   float UI hints for user making suggestions on operations.
@@ -21,6 +20,7 @@
 
 ## Less keen TODOs:
 
+-   remove crappy canvas texture. The texture should be per quad, not in the gaps, and paper/canvas items don't unshrinking anyway. Blend mode might fix it but it needs to be on dark quads, too, just not space around shrunk ones.
 -   split according to an underlying image pixel brightness
 -   round the corners?
 -   on splitting quads, spawn and animate some particles for teh JUICE?
@@ -32,6 +32,7 @@
 
 ## Done
 
+-   Prepare a paper texture to an offscreen and compose it each frame. Done and it is horrible.
 -   "z": zeroing all. Shrink all to fraction 1.0 is interesting - hides them and lets you magic the quads in by inflating them. It's not very split-themed, though.
 -   Allow unshrink by colour.All quads with same colour as hovered-quad. It's a bit meh.
 -   add on-screen help: "?" because dat.gui takes "h"

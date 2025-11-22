@@ -26,6 +26,7 @@ export interface Options {
     quadDrawFillMode: "useBrightness" | "usePalette";
     imageIx: number;
     brushMode: BrushMode;
+    shouldDrawCanvasTexture: boolean;
     /** next time we're asked to generate from scratch, should we lay out in a grid? */
     shouldUseGridMode: boolean;
     shouldDrawMessages: boolean;

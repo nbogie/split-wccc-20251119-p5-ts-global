@@ -15,6 +15,7 @@ export function createGUI(w: World): dat.GUI {
     gui.add(w.options, "actionSelectShrinkerBrush").name("⬇️ brush:shrink");
     gui.add(w.options, "actionSelectInflaterBrush").name("⬆️ brush:inflate");
     gui.add(w.options, "actionSelectSplitterBrush").name("🔪 brush:split");
+    gui.add(w.options, "shouldDrawCanvasTexture").name("🙈 canvas texture");
     gui.add(w.options, "actionAnimateUnshrinkAll").name("unshrink all");
     gui.add(w.options, "actionAnimateRandomShrinkFractionChanges").name(
         "shrink randomly"

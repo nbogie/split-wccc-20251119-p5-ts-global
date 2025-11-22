@@ -9,9 +9,10 @@ Written in typescript and p5 v2.x in global-mode with modules, partly to test v2
 
 ## Credits
 
--   Very much informed by [Okazz's wonderful, elegant sketch "201216a"](https://openprocessing.org/sketch/1045334/) though all I've started with here is an approximation of their conceptual algorithm from memory (no doubt I butchered that).
-    (I've written other non-interactive versions of this some years ago but started from scratch for the challenge without reusing / consulting any code.)
+-   The basic sketch is very much informed by [Okazz's wonderful, elegant sketch "201216a"](https://openprocessing.org/sketch/1045334/) though all I've started with here is an approximation of their conceptual algorithm from memory (no doubt I butchered that).
+-   I've written other non-interactive versions of this some years ago but started from scratch for the challenge without reusing / consulting any code unless otherwise noted here in credits.
 -   Uses various palette(s) from [Kjetil Golid's chromotome](https://github.com/kgolid/chromotome) via [https://nice-colours-quicker.netlify.app/](nice-colours-quicker).
+-   Procedural canvas texture (if used) is taken from [this Manohar Vanga article on watercolor simulation](https://sighack.com/post/generative-watercolor-in-processing) - [p5 demo](https://openprocessing.org/sketch/942231).
 
 ## WCCChallenge?
 

@@ -30,6 +30,7 @@ import * as dat from "dat.gui"; //TODO: remove this import when building for OP
 
 import { createGUI } from "./gui.js";
 import { drawQuadsByUnderlyingImage, loadImagePack } from "./underimage.js";
+import { drawCanvasTextureTo } from "./canvasTexture.js";
 
 export interface World {
     quads: Quad[];
@@ -42,7 +43,7 @@ export interface World {
 
 /** Encapsulates our entire global state that will be made available to most of our functions */
 let world: World;
-
+let textureGraphic: ReturnType<typeof createGraphics>;
 //just checking this ts setup can handle the p5 value.
 p5.disableFriendlyErrors = true;
 
@@ -53,11 +54,26 @@ window.setup = async function setup() {
     setDescription();
     // blendMode(DARKEST);
     actionRegenerateObservingMode();
+
+    textureGraphic = createGraphics(width, height);
+    drawCanvasTextureTo({ alphaRange: [10, 40], spacing: 10 }, textureGraphic);
 };
 
 window.draw = function draw() {
     background(30);
     const { options } = world;
+
+    if (options.shouldDrawCanvasTexture) {
+        push();
+        blendMode(SUBTRACT);
+        image(textureGraphic, 0, 0);
+        pop();
+    }
+    push();
+    if (options.shouldDrawCanvasTexture) {
+        blendMode(ADD);
+    }
+
     switch (options.quadDrawMode) {
         case "normal":
             world.quads.forEach((q) => {
@@ -74,6 +90,7 @@ window.draw = function draw() {
                 "unrecognised quadDrawMode: " + options.quadDrawMode
             );
     }
+    pop();
     if (options.shouldShowHelpScreen) {
         drawHelpScreen();
     }
@@ -102,6 +119,7 @@ function createOptions(): Options {
         shouldDrawDebugText: false,
         shouldShowHelpScreen: false,
         shouldDrawDebugNormals: false,
+        shouldDrawCanvasTexture: true,
         shouldLogKeyCommands: false,
         quadBrushRadius: 120,
         shouldShrink: true,
