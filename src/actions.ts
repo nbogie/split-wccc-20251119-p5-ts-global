@@ -7,6 +7,7 @@ import {
     findQuadNearestToPos,
     splitQuadIfBig,
     subdivideAllRepeatedly,
+    type Quad,
 } from "./quad.js";
 import { mousePos } from "./randomStuff.js";
 import { palettes } from "./palettes.js";
@@ -117,7 +118,7 @@ export function createCommands(): Command[] {
     });
     cmds.push({
         key: "d",
-        action: () => actionSplitQuadUnderPos(mousePos()),
+        action: () => splitQuadUnderPos(mousePos()),
         title: "split quad at mouse",
         description: "Split the quad under the current mouse/touch position",
     });
@@ -270,7 +271,7 @@ export function actionAnimateRandomShrinkFractionChanges() {
     });
 }
 
-export function actionSplitQuadUnderPos(pos: p5.Vector) {
+export function splitQuadUnderPos(pos: p5.Vector) {
     //TODO: when ditching a split quad, clear any gsap anims on it.
 
     const w = getWorld();
@@ -285,6 +286,29 @@ export function actionSplitQuadUnderPos(pos: p5.Vector) {
         gsap.to(splitResult, { shrinkFraction: 0, duration: 0.5 });
     }
     return splitResult;
+}
+
+export function splitAndAddGivenQuads(quads: Quad[]): Quad[] {
+    //TODO: when ditching a split quad, clear any gsap anims on it.
+
+    const w = getWorld();
+    const createdQuads: Quad[] = [];
+
+    for (let qToSplit of quads) {
+        const splitResult = splitQuadIfBig(qToSplit, {
+            ...w.options,
+            shouldGenerateUnshrunk: false,
+        });
+        if (splitResult) {
+            createdQuads.push(...splitResult);
+            w.quads = w.quads.filter((q) => q !== qToSplit);
+        }
+    }
+    if (createdQuads.length > 0) {
+        w.quads.push(...createdQuads);
+        gsap.to(createdQuads, { shrinkFraction: 0, duration: 0.5 });
+    }
+    return createdQuads;
 }
 
 export function actionToggleDebugText() {

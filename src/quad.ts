@@ -307,11 +307,13 @@ function visNormals(edges: DecoratedEdge[]) {
         pop();
     }
 }
+
 export function findQuadCentroid(quadPts: Quad["pts"]): p5.Vector {
     return quadPts
         .reduce((prev, curr) => prev.add(curr), createVector(0, 0))
         .div(4);
 }
+
 function drawDebugInfo(quad: Quad): void {
     const [a, b, c, d] = quad.pts;
 
@@ -331,4 +333,12 @@ export function findQuadNearestToPos(quads: Quad[], pos: p5.Vector) {
     return minByOrThrow(quads, (quad: Quad) =>
         findQuadCentroid(quad.pts).dist(pos)
     );
+}
+
+export function findQuadsNearPos(
+    pos: p5.Vector,
+    radius: number,
+    fromQuads: Quad[]
+): Quad[] {
+    return fromQuads.filter((q) => findQuadCentroid(q.pts).dist(pos) < radius);
 }
