@@ -80,7 +80,9 @@ window.draw = function draw() {
 
 function createOptions(): Options {
     const shouldUseGridMode = random([true, false]);
-    const quadDrawMode: Options["quadDrawMode"] = "under-image";
+    const quadDrawMode: Options["quadDrawMode"] = true
+        ? "normal"
+        : "under-image";
     return {
         quadDrawMode,
         shouldUseGridMode,
