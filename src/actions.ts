@@ -86,6 +86,13 @@ export function createCommands(): Command[] {
         description: "Toggle display of help on commands and interaction.",
         beginnerPriority: "2: med",
     });
+    cmds.push({
+        key: "C",
+        action: actionReportHelpToConsole,
+        title: "report Help in console",
+        description: "Generate a report of commands into the console",
+        beginnerPriority: "3: low",
+    });
 
     cmds.push({
         key: " ",
@@ -126,6 +133,13 @@ export function createCommands(): Command[] {
         action: actionUnshrinkAll,
         title: "Unshrink all fully",
         description: "Unshrinking all quads to full size",
+        beginnerPriority: "1: high",
+    });
+    cmds.push({
+        key: "k",
+        action: actionLoadRandomPreset,
+        title: "Random Preset",
+        description: "Load a random preset of parameters",
         beginnerPriority: "1: high",
     });
     cmds.push({
@@ -249,10 +263,11 @@ function generateHelpReportForConsole(): String[] {
 export function actionToggleHelp() {
     const w = getWorld();
     w.options.shouldShowHelpScreen = !w.options.shouldShowHelpScreen;
-    if (w.options.shouldShowHelpScreen) {
-        console.log(generateHelpReportForConsole().join("\n"));
-        postMessage("Commands help posted to console");
-    }
+}
+
+export function actionReportHelpToConsole() {
+    console.log(generateHelpReportForConsole().join("\n"));
+    postMessage("Commands help posted to console");
 }
 
 export function actionRegenerateFromGrid() {
@@ -354,6 +369,19 @@ export function actionUnshrinkAll() {
         shrinkFraction: 0,
         ease: "power3.out",
     });
+}
+export function actionLoadRandomPreset() {
+    const presets = [
+        {
+            name: "test",
+            fn: () => {
+                console.log("in preset fn");
+            },
+        },
+    ];
+    const chosenPreset = random(presets);
+    chosenPreset.fn();
+    postMessage("running preset: " + chosenPreset.name);
 }
 
 export function actionUnshrinkBySameColourAsUnderMouse() {
