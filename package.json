@@ -13,6 +13,7 @@
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
+        "build:no-bundle": "tsc && vite --config vite-for-no-bundling.config.js build",
         "preview": "vite preview",
         "type-check": "tsc --noEmit",
         "type-check:watch": "tsc --noEmit --watch"
@@ -26,3 +27,4 @@
         "vite": "^7.2.2"
     }
 }
+
