@@ -75,7 +75,7 @@ export function createOptions(): Options {
         shouldDrawDebugText: false,
         shouldShowHelpScreen: false,
         shouldDrawDebugNormals: false,
-        shouldDrawCanvasTexture: true,
+        shouldDrawCanvasTexture: false,
         shouldLogKeyCommands: false,
         quadBrushRadius: 120,
         _lastQuadBrushRadiusChangeMillis: -10_000,
