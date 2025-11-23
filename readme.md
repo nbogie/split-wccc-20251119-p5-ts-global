@@ -61,6 +61,7 @@ Join the Birb's Nest Discord for friendly creative coding community and future c
 ![screenshot-kevin.png](/docs/screenshots/screenshot-kevin.png)
 ![screenshot-rough-squares.jpg](/docs/screenshots/screenshot-rough-squares.jpg)
 ![screenshot-two-palettes.png](/docs/screenshots/screenshot-two-palettes.png)
+![screenshot-what.jpg](/docs/screenshots/screenshot-what.jpg)
 
 ## TODO:
 
