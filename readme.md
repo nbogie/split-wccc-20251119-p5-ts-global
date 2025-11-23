@@ -28,6 +28,8 @@ Join the Birb's Nest Discord for friendly creative coding community and future c
 
 (get latest keys with "?". This summary might be out of date)
 
+There are some suggestions of what to try first here: [docs/tutorial.md](docs/tutorial.md) - no tutorial yet, despite the name.
+
 -   drag mouse: Manipulate quads (Depending on the currently selected brush, you can shrink / inflate / split the quads under or near the pointer).
 -   "1": Select brush: split (change the current brush mode to split quads).
 -   "2": Select brush: shrinkmax (change the current brush mode to shrink quads completely).
