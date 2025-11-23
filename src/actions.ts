@@ -494,12 +494,14 @@ export function actionSetDrawModeNormal(): void {
     const w = getWorld();
     w.options.quadDrawMode = "normal";
     w.options.minAllowedLength = 15;
+    postMessage("normal drawing mode");
 }
 
 export function actionSetDrawModeRough(): void {
     const w = getWorld();
     w.options.quadDrawMode = "rough";
     w.options.minAllowedLength = 15;
+    postMessage("roughjs drawing mode (buggy)");
 }
 
 export function actionSetDrawModeToUseReferenceImage(): void {

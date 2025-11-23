@@ -25,7 +25,6 @@
 -   round the corners?
 -   on splitting quads, spawn and animate some particles for teh JUICE?
 -   animate a little rotation around centroid for a human feel?
--   draw outlines / hatching with rough.js?
 -   don't shrink, instead disturb,wobble, rotate?
 -   extrude to 3d w custom geom?
 -   fix the occasional hairline gaps between quads
@@ -38,6 +37,7 @@
 
 ## Done
 
+-   draw outlines / hatching with rough.js?
 -   Prepare a paper texture to an offscreen and compose it each frame. Done and it is horrible.
 -   "z": zeroing all. Shrink all to fraction 1.0 is interesting - hides them and lets you magic the quads in by inflating them. It's not very split-themed, though.
 -   Allow unshrink by colour.All quads with same colour as hovered-quad. It's a bit meh.
