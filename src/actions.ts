@@ -117,7 +117,7 @@ export function createCommands(): Command[] {
     });
     cmds.push({
         key: "r",
-        action: actionAnimateRandomShrinkFractionChanges,
+        action: actionShrinkAllRandomly,
         title: "Shrink all randomly",
         description:
             "Animate random quad shrink/grows from a variety of options",
@@ -125,9 +125,9 @@ export function createCommands(): Command[] {
     });
     cmds.push({
         key: "u",
-        action: actionAnimateUnshrinkAll,
+        action: actionUnshrinkAll,
         title: "Unshrink all fully",
-        description: "Animate all quads unshrinking to full size",
+        description: "Unshrinking all quads to full size",
         beginnerPriority: "1: high",
     });
     cmds.push({
@@ -203,7 +203,7 @@ export function createCommands(): Command[] {
     });
     cmds.push({
         key: "z",
-        action: () => actionAnimateShrinkAllCompletely(),
+        action: () => actionShrinkAllCompletely(),
         title: "Shink all to zero",
         description:
             "Increase the number of quad-splitting passes done over the quads.  Smaller quads will result.",
@@ -298,7 +298,7 @@ export function actionRegenerateWithSingleStartingQuad() {
 
     world.quads = [createStartingQuad(options)];
     world.quads = subdivideAllRepeatedly(world.quads, options);
-    actionAnimateRandomShrinkFractionChanges();
+    actionShrinkAllRandomly();
     postMessage(
         `Regenerating from one quad. (Num splits: ${options.numSplits})`
     );
@@ -311,7 +311,7 @@ export function actionRegenerateObservingMode() {
     }
 }
 
-export function actionAnimateShrinkAllCompletely() {
+export function actionShrinkAllCompletely() {
     const shouldStagger = random([true, false]);
 
     const quads = getWorld().quads;
@@ -323,7 +323,7 @@ export function actionAnimateShrinkAllCompletely() {
     });
 }
 
-export function actionAnimateUnshrinkAll() {
+export function actionUnshrinkAll() {
     const quads = getWorld().quads;
     gsap.to(quads, {
         duration: 0.2,
@@ -333,7 +333,7 @@ export function actionAnimateUnshrinkAll() {
     });
 }
 
-export function actionAnimateUnshrinkBySameColourAsUnderMouse() {
+export function actionUnshrinkBySameColourAsUnderMouse() {
     const quads = getWorld().quads;
     const nearestQuad = findQuadNearestToPos(quads, mousePos());
     if (!nearestQuad) {
@@ -351,16 +351,31 @@ export function actionAnimateUnshrinkBySameColourAsUnderMouse() {
         ease: "power3.out",
     });
 }
-export function actionAnimateRandomShrinkFractionChanges() {
+export function actionShrinkAllRandomly() {
     const quads = getWorld().quads;
     const shouldStagger = random([true, false]);
     const totalElapsedTime = 0.4;
     //go faster with higher number of quads
     const staggerTime = totalElapsedTime / quads.length;
+
+    const isUniformShrink = random([true, false]);
+
+    const uniformShrink = random([0.2, 0.3, 0.3, 0.4]);
+    const shrinkRange: [number, number] = isUniformShrink
+        ? [uniformShrink, uniformShrink]
+        : [0.15, 0.9];
+
     gsap.to(quads, {
         duration: totalElapsedTime,
         shrinkFraction: (ix: number, _elem: any) =>
-            map(noise(ix * 777 + 1000 * millis()), 0.15, 0.85, 0, 0.9, true),
+            map(
+                noise(ix * 777 + 1000 * millis()),
+                0.15,
+                0.85,
+                shrinkRange[0],
+                shrinkRange[1],
+                true
+            ),
         stagger: shouldStagger ? staggerTime : undefined,
         ease: "bounce.out",
     });

@@ -1,6 +1,6 @@
 import gsap from "gsap";
 import {
-    actionAnimateUnshrinkBySameColourAsUnderMouse,
+    actionUnshrinkBySameColourAsUnderMouse,
     splitAndAddGivenQuads,
 } from "./actions.js";
 import { getWorld } from "./main.js";
@@ -83,7 +83,7 @@ window.mouseDragged = function mouseDragged(evt) {
 
         case "inflate-by-colour":
             {
-                actionAnimateUnshrinkBySameColourAsUnderMouse();
+                actionUnshrinkBySameColourAsUnderMouse();
             }
             break;
 

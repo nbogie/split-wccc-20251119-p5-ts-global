@@ -49,8 +49,8 @@ export interface Options {
     actionSelectShrinkerBrush: () => void;
     actionSelectInflaterBrush: () => void;
     actionSelectSplitterBrush: () => void;
-    actionAnimateUnshrinkAll: () => void;
-    actionAnimateRandomShrinkFractionChanges: () => void;
+    actionUnshrinkAll: () => void;
+    actionShrinkAllRandomly: () => void;
     actionRegenerateFromGrid: () => void;
     actionRegenerateWithSingleStartingQuad: () => void;
 }

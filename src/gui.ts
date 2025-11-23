@@ -16,10 +16,8 @@ export function createGUI(w: World): dat.GUI {
     gui.add(w.options, "actionSelectInflaterBrush").name("⬆️ brush:inflate");
     gui.add(w.options, "actionSelectSplitterBrush").name("🔪 brush:split");
     gui.add(w.options, "shouldDrawCanvasTexture").name("🙈 canvas texture");
-    gui.add(w.options, "actionAnimateUnshrinkAll").name("unshrink all");
-    gui.add(w.options, "actionAnimateRandomShrinkFractionChanges").name(
-        "shrink randomly"
-    );
+    gui.add(w.options, "actionUnshrinkAll").name("unshrink all");
+    gui.add(w.options, "actionShrinkAllRandomly").name("shrink randomly");
     gui.add(w.options, "actionRegenerateFromGrid").name("regen: grid");
     gui.add(w.options, "actionRegenerateWithSingleStartingQuad").name(
         "regen: one quad"

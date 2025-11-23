@@ -9,8 +9,8 @@ import "p5"; //TODO: remove this import when building for OP
 import p5 from "p5"; //TODO: remove this import when building for OP
 
 import {
-    actionAnimateRandomShrinkFractionChanges,
-    actionAnimateUnshrinkAll,
+    actionShrinkAllRandomly,
+    actionUnshrinkAll,
     actionRegenerateFromGrid,
     actionRegenerateObservingMode,
     actionRegenerateWithSingleStartingQuad,
@@ -135,8 +135,8 @@ function createOptions(): Options {
         actionSelectShrinkerBrush,
         actionSelectInflaterBrush,
         actionSelectSplitterBrush,
-        actionAnimateUnshrinkAll,
-        actionAnimateRandomShrinkFractionChanges,
+        actionUnshrinkAll,
+        actionShrinkAllRandomly,
         actionRegenerateFromGrid,
         actionRegenerateWithSingleStartingQuad,
     };

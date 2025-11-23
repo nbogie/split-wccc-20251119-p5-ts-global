@@ -54,7 +54,9 @@ export function drawDebugText(world: World) {
     const { quads, options } = world;
     fill(255);
     stroke(0);
+    strokeWeight(2);
     push();
+    textSize(20);
     translate(100, height - 100);
     const lines = [
         "quads: " + quads.length,
