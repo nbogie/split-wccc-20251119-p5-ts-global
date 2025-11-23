@@ -8,6 +8,7 @@ export function createGUI(w: World): dat.GUI {
     const gui = new dat.GUI({ closed: true });
 
     gui.add(w.options, "numSplits", 0, 30, 1)
+        .name("max splits")
         .listen()
         .onFinishChange((_v) => actionRegenerateObservingMode());
 
