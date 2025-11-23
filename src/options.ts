@@ -22,6 +22,7 @@ export interface Options {
     shouldLogKeyCommands: boolean;
     /**when dragging over quads, how near must a quad centroid be to mouse pos to be considered targeted */
     quadBrushRadius: number;
+    _lastQuadBrushRadiusChangeMillis: number;
     /** A number between 0 (no shrink) and 1 (entirely shrunk - avoid).  Each quad maintains its own but sometimes we set all to this value.
      * @see {@link Quad.shrinkFraction} for more on the meaning. */
     globalShrinkFraction: number;

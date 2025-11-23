@@ -95,6 +95,7 @@ window.draw = function draw() {
         drawHelpScreen();
     }
 
+    drawBrushFeedback();
     drawRecentPostedMessages();
     updatePostedMessages();
 
@@ -122,6 +123,7 @@ function createOptions(): Options {
         shouldDrawCanvasTexture: true,
         shouldLogKeyCommands: false,
         quadBrushRadius: 120,
+        _lastQuadBrushRadiusChangeMillis: -10_000,
         shouldShrink: true,
         numSplits:
             quadDrawMode === "under-image"
@@ -229,5 +231,24 @@ function drawHelpScreen() {
         // text(info.description, 300, 0);//too much info in this form.  better on hover, or in reference page.
         translate(0, lineHeight);
     }
+    pop();
+}
+
+function drawBrushFeedback() {
+    const now = millis();
+    const brushRadiusIndicatorAlphaFrac = map(
+        now - world.options._lastQuadBrushRadiusChangeMillis,
+        0,
+        3000,
+        1,
+        0,
+        true
+    );
+    push();
+    stroke(200, 255 * brushRadiusIndicatorAlphaFrac);
+    strokeWeight(3);
+    noFill();
+    circle(mouseX, mouseY, world.options.quadBrushRadius * 2);
+
     pop();
 }

@@ -33,7 +33,9 @@ export function createGUI(w: World): dat.GUI {
     misc.add(w.options, "paletteIx", 0, palettes.length - 1, 1);
     misc.add(w.options, "quadBrushRadius", 1, 200, 10)
         .listen()
-        .onChange((val) => console.log(val));
+        .onChange(
+            () => (w.options._lastQuadBrushRadiusChangeMillis = millis())
+        );
     misc.add(w.options, "shouldDrawCanvasTexture").name("🙈 textured canvas");
     misc.add(w.options, "shouldShowHelpScreen").name("❓ show help");
     return gui;
