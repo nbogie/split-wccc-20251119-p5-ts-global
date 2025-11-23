@@ -64,6 +64,7 @@ There are some suggestions of what to try first here: [docs/tutorial.md](docs/tu
 ![screenshot-rough-squares.jpg](/docs/screenshots/screenshot-rough-squares.jpg)
 ![screenshot-two-palettes.png](/docs/screenshots/screenshot-two-palettes.png)
 ![screenshot-what.jpg](/docs/screenshots/screenshot-what.jpg)
+![screenshot-shatter.jpg](/docs/screenshots/screenshot-shatter.jpg)
 
 ## TODO:
 

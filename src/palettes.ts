@@ -158,6 +158,37 @@ const palettesRaw: PaletteRaw[] = [
         size: 8,
         type: "chromotome",
     },
+
+    {
+        name: "neill-harmony1-cpp-triangle",
+        stroke: "#202020",
+        background: "#202020",
+        size: 6,
+        type: "chromotome",
+        colors: [
+            "rgb(69.4%, 36.3%, 68.3%)",
+            "rgb(21.5%, 0%, 21.8%)",
+            "rgb(85.4%, 74.3%, 35.9%)",
+            "rgb(91.2%, 87.7%, 75.9%)",
+            "rgb(24.2%, 70%, 74%)",
+            "rgb(19%, 52.9%, 55.9%)",
+        ],
+    },
+    {
+        name: "neill-harmony2-cpp-triangle",
+        stroke: "#202020",
+        background: "#202020",
+        size: 6,
+        type: "chromotome",
+        colors: [
+            "#f9109e",
+            "#4e002c",
+            "#fdc500",
+            "#ffea8c",
+            "#00bffe",
+            "#3c90b2",
+        ],
+    },
 ];
 
 export const palettes: Palette[] = preprocessPalettes(palettesRaw);
