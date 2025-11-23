@@ -540,3 +540,16 @@ export function createHelpItems(): HelpItem[] {
     ];
     return items;
 }
+
+export const actions = {
+    actionRegenerateFromGrid,
+    actionRegenerateWithSingleStartingQuad,
+    actionSelectInflateByColourBrush,
+    actionSelectInflaterBrush,
+    actionSelectMaxShrinkerBrush,
+    actionSelectShrinkerBrush,
+    actionSelectSplitterBrush,
+    actionShrinkAllRandomly,
+    actionUnshrinkAll,
+    actionPickNewRandomPalette,
+};

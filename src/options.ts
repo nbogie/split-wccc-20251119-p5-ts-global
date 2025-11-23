@@ -1,16 +1,3 @@
-import {
-    actionPickNewRandomPalette,
-    actionRegenerateFromGrid,
-    actionRegenerateWithSingleStartingQuad,
-    actionSelectInflateByColourBrush,
-    actionSelectInflaterBrush,
-    actionSelectMaxShrinkerBrush,
-    actionSelectShrinkerBrush,
-    actionSelectSplitterBrush,
-    actionShrinkAllRandomly,
-    actionUnshrinkAll,
-} from "./actions.js";
-
 export type BrushMode =
     | "inflate"
     | "shrink"
@@ -45,18 +32,6 @@ export interface Options {
     minAllowedLength: number;
     seed: number;
     paletteIx: number;
-
-    // these should probably go in a separate object and interface - controls
-    actionSelectMaxShrinkerBrush: () => void;
-    actionSelectInflateByColourBrush: () => void;
-    actionSelectShrinkerBrush: () => void;
-    actionSelectInflaterBrush: () => void;
-    actionSelectSplitterBrush: () => void;
-    actionUnshrinkAll: () => void;
-    actionShrinkAllRandomly: () => void;
-    actionRegenerateFromGrid: () => void;
-    actionPickNewRandomPalette: () => void;
-    actionRegenerateWithSingleStartingQuad: () => void;
 }
 
 export function createOptions(): Options {
@@ -93,15 +68,5 @@ export function createOptions(): Options {
         paletteIx: 0,
         defaultMessageDurationMillis: 2000,
         brushMode: "no-op",
-        actionRegenerateFromGrid,
-        actionRegenerateWithSingleStartingQuad,
-        actionSelectInflateByColourBrush,
-        actionSelectInflaterBrush,
-        actionSelectMaxShrinkerBrush,
-        actionSelectShrinkerBrush,
-        actionSelectSplitterBrush,
-        actionShrinkAllRandomly,
-        actionUnshrinkAll,
-        actionPickNewRandomPalette,
     };
 }

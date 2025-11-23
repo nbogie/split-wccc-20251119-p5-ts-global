@@ -3,7 +3,7 @@ import * as dat from "dat.gui"; //TODO: remove this at OP deploy
 import { actionRegenerateObservingMode } from "./actions.js";
 import type { World } from "./main.js";
 import { palettes } from "./palettes.js";
-
+import { actions } from "./actions.js";
 export function createGUI(w: World): dat.GUI {
     const gui = new dat.GUI({ closed: true });
 
@@ -12,22 +12,24 @@ export function createGUI(w: World): dat.GUI {
         .listen()
         .onFinishChange((_v) => actionRegenerateObservingMode());
 
-    gui.add(w.options, "actionSelectMaxShrinkerBrush").name(
+    gui.add(actions, "actionSelectMaxShrinkerBrush").name(
         "⬇️⬇️ brush:shrinkmax"
     );
-    gui.add(w.options, "actionSelectShrinkerBrush").name("⬇️ brush:shrink");
-    gui.add(w.options, "actionSelectInflaterBrush").name("⬆️ brush:inflate");
-    gui.add(w.options, "actionSelectSplitterBrush").name("🔪 brush:split");
+    gui.add(actions, "actionSelectShrinkerBrush").name("⬇️ brush:shrink");
+    gui.add(actions, "actionSelectInflaterBrush").name("⬆️ brush:inflate");
+    gui.add(actions, "actionSelectSplitterBrush").name("🔪 brush:split");
 
-    const actions = gui.addFolder("actions");
-    actions.add(w.options, "actionUnshrinkAll").name("unshrink all");
-    actions.add(w.options, "actionShrinkAllRandomly").name("shrink randomly");
-    actions.add(w.options, "actionRegenerateFromGrid").name("regen: grid");
-    actions
-        .add(w.options, "actionRegenerateWithSingleStartingQuad")
+    const actsFolder = gui.addFolder("actions");
+    actsFolder.add(actions, "actionUnshrinkAll").name("unshrink all");
+    actsFolder.add(actions, "actionShrinkAllRandomly").name("shrink randomly");
+    actsFolder.add(actions, "actionRegenerateFromGrid").name("regen: grid");
+    actsFolder
+        .add(actions, "actionRegenerateWithSingleStartingQuad")
         .name("regen: one quad");
 
-    actions.add(w.options, "actionPickNewRandomPalette").name("random palette");
+    actsFolder
+        .add(actions, "actionPickNewRandomPalette")
+        .name("random palette");
 
     const misc = gui.addFolder("otherStuff");
 
