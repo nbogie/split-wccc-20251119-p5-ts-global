@@ -16,16 +16,18 @@ Written in typescript and p5 v2.x in global-mode with modules, partly to test v2
 
 ## WCCChallenge?
 
-Join the Birb's Nest Discord for friendly creative coding community
-and future challenges and contributions: https://discord.gg/S8c7qcjw2b
+The Weekly Creative Code Challenge is a friendly jam for generative artists and creative coders.
+
+[You can see the other entries here.](https://openprocessing.org/curation/78544)
+
+Join the Birb's Nest Discord for friendly creative coding community and future challenges and contributions: https://discord.gg/S8c7qcjw2b
 
 ## TODO:
 
 See [docs/todo.md](docs/todo.md)
 
-## other studies around this idea
+## Old studies around this idea
 
--   Okazz original (to my knowledge): https://openprocessing.org/sketch/1045334/
--   mine from 2023, a slight re-write of Okazz's sketch, hopefully clearer. Recursive as per original. https://openprocessing.org/sketch/1970161
--   mine from 2021 https://openprocessing.org/sketch/1303469
-    I was aiming at a somewhat interactive reveal/breakdown but it's naff. The additional optional insetting was done well, iirc.
+-   2023, a slight re-write of Okazz's sketch, hopefully clearer. Recursive as per original. https://openprocessing.org/sketch/1970161
+-   2021 https://openprocessing.org/sketch/1303469
+    I was aiming at a somewhat interactive reveal/breakdown but it was naff. The additional optional insetting was done well, iirc.
