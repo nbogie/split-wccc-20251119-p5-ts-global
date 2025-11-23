@@ -50,3 +50,5 @@ then edit `dist/assets/app-SOME-HASH-HERE.js:`
 ```js
 import rough from "https://cdn.jsdelivr.net/npm/roughjs@4.6.6/+esm";
 ```
+
+-   change imagepack URL folder structure to "./" because OpenProcessing doesn't seem to do file structures. all uploaded files will be at ./

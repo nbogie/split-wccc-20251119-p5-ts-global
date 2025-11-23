@@ -167,11 +167,11 @@ function drawHelpScreen() {
 
     const lineColours = ["#ef9e28", "#c6ac71"];
 
-    const lineHeight = 30;
     stroke(30);
     textAlign(LEFT, TOP);
     translate(width / 2, 50);
     const baseSize = 15;
+    const lineHeight = baseSize * 1.8;
     for (let [ix, info] of items.entries()) {
         fill(lineColours[ix % 2]);
         textWeight(800);
@@ -187,7 +187,12 @@ function drawHelpScreen() {
         textWeight(400);
         text(info.title, 50, 0);
         // text(info.description, 300, 0);//too much info in this form.  better on hover, or in reference page.
+
         translate(0, lineHeight);
+        push();
+        stroke(255, 20);
+        line(-180, -3, 300, -3);
+        pop();
     }
     pop();
 }

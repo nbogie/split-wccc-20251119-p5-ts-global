@@ -2,6 +2,7 @@
 
 ## Keen TODOs:
 
+-   support presets - collections of option objects (or overrides of same) to demo some good setups.
 -   Do alternative insetting by shrinking corners to the intersection of the two inset lines parallel to their edges.
 -   add changing palette without re-drawing. especially for allowing colour palette over greyscale, or vice versa.
 -   Unshrink all quads lying on one or two perpendicular edges of the whole image (or intersecting one or two simple straight lines across the design. Really wants to be a thick line though to ensure fewer near misses)
