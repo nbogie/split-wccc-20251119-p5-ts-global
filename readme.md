@@ -73,9 +73,20 @@ See [docs/todo.md](docs/todo.md)
 -   2021 https://openprocessing.org/sketch/1303469
     I was aiming at a somewhat interactive reveal/breakdown but it was naff. The additional optional insetting was done well, iirc.
 
+# local dev
+
+```bash
+npm install
+npm run dev
+```
+
 # hacky build process for openprocessing
 
-Here are the bits I haven't automated yet. Mostly this is done by `vite-for-no-bundling.config.js`, as opposed to the normal bundling or netlify which uses vite defaults.
+To make the sketch accessible on openprocessing it is transpiled from typescript into javascript and (for my upload convenience, not the reader's) turned into a single file.
+
+Mostly this is done by `vite-for-no-bundling.config.js`. The normal build and deploy to netlify doesn't have a vite config file as it just uses defaults.
+
+There is some manual process necessary, that I haven't automated yet:
 
 ```bash
 npm install
@@ -92,4 +103,5 @@ then edit `dist/assets/app-SOME-HASH-HERE.js:`
 import rough from "https://cdn.jsdelivr.net/npm/roughjs@4.6.6/+esm";
 ```
 
--   change imagepack URL folder structure to "./" because OpenProcessing doesn't seem to do file structures. all uploaded files will be at ./
+-   change imagepack URL folder structure to "./"
+    This is because OpenProcessing doesn't seem to do file structures. all uploaded files will be at ./
