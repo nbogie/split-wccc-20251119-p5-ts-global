@@ -20,6 +20,8 @@ import {
     createCommands,
     createHelpItems,
     type Command,
+    actionSelectInflateByColourBrush,
+    actionSelectMaxShrinkerBrush,
 } from "./actions.js";
 
 import "./interaction.js";
@@ -132,13 +134,15 @@ function createOptions(): Options {
         paletteIx: 0,
         defaultMessageDurationMillis: 2000,
         brushMode: "no-op",
-        actionSelectShrinkerBrush,
-        actionSelectInflaterBrush,
-        actionSelectSplitterBrush,
-        actionUnshrinkAll,
-        actionShrinkAllRandomly,
         actionRegenerateFromGrid,
         actionRegenerateWithSingleStartingQuad,
+        actionSelectInflateByColourBrush,
+        actionSelectInflaterBrush,
+        actionSelectMaxShrinkerBrush,
+        actionSelectShrinkerBrush,
+        actionSelectSplitterBrush,
+        actionShrinkAllRandomly,
+        actionUnshrinkAll,
     };
 }
 

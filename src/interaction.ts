@@ -88,6 +88,7 @@ window.mouseDragged = function mouseDragged(evt) {
             break;
 
         case "shrink":
+        case "shrinkmax":
             {
                 const nearbyQuads = findQuadsNearPos(
                     mouseP,
@@ -104,7 +105,10 @@ window.mouseDragged = function mouseDragged(evt) {
                     gsap.to(freshNearbyQuads, {
                         delay: 0.05,
                         duration: 0.5,
-                        shrinkFraction: "random(0.2, 0.6, 0.1)",
+                        shrinkFraction:
+                            w.options.brushMode === "shrinkmax"
+                                ? 1
+                                : "random(0.2, 0.6, 0.1)",
                     });
                     freshNearbyQuads.forEach(
                         (q) => (q.lastMouseModMillis = millis())

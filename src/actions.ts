@@ -48,9 +48,9 @@ export function createCommands(): Command[] {
     });
     cmds.push({
         key: "1",
-        action: actionSelectSplitterBrush,
-        title: "Select brush: split",
-        description: "change the current brush mode to split quads",
+        action: actionSelectMaxShrinkerBrush,
+        title: "Select brush: shrinkmax",
+        description: "change the current brush mode to shrink quads completely",
         beginnerPriority: "1: high",
     });
     cmds.push({
@@ -62,13 +62,20 @@ export function createCommands(): Command[] {
     });
     cmds.push({
         key: "3",
+        action: actionSelectSplitterBrush,
+        title: "Select brush: split",
+        description: "change the current brush mode to split quads",
+        beginnerPriority: "1: high",
+    });
+    cmds.push({
+        key: "4",
         action: actionSelectInflaterBrush,
         title: "Select brush: inflate",
         description: "change the current brush mode to inflate quads",
         beginnerPriority: "1: high",
     });
     cmds.push({
-        key: "4",
+        key: "5",
         action: actionSelectInflateByColourBrush,
         title: "Select brush: inflate-by-colour",
         description:
@@ -449,6 +456,11 @@ export function actionSelectShrinkerBrush() {
     getWorld().options.brushMode = "shrink";
     postMessage("Shrinker brush");
 }
+export function actionSelectMaxShrinkerBrush() {
+    getWorld().options.brushMode = "shrinkmax";
+    postMessage("MaxShrinker brush");
+}
+
 export function actionSelectSplitterBrush() {
     getWorld().options.brushMode = "split";
     postMessage("Splitter brush");

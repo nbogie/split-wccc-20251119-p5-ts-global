@@ -15,6 +15,7 @@ export type Quad = {
 export type BrushMode =
     | "inflate"
     | "shrink"
+    | "shrinkmax"
     | "split"
     | "inflate-by-colour"
     | "no-op";
@@ -46,6 +47,8 @@ export interface Options {
     paletteIx: number;
 
     // these should probably go in a separate object and interface - controls
+    actionSelectMaxShrinkerBrush: () => void;
+    actionSelectInflateByColourBrush: () => void;
     actionSelectShrinkerBrush: () => void;
     actionSelectInflaterBrush: () => void;
     actionSelectSplitterBrush: () => void;
