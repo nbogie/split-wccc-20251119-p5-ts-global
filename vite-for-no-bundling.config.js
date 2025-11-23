@@ -32,9 +32,9 @@ export default defineConfig(({ mode }) => {
                 preserveEntrySignatures: "strict",
                 output: {
                     format: "es",
-                    preserveModules: true,
+                    // preserveModules: true,
                     // chunkFileNames: `[name].js`, // ensures chunks are named clearly
-                    entryFileNames: `[name].js`, // ensures module files are named clearly
+                    // entryFileNames: `[name].js`, // ensures module files are named clearly
                 },
             },
         },
