@@ -24,6 +24,37 @@ The Weekly Creative Code Challenge is a friendly jam for generative artists and 
 
 Join the Birb's Nest Discord for friendly creative coding community and future challenges and contributions: https://discord.gg/S8c7qcjw2b
 
+### controls:
+
+(get latest keys with "?". This summary might be out of date)
+
+-   drag mouse: Manipulate quads (Depending on the currently selected brush, you can shrink / inflate / split the quads under or near the pointer).
+-   "1": Select brush: split (change the current brush mode to split quads).
+-   "2": Select brush: shrinkmax (change the current brush mode to shrink quads completely).
+-   "3": Select brush: shrink (change the current brush mode to shrink quads).
+-   "4": Select brush: inflate (change the current brush mode to inflate quads).
+-   "5": Select brush: inflate-by-colour (change the current brush mode to inflate quads having the same colour as the under mouse).
+-   ",": Decrease num splits (Decrease the maximum number of quad-splitting passes done over the quads. Bigger quads will result.).
+-   ".": Increase num splits (Increase the maximum number of quad-splitting passes done over the quads. Smaller quads will result.).
+-   "g": Regenerate from grid (Regenerate a new set of quads by repeatedly bisecting a grid of starting quads).
+-   "o": Regenerate from one quad (Regenerate a new set of quads starting from a single large quad).
+-   "s": Shrink all randomly (Animate random quad shrink/grows from a variety of options).
+-   "u": Unshrink all fully (Unshrinking all quads to full size).
+-   "p": Pick random palette (Pick random palette from those available).
+-   "r": Draw mode: roughjs (experimental) (use roughjs for drawing - maybe very slow).
+-   "?": Toggle help (Toggle display of help on commands and interaction.).
+-   "SPACE": Regenerate (Regenerate a new set of quads preserving the current config (maintaining grid mode if enabled)).
+-   "n": Draw mode: normal (set normal draw mode).
+-   "v": saVe screenshot (Save a screenshot of the current canvas).
+-   "h": Toggle hide dat.gui (Toggle complete hide of dat.gui).
+-   "d": Split quad at mouse (Split the quad under the current mouse/touch position).
+-   "t": Toggle debug text (Toggle the display of some debug text (num quads, num iterations of bisection, palette name, etc)).
+-   "m": Toggle messages (Toggle the display of info messages when you take certain actions).
+-   "=": Unshrink all a little (Decreate the global shrink fraction (fractions by which all quad corners are lerped towards their centroid)).
+-   "-": Shrink all a little (Increase the global shrink fraction (fractions by which all quad corners are lerped towards their centroid)).
+-   "z": Shink all to zero (Increase the number of quad-splitting passes done over the quads. Smaller quads will result.).
+-   "i": Draw mode: reference image (have the quads observe the brightness or colour of a loaded but hidden reference image).
+
 ## TODO:
 
 See [docs/todo.md](docs/todo.md)
