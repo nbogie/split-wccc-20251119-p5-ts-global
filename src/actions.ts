@@ -22,30 +22,14 @@ export interface Command {
 
 export function createCommands(): Command[] {
     const cmds: Command[] = [];
-
     cmds.push({
-        key: "i",
-        beginnerPriority: "3: low",
-        action: () => {
-            actionSetDrawModeToUseReferenceImage();
+        key: "1",
+        action: actionSelectSplitterBrush,
+        title: "Select brush: split",
+        description: "change the current brush mode to split quads",
+        beginnerPriority: "1: high",
+    });
 
-            actionRegenerateObservingMode();
-        },
-        title: "Draw mode: reference image",
-        description:
-            "have the quads observe the brightness or colour of a loaded but hidden reference image",
-    });
-    cmds.push({
-        key: "n",
-        action: () => {
-            getWorld().options.numSplits = 5;
-            actionSetDrawModeNormal();
-            actionRegenerateObservingMode();
-        },
-        title: "Draw mode: normal",
-        description: "set normal draw mode",
-        beginnerPriority: "3: low",
-    });
     cmds.push({
         key: "2",
         action: actionSelectMaxShrinkerBrush,
@@ -60,13 +44,7 @@ export function createCommands(): Command[] {
         description: "change the current brush mode to shrink quads",
         beginnerPriority: "1: high",
     });
-    cmds.push({
-        key: "1",
-        action: actionSelectSplitterBrush,
-        title: "Select brush: split",
-        description: "change the current brush mode to split quads",
-        beginnerPriority: "1: high",
-    });
+
     cmds.push({
         key: "4",
         action: actionSelectInflaterBrush,
@@ -82,20 +60,33 @@ export function createCommands(): Command[] {
             "change the current brush mode to inflate quads having the same colour as the under mouse",
         beginnerPriority: "1: high",
     });
+
+    cmds.push({
+        key: ",",
+        action: () => actionChangeNumSplits(-1),
+        title: "Decrease num splits",
+        description:
+            "Decrease the maximum number of quad-splitting passes done over the quads.  Bigger quads will result.",
+        beginnerPriority: "1: high",
+    });
+
+    cmds.push({
+        key: ".",
+        action: () => actionChangeNumSplits(1),
+        title: "Increase num splits",
+        description:
+            "Increase the maximum number of quad-splitting passes done over the quads.  Smaller quads will result.",
+        beginnerPriority: "1: high",
+    });
+
     cmds.push({
         key: "?",
         action: actionToggleHelp,
         title: "Toggle help",
         description: "Toggle display of help on commands and interaction.",
-        beginnerPriority: "1: high",
+        beginnerPriority: "2: med",
     });
-    cmds.push({
-        key: "h",
-        action: () => {}, //implemented by dat.gui automatically
-        title: "Toggle hide dat.gui",
-        description: "Toggle complete hide of dat.gui",
-        beginnerPriority: "3: low",
-    });
+
     cmds.push({
         key: " ",
         action: actionRegenerateObservingMode,
@@ -123,7 +114,7 @@ export function createCommands(): Command[] {
         beginnerPriority: "1: high",
     });
     cmds.push({
-        key: "r",
+        key: "s",
         action: actionShrinkAllRandomly,
         title: "Shrink all randomly",
         description:
@@ -145,10 +136,17 @@ export function createCommands(): Command[] {
         beginnerPriority: "1: high",
     });
     cmds.push({
-        key: "s",
+        key: "h",
+        action: () => {}, //implemented by dat.gui automatically
+        title: "Toggle hide dat.gui",
+        description: "Toggle complete hide of dat.gui",
+        beginnerPriority: "3: low",
+    });
+    cmds.push({
+        key: "v",
         action: actionTakeAScreenshot,
-        title: "Screenshot",
-        description: "Take a screenshot of the current canvas",
+        title: "saVe screenshot",
+        description: "Save a screenshot of the current canvas",
         beginnerPriority: "2: med",
     });
     cmds.push({
@@ -192,28 +190,35 @@ export function createCommands(): Command[] {
     });
 
     cmds.push({
-        key: ",",
-        action: () => actionChangeNumSplits(-1),
-        title: "Decrease num splits",
-        description:
-            "Decrease the maximum number of quad-splitting passes done over the quads.  Bigger quads will result.",
-        beginnerPriority: "1: high",
-    });
-
-    cmds.push({
-        key: ".",
-        action: () => actionChangeNumSplits(1),
-        title: "Increase num splits",
-        description:
-            "Increase the maximum number of quad-splitting passes done over the quads.  Smaller quads will result.",
-        beginnerPriority: "1: high",
-    });
-    cmds.push({
         key: "z",
         action: () => actionShrinkAllCompletely(),
         title: "Shink all to zero",
         description:
             "Increase the number of quad-splitting passes done over the quads.  Smaller quads will result.",
+        beginnerPriority: "3: low",
+    });
+
+    cmds.push({
+        key: "i",
+        beginnerPriority: "3: low",
+        action: () => {
+            actionSetDrawModeToUseReferenceImage();
+
+            actionRegenerateObservingMode();
+        },
+        title: "Draw mode: reference image",
+        description:
+            "have the quads observe the brightness or colour of a loaded but hidden reference image",
+    });
+    cmds.push({
+        key: "n",
+        action: () => {
+            getWorld().options.numSplits = 5;
+            actionSetDrawModeNormal();
+            actionRegenerateObservingMode();
+        },
+        title: "Draw mode: normal",
+        description: "set normal draw mode",
         beginnerPriority: "3: low",
     });
 
