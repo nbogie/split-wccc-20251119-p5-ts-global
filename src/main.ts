@@ -22,10 +22,11 @@ import {
     type Command,
     actionSelectInflateByColourBrush,
     actionSelectMaxShrinkerBrush,
+    actionPickNewRandomPalette,
 } from "./actions.js";
 
 import "./interaction.js";
-import { drawQuad, type Options, type Quad } from "./quad.js";
+import { drawQuad, type Quad } from "./quad.js";
 import { drawDebugText, setDescription } from "./randomStuff.js";
 
 import * as dat from "dat.gui"; //TODO: remove this import when building for OP
@@ -33,6 +34,7 @@ import * as dat from "dat.gui"; //TODO: remove this import when building for OP
 import { createGUI } from "./gui.js";
 import { drawQuadsByUnderlyingImage, loadImagePack } from "./underimage.js";
 import { drawCanvasTextureTo } from "./canvasTexture.js";
+import type { Options } from "./options.js";
 
 export interface World {
     quads: Quad[];
@@ -143,6 +145,7 @@ function createOptions(): Options {
         actionSelectSplitterBrush,
         actionShrinkAllRandomly,
         actionUnshrinkAll,
+        actionPickNewRandomPalette,
     };
 }
 
