@@ -55,6 +55,13 @@ Join the Birb's Nest Discord for friendly creative coding community and future c
 -   "z": Shink all to zero (Increase the number of quad-splitting passes done over the quads. Smaller quads will result.).
 -   "i": Draw mode: reference image (have the quads observe the brightness or colour of a loaded but hidden reference image).
 
+## some screenshots
+
+![screenshot-column.jpg](/docs/screenshots/screenshot-column.jpg)
+![screenshot-kevin.png](/docs/screenshots/screenshot-kevin.png)
+![screenshot-rough-squares.jpg](/docs/screenshots/screenshot-rough-squares.jpg)
+![screenshot-two-palettes.png](/docs/screenshots/screenshot-two-palettes.png)
+
 ## TODO:
 
 See [docs/todo.md](docs/todo.md)
