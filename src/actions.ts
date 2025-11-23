@@ -47,21 +47,21 @@ export function createCommands(): Command[] {
         beginnerPriority: "3: low",
     });
     cmds.push({
-        key: "1",
+        key: "2",
         action: actionSelectMaxShrinkerBrush,
         title: "Select brush: shrinkmax",
         description: "change the current brush mode to shrink quads completely",
         beginnerPriority: "1: high",
     });
     cmds.push({
-        key: "2",
+        key: "3",
         action: actionSelectShrinkerBrush,
         title: "Select brush: shrink",
         description: "change the current brush mode to shrink quads",
         beginnerPriority: "1: high",
     });
     cmds.push({
-        key: "3",
+        key: "1",
         action: actionSelectSplitterBrush,
         title: "Select brush: split",
         description: "change the current brush mode to split quads",
