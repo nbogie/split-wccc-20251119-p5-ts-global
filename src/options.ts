@@ -1,3 +1,16 @@
+import {
+    actionPickNewRandomPalette,
+    actionRegenerateFromGrid,
+    actionRegenerateWithSingleStartingQuad,
+    actionSelectInflateByColourBrush,
+    actionSelectInflaterBrush,
+    actionSelectMaxShrinkerBrush,
+    actionSelectShrinkerBrush,
+    actionSelectSplitterBrush,
+    actionShrinkAllRandomly,
+    actionUnshrinkAll,
+} from "./actions.js";
+
 export type BrushMode =
     | "inflate"
     | "shrink"
@@ -44,4 +57,51 @@ export interface Options {
     actionRegenerateFromGrid: () => void;
     actionPickNewRandomPalette: () => void;
     actionRegenerateWithSingleStartingQuad: () => void;
+}
+
+export function createOptions(): Options {
+    const shouldUseGridMode = random([true, false]);
+    const quadDrawMode: Options["quadDrawMode"] = true
+        ? "normal"
+        : "under-image";
+
+    return {
+        quadDrawMode,
+        quadDrawFillMode: random(["useBrightness", "usePalette"]),
+        imageIx: 0,
+        shouldUseGridMode,
+
+        shouldDrawMessages: true,
+        shouldDrawDebugText: false,
+        shouldShowHelpScreen: false,
+        shouldDrawDebugNormals: false,
+        shouldDrawCanvasTexture: true,
+        shouldLogKeyCommands: false,
+        quadBrushRadius: 120,
+        _lastQuadBrushRadiusChangeMillis: -10_000,
+        shouldShrink: true,
+        numSplits:
+            quadDrawMode === "under-image"
+                ? 10
+                : shouldUseGridMode
+                ? random([1, 2, 3])
+                : random([5, 6]),
+        shouldGenerateUnshrunk: true,
+        globalShrinkFraction: 0.05, //0-1 exclusive
+        minAllowedLength: quadDrawMode === "under-image" ? 5 : 15,
+        seed: 123,
+        paletteIx: 0,
+        defaultMessageDurationMillis: 2000,
+        brushMode: "no-op",
+        actionRegenerateFromGrid,
+        actionRegenerateWithSingleStartingQuad,
+        actionSelectInflateByColourBrush,
+        actionSelectInflaterBrush,
+        actionSelectMaxShrinkerBrush,
+        actionSelectShrinkerBrush,
+        actionSelectSplitterBrush,
+        actionShrinkAllRandomly,
+        actionUnshrinkAll,
+        actionPickNewRandomPalette,
+    };
 }

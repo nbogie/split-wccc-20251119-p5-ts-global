@@ -9,20 +9,10 @@ import "p5"; //TODO: remove this import when building for OP
 import p5 from "p5"; //TODO: remove this import when building for OP
 
 import {
-    actionShrinkAllRandomly,
-    actionUnshrinkAll,
-    actionRegenerateFromGrid,
     actionRegenerateObservingMode,
-    actionRegenerateWithSingleStartingQuad,
-    actionSelectInflaterBrush,
-    actionSelectShrinkerBrush,
-    actionSelectSplitterBrush,
     createCommands,
     createHelpItems,
     type Command,
-    actionSelectInflateByColourBrush,
-    actionSelectMaxShrinkerBrush,
-    actionPickNewRandomPalette,
 } from "./actions.js";
 
 import "./interaction.js";
@@ -31,10 +21,10 @@ import { drawDebugText, setDescription } from "./randomStuff.js";
 
 import * as dat from "dat.gui"; //TODO: remove this import when building for OP
 
-import { createGUI } from "./gui.js";
-import { drawQuadsByUnderlyingImage, loadImagePack } from "./underimage.js";
 import { drawCanvasTextureTo } from "./canvasTexture.js";
-import type { Options } from "./options.js";
+import { createGUI } from "./gui.js";
+import { createOptions, type Options } from "./options.js";
+import { drawQuadsByUnderlyingImage, loadImagePack } from "./underimage.js";
 
 export interface World {
     quads: Quad[];
@@ -103,53 +93,6 @@ window.draw = function draw() {
         drawDebugText(world);
     }
 };
-
-function createOptions(): Options {
-    const shouldUseGridMode = random([true, false]);
-    const quadDrawMode: Options["quadDrawMode"] = true
-        ? "normal"
-        : "under-image";
-
-    return {
-        quadDrawMode,
-        quadDrawFillMode: random(["useBrightness", "usePalette"]),
-        imageIx: 0,
-        shouldUseGridMode,
-
-        shouldDrawMessages: true,
-        shouldDrawDebugText: false,
-        shouldShowHelpScreen: false,
-        shouldDrawDebugNormals: false,
-        shouldDrawCanvasTexture: true,
-        shouldLogKeyCommands: false,
-        quadBrushRadius: 120,
-        _lastQuadBrushRadiusChangeMillis: -10_000,
-        shouldShrink: true,
-        numSplits:
-            quadDrawMode === "under-image"
-                ? 10
-                : shouldUseGridMode
-                ? random([1, 2, 3])
-                : random([5, 6]),
-        shouldGenerateUnshrunk: true,
-        globalShrinkFraction: 0.05, //0-1 exclusive
-        minAllowedLength: quadDrawMode === "under-image" ? 5 : 15,
-        seed: 123,
-        paletteIx: 0,
-        defaultMessageDurationMillis: 2000,
-        brushMode: "no-op",
-        actionRegenerateFromGrid,
-        actionRegenerateWithSingleStartingQuad,
-        actionSelectInflateByColourBrush,
-        actionSelectInflaterBrush,
-        actionSelectMaxShrinkerBrush,
-        actionSelectShrinkerBrush,
-        actionSelectSplitterBrush,
-        actionShrinkAllRandomly,
-        actionUnshrinkAll,
-        actionPickNewRandomPalette,
-    };
-}
 
 export interface Message {
     str: string;
