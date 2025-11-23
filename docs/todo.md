@@ -30,6 +30,12 @@
 -   extrude to 3d w custom geom?
 -   fix the occasional hairline gaps between quads
 
+# Technical debt
+
+-   I've made zero attempt to clean up unnecessary GSAP tweens, and mouse drag almost certainly queues a firestream of events it needn't.
+-   As soon as I added roughjs I started getting browser hanging. Might just be GC or interplay with GSAP.
+-   the Options object is a massive junk drawer. But so what - fit for purpose.
+
 ## Done
 
 -   Prepare a paper texture to an offscreen and compose it each frame. Done and it is horrible.

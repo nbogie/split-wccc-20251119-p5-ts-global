@@ -31,3 +31,22 @@ See [docs/todo.md](docs/todo.md)
 -   2023, a slight re-write of Okazz's sketch, hopefully clearer. Recursive as per original. https://openprocessing.org/sketch/1970161
 -   2021 https://openprocessing.org/sketch/1303469
     I was aiming at a somewhat interactive reveal/breakdown but it was naff. The additional optional insetting was done well, iirc.
+
+# hacky build process for openprocessing
+
+Here are the bits I haven't automated yet. Mostly this is done by `vite-for-no-bundling.config.js`, as opposed to the normal bundling or netlify which uses vite defaults.
+
+```bash
+npm install
+npm run build:no-bundle
+code dist/
+```
+
+then edit `dist/assets/app-SOME-HASH-HERE.js:`
+
+-   remove all imports - they're all done by script tag except:
+-   add a CDN ESM import for roughjs:
+
+```js
+import rough from "https://cdn.jsdelivr.net/npm/roughjs@4.6.6/+esm";
+```

@@ -26,6 +26,8 @@ export function createGUI(w: World): dat.GUI {
     actsFolder
         .add(actions, "actionRegenerateWithSingleStartingQuad")
         .name("regen: one quad");
+    actsFolder.add(actions, "actionSetDrawModeRough").name("roughjs draw mode");
+    actsFolder.add(actions, "actionSetDrawModeNormal").name("normal draw mode");
 
     actsFolder
         .add(actions, "actionPickNewRandomPalette")
@@ -34,6 +36,7 @@ export function createGUI(w: World): dat.GUI {
     const misc = gui.addFolder("otherStuff");
 
     misc.add(w.options, "paletteIx", 0, palettes.length - 1, 1);
+
     misc.add(w.options, "disableMultiStroke");
     misc.add(w.options, "defaultRoughness", 0, 3, 0.2);
 
