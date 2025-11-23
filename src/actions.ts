@@ -136,6 +136,28 @@ export function createCommands(): Command[] {
         beginnerPriority: "1: high",
     });
     cmds.push({
+        key: "r",
+        action: () => {
+            getWorld().options.numSplits = 5;
+            actionSetDrawModeRough();
+            actionRegenerateObservingMode();
+        },
+        title: "Draw mode: roughjs (experimental)",
+        description: "use roughjs for drawing - maybe very slow",
+        beginnerPriority: "1: high",
+    });
+    cmds.push({
+        key: "n",
+        action: () => {
+            getWorld().options.numSplits = 5;
+            actionSetDrawModeNormal();
+            actionRegenerateObservingMode();
+        },
+        title: "Draw mode: normal",
+        description: "set normal draw mode",
+        beginnerPriority: "2: med",
+    });
+    cmds.push({
         key: "h",
         action: () => {}, //implemented by dat.gui automatically
         title: "Toggle hide dat.gui",
@@ -209,17 +231,6 @@ export function createCommands(): Command[] {
         title: "Draw mode: reference image",
         description:
             "have the quads observe the brightness or colour of a loaded but hidden reference image",
-    });
-    cmds.push({
-        key: "n",
-        action: () => {
-            getWorld().options.numSplits = 5;
-            actionSetDrawModeNormal();
-            actionRegenerateObservingMode();
-        },
-        title: "Draw mode: normal",
-        description: "set normal draw mode",
-        beginnerPriority: "3: low",
     });
 
     return cmds;
@@ -484,6 +495,13 @@ export function actionSetDrawModeNormal(): void {
     w.options.quadDrawMode = "normal";
     w.options.minAllowedLength = 15;
 }
+
+export function actionSetDrawModeRough(): void {
+    const w = getWorld();
+    w.options.quadDrawMode = "rough";
+    w.options.minAllowedLength = 15;
+}
+
 export function actionSetDrawModeToUseReferenceImage(): void {
     const w = getWorld();
     if (w.images) {
@@ -552,4 +570,6 @@ export const actions = {
     actionShrinkAllRandomly,
     actionUnshrinkAll,
     actionPickNewRandomPalette,
+    actionSetDrawModeRough,
+    actionSetDrawModeNormal,
 };

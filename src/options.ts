@@ -7,9 +7,14 @@ export type BrushMode =
     | "no-op";
 
 export interface Options {
+    /** roughjs's property of the same name */
+    disableMultiStroke: boolean;
+    /** roughjs's roughness property */
+    defaultRoughness: number;
+
     shouldShowHelpScreen: boolean;
     defaultMessageDurationMillis: number;
-    quadDrawMode: "normal" | "under-image";
+    quadDrawMode: "normal" | "rough" | "under-image";
     quadDrawFillMode: "useBrightness" | "usePalette";
     imageIx: number;
     brushMode: BrushMode;
@@ -45,7 +50,8 @@ export function createOptions(): Options {
         quadDrawFillMode: random(["useBrightness", "usePalette"]),
         imageIx: 0,
         shouldUseGridMode,
-
+        disableMultiStroke: false,
+        defaultRoughness: 1,
         shouldDrawMessages: true,
         shouldDrawDebugText: false,
         shouldShowHelpScreen: false,

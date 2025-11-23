@@ -34,6 +34,9 @@ export function createGUI(w: World): dat.GUI {
     const misc = gui.addFolder("otherStuff");
 
     misc.add(w.options, "paletteIx", 0, palettes.length - 1, 1);
+    misc.add(w.options, "disableMultiStroke");
+    misc.add(w.options, "defaultRoughness", 0, 3, 0.2);
+
     misc.add(w.options, "quadBrushRadius", 1, 200, 10)
         .listen()
         .onChange(

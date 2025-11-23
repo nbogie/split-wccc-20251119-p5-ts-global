@@ -1,8 +1,24 @@
 import p5 from "p5";
 import { minByOrThrow, randomColourAndIdFromPalette } from "./randomStuff.js";
 import type { Options } from "./options.js";
+import { getWorld } from "./main.js";
+
+let nextQuadId = 1;
+
+const roughJSFillStyleNames = [
+    "cross-hatch",
+    "hachure",
+    "solid",
+    "zigzag",
+    // "dots",
+    "sunburst",
+    "dashed",
+    "zigzag-line",
+];
+
 export type Quad = {
     /** time this quad was last manipulated by mouse - in millis since sketch start */
+    id: number;
     lastMouseModMillis: number;
     colour: p5.Color;
     /** helps us find all quads of the same colour. */
@@ -79,6 +95,7 @@ function createQuadOnGrid(
 function createQuadWithPoints(pts: Quad["pts"], options: Options): Quad {
     const [colour, colourIx] = randomColourAndIdFromPalette();
     return {
+        id: nextQuadId++,
         pts: pts.map((pt) => pt.copy()) as Quad["pts"],
         isLeaf: false,
         lastMouseModMillis: -1,
@@ -96,6 +113,9 @@ function randomShrinkFraction() {
     return round(numDivisions * random(0, 0.9)) / numDivisions;
 }
 export function drawQuad(quad: Quad, options: Options): void {
+    if (quad.shrinkFraction > 0.999) {
+        return;
+    }
     push();
     const c = color(quad.colour.toString());
     if (options.shouldDrawDebugNormals) {
@@ -103,12 +123,32 @@ export function drawQuad(quad: Quad, options: Options): void {
     }
     const shrunkPts = shrinkQuadPoints(quad.pts, quad.shrinkFraction);
 
-    fill(c);
-    noStroke();
-    beginShape();
-    shrunkPts.forEach((v) => vertex(v.x, v.y));
-    endShape(CLOSE);
-    pop();
+    if (options.quadDrawMode === "normal") {
+        fill(c);
+        noStroke();
+        beginShape();
+        shrunkPts.forEach((v) => vertex(v.x, v.y));
+        endShape(CLOSE);
+        pop();
+    } else if (options.quadDrawMode === "rough") {
+        //draw triangle ABC
+
+        getWorld().roughCanvas.polygon(
+            shrunkPts.map((v) => [v.x, v.y]),
+            {
+                fill: quad.colour.toString(),
+                stroke: "#FFFFFFAA",
+                strokeWidth: 2,
+                roughness: options.defaultRoughness, //should go less as quads get tiny
+                disableMultiStroke: options.disableMultiStroke,
+                fillStyle:
+                    roughJSFillStyleNames[
+                        quad.id % roughJSFillStyleNames.length
+                    ],
+                seed: quad.id * 33,
+            }
+        );
+    }
 }
 
 export function drawQuadWithBrightness(
