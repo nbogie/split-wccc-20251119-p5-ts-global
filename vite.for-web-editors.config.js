@@ -1,3 +1,4 @@
+//@ts-check
 //reading:
 //configuring vite: https://vite.dev/config/
 //build options: https://vite.dev/config/build-options
@@ -12,7 +13,6 @@ export default defineConfig(({ mode }) => {
         build: {
             //more readable code for upload on openprocessing etc
             minify: false,
-
             //maybe use dynamic import vars ?
             // https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars
 
@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => {
                     // If building, use the production HTML file.
                     // Otherwise (for dev server), Vite defaults to the root index.html
                     app: isProduction
-                        ? resolve(__dirname, "index.no-bundle.html")
+                        ? resolve(__dirname, "index.for-web-editors.html")
                         : resolve(__dirname, "index.html"),
                 },
 
