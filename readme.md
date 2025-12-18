@@ -105,6 +105,7 @@ then edit `dist/assets/app-SOME-HASH-HERE.js:`
 ```js
 import rough from "https://cdn.jsdelivr.net/npm/roughjs@4.6.6/+esm";
 ```
+- if testing the single-file deploy locally, adjust the path to the .js file slightly from `index-for-web-editors.html` (vite seems insistent on making it absolute).
 
--   change imagepack URL folder structure to "./"
+-   in the js, change imagepack URL folder structure to "./"
     This is because OpenProcessing doesn't seem to do file structures. all uploaded files will be at ./
