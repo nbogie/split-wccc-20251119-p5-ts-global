@@ -2,6 +2,7 @@
 
 ## Keen TODOs:
 
+-   replace roughjs with CDN load (https://unpkg.com/roughjs@latest/bundled/rough.js) and make all externals
 -   support presets - collections of option objects (or overrides of same) to demo some good setups.
 -   Do alternative insetting by shrinking corners to the intersection of the two inset lines parallel to their edges.
 -   add changing palette without re-drawing. especially for allowing colour palette over greyscale, or vice versa.
