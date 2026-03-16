@@ -1,4 +1,4 @@
-import p5 from "p5";
+import p5 from "p5/global";
 import { minByOrThrow, randomColourAndIdFromPalette } from "./randomStuff.js";
 import type { Options } from "./options.js";
 import { getWorld } from "./main.js";

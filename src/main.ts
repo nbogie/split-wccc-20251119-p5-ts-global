@@ -2,11 +2,7 @@
 
 //See readme.md for more info
 
-//this import RUNS p5 - it's not for type purposes - that's set up by  global.d.ts
-import "p5"; //TODO: remove this import when building for OP
-
-//This import brings in the runtime p5 value (to reference p5.Vector.random2D() etc)
-import p5 from "p5"; //TODO: remove this import when building for OP
+import p5 from "p5/global"; //TODO: remove this import when building for OP
 
 import rough from "roughjs";
 

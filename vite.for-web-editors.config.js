@@ -25,7 +25,7 @@ export default defineConfig((_options) => {
                 },
 
                 //externalize deps that shouldn't be bundled
-                external: ["dat.gui", "gsap", "p5", "roughjs"],
+                external: ["dat.gui", "gsap", "p5/global", "roughjs"],
                 //https://rollupjs.org/configuration-options/
                 preserveEntrySignatures: "strict",
                 output: {

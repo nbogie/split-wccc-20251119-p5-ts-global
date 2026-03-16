@@ -93,13 +93,13 @@ There is some manual process necessary, that I haven't automated yet:
 
 ```bash
 npm install
-npm run build:no-bundle
+npm run build:for-web-editors
 code dist/
 ```
 
 then edit `dist/assets/app-SOME-HASH-HERE.js:`
 
--   remove all imports - they're all done by script tag except:
+-   remove all imports - they're all done by script tag in the custom HTML page, except:
 -   add a CDN ESM import for roughjs:
 
 ```js
